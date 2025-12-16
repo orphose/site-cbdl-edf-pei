@@ -344,7 +344,7 @@ export default function AdminPage() {
           <div className="absolute top-20 right-0 w-96 h-96 bg-edf-blue/5 rounded-full blur-3xl" />
           <div className="absolute bottom-20 left-0 w-80 h-80 bg-edf-orange/5 rounded-full blur-3xl" />
           <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-edf-green/5 rounded-full blur-3xl" />
-          <div className="absolute top-24 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+          <div className="absolute top-28 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
           <div className="absolute bottom-24 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
         </div>
 
