@@ -726,9 +726,13 @@ export default function AdminPage() {
       <Modal 
         isOpen={newsModal.isOpen} 
         onClose={newsModal.onClose} 
-        size="3xl"
-        backdrop="blur"
+        size="2xl"
+        backdrop="opaque"
         scrollBehavior="inside"
+        classNames={{
+          backdrop: "bg-black/50",
+          base: "bg-white",
+        }}
       >
         <ModalContent>
           <ModalHeader className="border-b border-gray-100 pb-4">
@@ -819,9 +823,13 @@ export default function AdminPage() {
       <Modal 
         isOpen={partnershipModal.isOpen} 
         onClose={partnershipModal.onClose} 
-        size="2xl"
-        backdrop="blur"
+        size="xl"
+        backdrop="opaque"
         scrollBehavior="inside"
+        classNames={{
+          backdrop: "bg-black/50",
+          base: "bg-white",
+        }}
       >
         <ModalContent>
           <ModalHeader className="border-b border-gray-100 pb-4">
@@ -905,7 +913,11 @@ export default function AdminPage() {
       <Modal 
         isOpen={deleteModal.isOpen} 
         onClose={deleteModal.onClose}
-        backdrop="blur"
+        backdrop="opaque"
+        classNames={{
+          backdrop: "bg-black/50",
+          base: "bg-white",
+        }}
       >
         <ModalContent>
           <ModalHeader className="text-red-600">
