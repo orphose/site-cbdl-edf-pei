@@ -187,16 +187,25 @@ export default function AdminPage() {
   // Sauvegarder actualité
   const saveNews = async () => {
     try {
-      const data = {
-        ...newsForm,
+      const newsData = {
+        title: newsForm.title,
         slug: newsForm.slug || generateSlug(newsForm.title),
+        excerpt: newsForm.excerpt || null,
+        content: newsForm.content || null,
+        image_url: newsForm.image_url || null,
+        is_published: newsForm.is_published,
         published_at: newsForm.is_published ? new Date().toISOString() : null,
       };
 
       if (editingNews) {
-        await supabase.from("news").update(data).eq("id", editingNews.id);
+        const { error } = await supabase
+          .from("news")
+          .update(newsData)
+          .eq("id", editingNews.id);
+        if (error) throw error;
       } else {
-        await supabase.from("news").insert(data);
+        const { error } = await supabase.from("news").insert(newsData);
+        if (error) throw error;
       }
 
       newsModal.onClose();
@@ -241,15 +250,26 @@ export default function AdminPage() {
   // Sauvegarder partenariat
   const savePartnership = async () => {
     try {
-      const data = {
-        ...partnershipForm,
+      const partnershipData = {
+        name: partnershipForm.name,
         slug: partnershipForm.slug || generateSlug(partnershipForm.name),
+        description: partnershipForm.description || null,
+        logo_url: partnershipForm.logo_url || null,
+        website_url: partnershipForm.website_url || null,
+        category: partnershipForm.category || null,
+        display_order: partnershipForm.display_order,
+        is_active: partnershipForm.is_active,
       };
 
       if (editingPartnership) {
-        await supabase.from("partnerships").update(data).eq("id", editingPartnership.id);
+        const { error } = await supabase
+          .from("partnerships")
+          .update(partnershipData)
+          .eq("id", editingPartnership.id);
+        if (error) throw error;
       } else {
-        await supabase.from("partnerships").insert(data);
+        const { error } = await supabase.from("partnerships").insert(partnershipData);
+        if (error) throw error;
       }
 
       partnershipModal.onClose();
