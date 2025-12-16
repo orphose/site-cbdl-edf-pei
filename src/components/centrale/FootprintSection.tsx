@@ -1,5 +1,7 @@
 "use client";
 
+import { IMAGES, VIDEOS } from "@/lib/media";
+
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { MapPin, Shield, Building2, CheckCircle } from "lucide-react";
@@ -288,7 +290,7 @@ export default function FootprintSection() {
         >
           <div className="relative aspect-[16/9] max-w-5xl mx-auto shadow-2xl overflow-hidden">
             <Image
-              src="/emprise_cbdl_vs_solaire.png"
+              src={IMAGES.centrale.emprise}
               alt="Comparaison de l'emprise au sol - Centrale Bioénergie vs Photovoltaïque"
               fill
               className="object-contain bg-white"

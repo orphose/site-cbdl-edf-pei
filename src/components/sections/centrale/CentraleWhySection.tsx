@@ -1,5 +1,7 @@
 "use client";
 
+import { IMAGES, VIDEOS } from "@/lib/media";
+
 import { motion } from "framer-motion";
 import { RefreshCw, FileCheck, Users } from "lucide-react";
 import Image from "next/image";
@@ -171,7 +173,7 @@ export default function CentraleWhySection() {
             {/* Image d'illustration */}
             <div className="relative aspect-[4/3] overflow-hidden border border-gray-100">
               <Image
-                src="/pourquoi_localisation_env.png"
+                src={IMAGES.centrale.pourquoiLocalisation}
                 alt="Localisation stratégique de la Centrale Bioénergie du Larivot en Guyane"
                 fill
                 className="object-cover"

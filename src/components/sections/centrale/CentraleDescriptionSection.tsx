@@ -1,5 +1,7 @@
 "use client";
 
+import { IMAGES, VIDEOS } from "@/lib/media";
+
 import { motion } from "framer-motion";
 import { Card, CardBody } from "@nextui-org/react";
 import { Factory, Cog, Droplet, Briefcase } from "lucide-react";
@@ -202,7 +204,7 @@ export default function CentraleDescriptionSection() {
               {/* Image */}
               <div className="relative flex-1 min-h-[300px] bg-gradient-to-br from-gray-50 to-white">
                 <Image
-                  src="/visuel_biomasse_1.png"
+                  src={IMAGES.centrale.visuelBiomasse}
                   alt="Cycle de la biomasse liquide - De la photosynthèse à la production d'énergie renouvelable"
                   fill
                   className="object-contain p-4"

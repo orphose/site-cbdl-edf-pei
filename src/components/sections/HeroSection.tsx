@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@nextui-org/react";
 import { Play, X } from "lucide-react";
+import { VIDEOS } from "@/lib/media";
 
 /**
  * Section Hero - Section 1
@@ -75,7 +76,7 @@ export default function HeroSection() {
             preload="auto"
             className="absolute inset-0 w-full h-full object-cover"
           >
-            <source src="/modelisation_video_cbdl_2.mp4" type="video/mp4" />
+            <source src={VIDEOS.modelisation2} type="video/mp4" />
           </video>
           
           {/* Overlay léger pour améliorer la lisibilité si besoin */}
@@ -174,7 +175,7 @@ export default function HeroSection() {
             preload="auto"
             className="absolute inset-0 w-full h-full object-cover"
           >
-            <source src="/modelisation_video_cbdl_2.mp4" type="video/mp4" />
+            <source src={VIDEOS.modelisation2} type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-edf-blue/20" />
         </div>
@@ -214,7 +215,7 @@ export default function HeroSection() {
                 playsInline
                 className="w-full h-full object-contain bg-black"
               >
-                <source src="/modelisation_video_cbdl_2.mp4" type="video/mp4" />
+                <source src={VIDEOS.modelisation2} type="video/mp4" />
               </video>
             </motion.div>
 

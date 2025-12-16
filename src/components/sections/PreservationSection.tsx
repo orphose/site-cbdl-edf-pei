@@ -1,5 +1,7 @@
 "use client";
 
+import { IMAGES, VIDEOS } from "@/lib/media";
+
 import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { TreePine, Calendar, Euro } from "lucide-react";
@@ -150,7 +152,7 @@ export default function PreservationSection() {
                 preload="auto"
                 className="absolute inset-0 w-full h-full object-cover"
               >
-                <source src="/sanctuarisation_video.mp4" type="video/mp4" />
+                <source src={VIDEOS.sanctuarisation} type="video/mp4" />
               </video>
 
               {/* Bordure */}

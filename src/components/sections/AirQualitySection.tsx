@@ -1,5 +1,7 @@
 "use client";
 
+import { IMAGES, VIDEOS } from "@/lib/media";
+
 import { motion } from "framer-motion";
 import { Button } from "@nextui-org/react";
 import { Wind, Leaf, CloudOff } from "lucide-react";
@@ -91,7 +93,7 @@ export default function AirQualitySection() {
           className="relative w-full h-full"
         >
           <Image
-            src="/qualite_air_photo_1.jpg"
+            src={IMAGES.environnement.qualiteAir}
             alt="Modélisation de la centrale bioénergie du Larivot"
             fill
             className="object-cover"
@@ -105,7 +107,7 @@ export default function AirQualitySection() {
       {/* Version mobile - Image en bas */}
       <div className="lg:hidden absolute bottom-0 left-0 right-0 h-64">
         <Image
-          src="/modelisation_photo_1.png"
+          src={IMAGES.centrale.modelisation}
           alt="Modélisation de la centrale bioénergie du Larivot"
           fill
           className="object-cover"

@@ -1,5 +1,7 @@
 "use client";
 
+import { IMAGES, VIDEOS } from "@/lib/media";
+
 import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 
@@ -101,7 +103,7 @@ export default function BeneficesWaterSection() {
                 preload="auto"
                 className="absolute inset-0 w-full h-full object-cover"
               >
-                <source src="/ressource_eau_2.mp4" type="video/mp4" />
+                <source src={VIDEOS.ressourceEau2} type="video/mp4" />
               </video>
 
               {/* Bordure */}

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { IMAGES } from "@/lib/media";
 
 /**
  * Liens de navigation du site
@@ -35,7 +36,7 @@ export default function Header() {
             className="flex items-center"
           >
             <Image
-              src="/EDF_PEI_LOGO_COULEURS.png"
+              src={IMAGES.logo.couleurs}
               alt="EDF PEI Centrale du Larivot Logo"
               width={200}
               height={80}

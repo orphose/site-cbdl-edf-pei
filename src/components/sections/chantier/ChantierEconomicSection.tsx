@@ -1,5 +1,7 @@
 "use client";
 
+import { IMAGES, VIDEOS } from "@/lib/media";
+
 import { motion } from "framer-motion";
 import { TrendingUp, Users } from "lucide-react";
 import Image from "next/image";
@@ -169,7 +171,7 @@ export default function ChantierEconomicSection() {
             <div className="grid grid-cols-2 gap-4">
               <div className="relative aspect-[3/4] overflow-hidden shadow-lg">
                 <Image
-                  src="/gestion_resp_1.png"
+                  src={IMAGES.environnement.gestionResp}
                   alt="Gestion responsable du chantier"
                   fill
                   className="object-cover"
@@ -177,7 +179,7 @@ export default function ChantierEconomicSection() {
               </div>
               <div className="relative aspect-[3/4] overflow-hidden shadow-lg mt-8">
                 <Image
-                  src="/ferme_peda_1.jpg"
+                  src={IMAGES.partenariats.fermePeda}
                   alt="Impact local du projet"
                   fill
                   className="object-cover"

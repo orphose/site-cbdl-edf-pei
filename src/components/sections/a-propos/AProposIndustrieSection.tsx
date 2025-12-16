@@ -1,5 +1,7 @@
 "use client";
 
+import { IMAGES, VIDEOS } from "@/lib/media";
+
 import { motion } from "framer-motion";
 import { Shield, Leaf, Target, Sparkles, CheckCircle2 } from "lucide-react";
 import Image from "next/image";
@@ -62,7 +64,7 @@ export default function AProposIndustrieSection() {
               {/* Image principale */}
               <div className="relative aspect-square bg-edf-blue overflow-hidden">
                 <Image
-                  src="/visuel_biomasse_1.png"
+                  src={IMAGES.centrale.visuelBiomasse}
                   alt="Excellence industrielle EDF PEI - Biomasse"
                   fill
                   className="object-cover"

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Card, CardBody } from "@nextui-org/react";
 import { Building2, Cog, Droplets, Users } from "lucide-react";
 import Image from "next/image";
+import { IMAGES } from "@/lib/media";
 
 /**
  * Données des cartes de description
@@ -190,7 +191,7 @@ export default function DescriptionSection() {
             </div>
             <div className="relative aspect-[16/9] max-w-5xl mx-auto">
               <Image
-                src="/visuel_biomasse_1.png"
+                src={IMAGES.centrale.visuelBiomasse}
                 alt="Cycle de production de la biomasse liquide"
                 fill
                 className="object-contain"

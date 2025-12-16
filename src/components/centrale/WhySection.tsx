@@ -1,5 +1,7 @@
 "use client";
 
+import { IMAGES, VIDEOS } from "@/lib/media";
+
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { RefreshCcw, FileText, Zap, MapPin } from "lucide-react";
@@ -166,7 +168,7 @@ export default function WhySection() {
             {/* Image principale */}
             <div className="relative aspect-[4/5] overflow-hidden shadow-2xl">
               <Image
-                src="/modelisation_photo_1.png"
+                src={IMAGES.centrale.modelisation}
                 alt="Modélisation 3D de la Centrale Bioénergie du Larivot"
                 fill
                 className="object-cover"

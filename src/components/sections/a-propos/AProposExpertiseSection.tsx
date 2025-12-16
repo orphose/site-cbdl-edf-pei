@@ -1,5 +1,7 @@
 "use client";
 
+import { IMAGES, VIDEOS } from "@/lib/media";
+
 import { motion } from "framer-motion";
 import {
   Settings,
@@ -141,7 +143,7 @@ export default function AProposExpertiseSection() {
           >
             <div className="relative aspect-[4/3] bg-gradient-to-br from-edf-blue to-edf-blue-dark overflow-hidden">
               <Image
-                src="/gestion_resp_1.png"
+                src={IMAGES.environnement.gestionResp}
                 alt="Expertise EDF PEI - Gestion responsable"
                 fill
                 className="object-cover mix-blend-luminosity opacity-60"

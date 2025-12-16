@@ -1,5 +1,7 @@
 "use client";
 
+import { IMAGES, VIDEOS } from "@/lib/media";
+
 import { motion } from "framer-motion";
 import { Check, MapPin, Shield, Building2, Zap, ArrowRight } from "lucide-react";
 import Image from "next/image";
@@ -59,7 +61,7 @@ export default function CentraleEmpriseSection() {
               {/* Image */}
               <div className="relative flex-1 min-h-[300px]">
                 <Image
-                  src="/emprise_cbdl_vs_solaire_2.png"
+                  src={IMAGES.centrale.emprise2}
                   alt="Comparaison : Centrale bioénergie du Larivot (10 ha) vs Centrale photovoltaïque avec stockage (800 ha)"
                   fill
                   className="object-contain p-4"

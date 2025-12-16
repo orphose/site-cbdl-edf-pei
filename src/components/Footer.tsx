@@ -4,6 +4,7 @@ import { Link } from "@nextui-org/react";
 import { Mail, MapPin, ExternalLink, Phone, Linkedin, Twitter, Youtube } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { IMAGES } from "@/lib/media";
 
 /**
  * Liens du footer organisés par catégorie
@@ -61,7 +62,7 @@ export default function Footer() {
               {/* Logo */}
               <div className="mb-8">
                 <Image
-                  src="/EDF_PEI_LOGO_BLANC.png"
+                  src={IMAGES.logo.blanc}
                   alt="EDF PEI"
                   width={180}
                   height={70}

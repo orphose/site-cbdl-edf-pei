@@ -1,5 +1,7 @@
 "use client";
 
+import { IMAGES, VIDEOS } from "@/lib/media";
+
 import { motion } from "framer-motion";
 import { Handshake, Building2, Users2 } from "lucide-react";
 import Image from "next/image";
@@ -92,7 +94,7 @@ export default function ChantierConsortiumSection() {
           >
             <div className="relative aspect-[4/3] overflow-hidden shadow-xl">
               <Image
-                src="/modelisation_photo_1.png"
+                src={IMAGES.centrale.modelisation}
                 alt="Modélisation de la Centrale Bioénergie du Larivot"
                 fill
                 className="object-cover"
