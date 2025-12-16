@@ -723,7 +723,13 @@ export default function AdminPage() {
       </div>
 
       {/* Modal Actualité */}
-      <Modal isOpen={newsModal.isOpen} onClose={newsModal.onClose} size="3xl">
+      <Modal 
+        isOpen={newsModal.isOpen} 
+        onClose={newsModal.onClose} 
+        size="3xl"
+        backdrop="blur"
+        scrollBehavior="inside"
+      >
         <ModalContent>
           <ModalHeader className="border-b border-gray-100 pb-4">
             <div className="flex items-center gap-3">
@@ -810,7 +816,13 @@ export default function AdminPage() {
       </Modal>
 
       {/* Modal Partenariat */}
-      <Modal isOpen={partnershipModal.isOpen} onClose={partnershipModal.onClose} size="2xl">
+      <Modal 
+        isOpen={partnershipModal.isOpen} 
+        onClose={partnershipModal.onClose} 
+        size="2xl"
+        backdrop="blur"
+        scrollBehavior="inside"
+      >
         <ModalContent>
           <ModalHeader className="border-b border-gray-100 pb-4">
             <div className="flex items-center gap-3">
@@ -890,7 +902,11 @@ export default function AdminPage() {
       </Modal>
 
       {/* Modal Suppression */}
-      <Modal isOpen={deleteModal.isOpen} onClose={deleteModal.onClose}>
+      <Modal 
+        isOpen={deleteModal.isOpen} 
+        onClose={deleteModal.onClose}
+        backdrop="blur"
+      >
         <ModalContent>
           <ModalHeader className="text-red-600">
             <div className="flex items-center gap-3">
