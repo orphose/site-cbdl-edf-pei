@@ -4,23 +4,24 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Users, FileText, ImageIcon, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
+import { getMediaUrl } from "@/lib/supabase";
 
 /**
  * Photos de la galerie
  */
 const GALLERY_PHOTOS = [
-  { id: 1, src: "/photo_gal_1.jpg", title: "Centrale Bioénergie du Larivot" },
-  { id: 2, src: "/photo_gal_2.jpg", title: "Vue aérienne du site" },
-  { id: 3, src: "/photo_gal_3.jpg", title: "Installation des équipements" },
-  { id: 4, src: "/photo_gal_4.jpg", title: "Travaux de construction" },
-  { id: 5, src: "/photo_gal_5.jpg", title: "Avancement du chantier" },
-  { id: 6, src: "/photo_gal_6.jpg", title: "Infrastructure moderne" },
-  { id: 7, src: "/photo_gal_7.jpg", title: "Moteurs haute performance" },
-  { id: 8, src: "/photo_gal_8.jpg", title: "Zone industrielle" },
-  { id: 9, src: "/photo_gal_9.jpg", title: "Environnement préservé" },
-  { id: 10, src: "/photo_gal_10.jpg", title: "Développement durable" },
-  { id: 11, src: "/photo_gal_11.jpg", title: "Équipe projet" },
-  { id: 12, src: "/photo_gal_12.jpg", title: "Inauguration" },
+  { id: 1, src: getMediaUrl("photo_gal_1.jpg"), title: "Centrale Bioénergie du Larivot" },
+  { id: 2, src: getMediaUrl("photo_gal_2.jpg"), title: "Vue aérienne du site" },
+  { id: 3, src: getMediaUrl("photo_gal_3.jpg"), title: "Installation des équipements" },
+  { id: 4, src: getMediaUrl("photo_gal_4.jpg"), title: "Travaux de construction" },
+  { id: 5, src: getMediaUrl("photo_gal_5.jpg"), title: "Avancement du chantier" },
+  { id: 6, src: getMediaUrl("photo_gal_6.jpg"), title: "Infrastructure moderne" },
+  { id: 7, src: getMediaUrl("photo_gal_7.jpg"), title: "Moteurs haute performance" },
+  { id: 8, src: getMediaUrl("photo_gal_8.jpg"), title: "Zone industrielle" },
+  { id: 9, src: getMediaUrl("photo_gal_9.jpg"), title: "Environnement préservé" },
+  { id: 10, src: getMediaUrl("photo_gal_10.jpg"), title: "Développement durable" },
+  { id: 11, src: getMediaUrl("photo_gal_11.jpg"), title: "Équipe projet" },
+  { id: 12, src: getMediaUrl("photo_gal_12.jpg"), title: "Inauguration" },
 ];
 
 /**

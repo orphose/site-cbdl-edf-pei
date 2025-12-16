@@ -13,6 +13,7 @@ import {
   X,
   ZoomIn
 } from "lucide-react";
+import { getMediaUrl } from "@/lib/supabase";
 
 /**
  * Timeline de concertation publique
@@ -53,62 +54,62 @@ const CONCERTATION_TIMELINE = [
  */
 const GALLERY_IMAGES = [
   {
-    src: "/modelisation_photo_1.png",
+    src: getMediaUrl("modelisation_photo_1.png"),
     alt: "Modélisation 3D de la centrale",
     title: "Vue aérienne",
   },
   {
-    src: "/ferme_peda_1.jpg",
+    src: getMediaUrl("ferme_peda_1.jpg"),
     alt: "Ferme pédagogique",
     title: "Ferme pédagogique",
   },
   {
-    src: "/miellerie_macouria_1.jpg",
+    src: getMediaUrl("miellerie_macouria_1.jpg"),
     alt: "Miellerie de Macouria",
     title: "Miellerie de Macouria",
   },
   {
-    src: "/palmetum_macouria_1.jpg",
+    src: getMediaUrl("palmetum_macouria_1.jpg"),
     alt: "Palmetum de Macouria",
     title: "Palmetum de Macouria",
   },
   {
-    src: "/village_palikour_1.jpg",
+    src: getMediaUrl("village_palikour_1.jpg"),
     alt: "Village Palikour",
     title: "Village Palikour",
   },
   {
-    src: "/qualite_air_photo_1.jpg",
+    src: getMediaUrl("qualite_air_photo_1.jpg"),
     alt: "Station qualité de l'air",
     title: "Qualité de l'air",
   },
   {
-    src: "/visuel_biomasse_1.png",
+    src: getMediaUrl("visuel_biomasse_1.png"),
     alt: "Cycle de la biomasse",
     title: "Cycle biomasse",
   },
   {
-    src: "/emprise_cbdl_vs_solaire.png",
+    src: getMediaUrl("emprise_cbdl_vs_solaire.png"),
     alt: "Comparaison d'emprise",
     title: "Emprise au sol",
   },
   {
-    src: "/modelisation_photo_1.png",
+    src: getMediaUrl("modelisation_photo_1.png"),
     alt: "Vue de la centrale",
     title: "Vue détaillée",
   },
   {
-    src: "/ferme_peda_1.jpg",
+    src: getMediaUrl("ferme_peda_1.jpg"),
     alt: "Activités pédagogiques",
     title: "Éducation",
   },
   {
-    src: "/miellerie_macouria_1.jpg",
+    src: getMediaUrl("miellerie_macouria_1.jpg"),
     alt: "Production locale",
     title: "Partenariats",
   },
   {
-    src: "/palmetum_macouria_1.jpg",
+    src: getMediaUrl("palmetum_macouria_1.jpg"),
     alt: "Biodiversité",
     title: "Environnement",
   },
