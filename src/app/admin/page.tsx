@@ -419,9 +419,6 @@ export default function AdminPage() {
     <div className="min-h-screen bg-gray-50">
       {/* Header admin EDF style */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        {/* Bandeau bleu */}
-        <div className="h-1 bg-gradient-to-r from-edf-blue via-edf-orange to-edf-green" />
-        
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-6">
@@ -464,6 +461,8 @@ export default function AdminPage() {
             </div>
           </div>
         </div>
+        {/* Bandeau coloré en bas */}
+        <div className="h-1 bg-gradient-to-r from-edf-blue via-edf-orange to-edf-green" />
       </header>
 
       {/* Statistiques rapides */}
