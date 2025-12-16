@@ -362,16 +362,6 @@ export default function AdminPage() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="w-full max-w-md"
           >
-            {/* Titre */}
-            <div className="text-center mb-10 mt-8">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Administration
-              </h1>
-              <p className="text-gray-500">
-                Centrale Bioénergie du Larivot
-              </p>
-            </div>
-
             {/* Formulaire */}
             <Card className="shadow-xl border border-gray-100">
               <CardBody className="p-8">
