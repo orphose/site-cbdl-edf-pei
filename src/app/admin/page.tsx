@@ -36,7 +36,6 @@ import {
   Eye,
   EyeOff,
   Lock,
-  Shield,
   LayoutDashboard,
   ArrowLeft,
 } from "lucide-react";
@@ -367,11 +366,6 @@ export default function AdminPage() {
                   className="mx-auto mb-6"
                 />
               </motion.div>
-              
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-edf-blue/10 rounded-full mb-4">
-                <Shield className="w-4 h-4 text-edf-blue" />
-                <span className="text-sm font-medium text-edf-blue">Espace sécurisé</span>
-              </div>
               
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
                 Administration
