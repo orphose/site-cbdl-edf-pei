@@ -351,22 +351,8 @@ export default function AdminPage() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="w-full max-w-md"
           >
-            {/* Logo et titre */}
+            {/* Titre */}
             <div className="text-center mb-10">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-              >
-                <Image
-                  src={IMAGES.logo.couleurs}
-                  alt="EDF PEI"
-                  width={180}
-                  height={72}
-                  className="mx-auto mb-6"
-                />
-              </motion.div>
-              
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
                 Administration
               </h1>
