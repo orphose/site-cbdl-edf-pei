@@ -38,36 +38,34 @@ import {
   Lock,
   LayoutDashboard,
   ArrowLeft,
+  Mail,
+  AlertCircle,
 } from "lucide-react";
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@/utils/supabase/client";
 import type { News, Partnership } from "@/lib/database.types";
-import { IMAGES } from "@/lib/media";
-import Image from "next/image";
+import type { User } from "@supabase/supabase-js";
 import Link from "next/link";
 
-// Client Supabase sans typage strict pour l'admin (permet CRUD complet)
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
-
-// Mot de passe admin (en production, utiliser Supabase Auth)
-const ADMIN_PASSWORD = "cbdl2024admin";
-
 /**
- * Page d'administration du CMS
- * Gestion des actualités et partenariats
+ * Page d'administration du CMS avec Supabase Auth
  */
 export default function AdminPage() {
+  // Client Supabase
+  const supabase = createClient();
+
   // États d'authentification
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [password, setPassword] = useState("");
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [authLoading, setAuthLoading] = useState(false);
   const [authError, setAuthError] = useState("");
+
+  // Formulaire de connexion
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   // États des données
   const [news, setNews] = useState<News[]>([]);
   const [partnerships, setPartnerships] = useState<Partnership[]>([]);
-  const [loading, setLoading] = useState(true);
 
   // États du formulaire actualité
   const [editingNews, setEditingNews] = useState<News | null>(null);
@@ -99,52 +97,65 @@ export default function AdminPage() {
   const deleteModal = useDisclosure();
   const [deleteTarget, setDeleteTarget] = useState<{ type: "news" | "partnership"; id: string } | null>(null);
 
-  // Assertions
-  console.assert(typeof isAuthenticated === "boolean", "isAuthenticated doit être un booléen");
-  console.assert(Array.isArray(news), "news doit être un tableau");
-
-  // Vérification authentification au montage
+  // Vérification de l'utilisateur au montage
   useEffect(() => {
-    const savedAuth = sessionStorage.getItem("cbdl_admin_auth");
-    if (savedAuth === "true") {
-      setIsAuthenticated(true);
-    }
-  }, []);
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+      setLoading(false);
+    };
 
-  // Chargement des données
+    checkUser();
+
+    // Écouter les changements d'authentification
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [supabase.auth]);
+
+  // Chargement des données quand l'utilisateur est connecté
   useEffect(() => {
-    if (isAuthenticated) {
+    if (user) {
       loadData();
     }
-  }, [isAuthenticated]);
+  }, [user]);
 
   // Fonction de connexion
-  const handleLogin = () => {
-    if (password === ADMIN_PASSWORD) {
-      setIsAuthenticated(true);
-      sessionStorage.setItem("cbdl_admin_auth", "true");
-      setAuthError("");
-    } else {
-      setAuthError("Mot de passe incorrect");
+  const handleLogin = async () => {
+    setAuthLoading(true);
+    setAuthError("");
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      setAuthError(error.message === "Invalid login credentials" 
+        ? "Email ou mot de passe incorrect" 
+        : error.message);
     }
+
+    setAuthLoading(false);
   };
 
   // Fonction de déconnexion
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    sessionStorage.removeItem("cbdl_admin_auth");
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
   };
 
   // Chargement des données
   const loadData = async () => {
-    setLoading(true);
     try {
-      const { data: newsData } = await supabaseAdmin
+      const { data: newsData } = await supabase
         .from("news")
         .select("*")
         .order("created_at", { ascending: false });
 
-      const { data: partnershipsData } = await supabaseAdmin
+      const { data: partnershipsData } = await supabase
         .from("partnerships")
         .select("*")
         .order("display_order", { ascending: true });
@@ -153,8 +164,6 @@ export default function AdminPage() {
       setPartnerships(partnershipsData || []);
     } catch (error) {
       console.error("Erreur chargement données:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -210,13 +219,13 @@ export default function AdminPage() {
       };
 
       if (editingNews) {
-        const { error } = await supabaseAdmin
+        const { error } = await supabase
           .from("news")
           .update(newsData)
           .eq("id", editingNews.id);
         if (error) throw error;
       } else {
-        const { error } = await supabaseAdmin.from("news").insert(newsData);
+        const { error } = await supabase.from("news").insert(newsData);
         if (error) throw error;
       }
 
@@ -274,13 +283,13 @@ export default function AdminPage() {
       };
 
       if (editingPartnership) {
-        const { error } = await supabaseAdmin
+        const { error } = await supabase
           .from("partnerships")
           .update(partnershipData)
           .eq("id", editingPartnership.id);
         if (error) throw error;
       } else {
-        const { error } = await supabaseAdmin.from("partnerships").insert(partnershipData);
+        const { error } = await supabase.from("partnerships").insert(partnershipData);
         if (error) throw error;
       }
 
@@ -303,9 +312,9 @@ export default function AdminPage() {
 
     try {
       if (deleteTarget.type === "news") {
-        await supabaseAdmin.from("news").delete().eq("id", deleteTarget.id);
+        await supabase.from("news").delete().eq("id", deleteTarget.id);
       } else {
-        await supabaseAdmin.from("partnerships").delete().eq("id", deleteTarget.id);
+        await supabase.from("partnerships").delete().eq("id", deleteTarget.id);
       }
       deleteModal.onClose();
       loadData();
@@ -314,28 +323,32 @@ export default function AdminPage() {
     }
   };
 
+  // Écran de chargement
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-edf-blue"></div>
+      </div>
+    );
+  }
+
   // =============================================
   // PAGE DE CONNEXION
   // =============================================
-  if (!isAuthenticated) {
+  if (!user) {
     return (
       <div className="min-h-screen bg-white relative overflow-hidden">
-        {/* Fond décoratif style EDF */}
+        {/* Fond décoratif */}
         <div className="absolute inset-0">
-          {/* Bandeau bleu en haut */}
           <div className="absolute top-0 left-0 right-0 h-2 bg-edf-blue" />
-          
-          {/* Formes géométriques */}
           <div className="absolute top-20 right-0 w-96 h-96 bg-edf-blue/5 rounded-full blur-3xl" />
           <div className="absolute bottom-20 left-0 w-80 h-80 bg-edf-orange/5 rounded-full blur-3xl" />
           <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-edf-green/5 rounded-full blur-3xl" />
-          
-          {/* Lignes décoratives */}
           <div className="absolute top-40 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
           <div className="absolute bottom-40 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
         </div>
 
-        {/* Header minimaliste */}
+        {/* Header */}
         <header className="relative z-10 p-6">
           <Link href="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-edf-blue transition-colors">
             <ArrowLeft className="w-4 h-4" />
@@ -343,7 +356,7 @@ export default function AdminPage() {
           </Link>
         </header>
 
-        {/* Contenu centré */}
+        {/* Formulaire de connexion */}
         <div className="relative z-10 flex items-center justify-center min-h-[calc(100vh-120px)] px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -361,23 +374,47 @@ export default function AdminPage() {
               </p>
             </div>
 
-            {/* Formulaire de connexion */}
+            {/* Formulaire */}
             <Card className="shadow-xl border border-gray-100">
               <CardBody className="p-8">
-                <div className="space-y-6">
+                <div className="space-y-5">
+                  {/* Message d'erreur */}
+                  {authError && (
+                    <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+                      <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                      <span>{authError}</span>
+                    </div>
+                  )}
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Email
+                    </label>
+                    <Input
+                      type="email"
+                      placeholder="admin@exemple.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      startContent={<Mail className="w-4 h-4 text-gray-400" />}
+                      size="lg"
+                      classNames={{
+                        input: "text-base",
+                        inputWrapper: "h-14 bg-gray-50 border-gray-200 hover:bg-gray-100 focus-within:bg-white",
+                      }}
+                    />
+                  </div>
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Mot de passe
                     </label>
                     <Input
                       type="password"
-                      placeholder="Entrez votre mot de passe"
+                      placeholder="••••••••"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && handleLogin()}
                       startContent={<Lock className="w-4 h-4 text-gray-400" />}
-                      isInvalid={!!authError}
-                      errorMessage={authError}
                       size="lg"
                       classNames={{
                         input: "text-base",
@@ -388,10 +425,11 @@ export default function AdminPage() {
 
                   <Button
                     onPress={handleLogin}
+                    isLoading={authLoading}
                     className="w-full h-14 bg-edf-blue hover:bg-edf-blue-dark text-white font-semibold text-base transition-all"
                     radius="md"
                   >
-                    <LayoutDashboard className="w-5 h-5 mr-2" />
+                    {!authLoading && <LayoutDashboard className="w-5 h-5 mr-2" />}
                     Accéder au tableau de bord
                   </Button>
 
@@ -402,7 +440,6 @@ export default function AdminPage() {
               </CardBody>
             </Card>
 
-            {/* Footer */}
             <p className="text-center text-xs text-gray-400 mt-8">
               © {new Date().getFullYear()} EDF PEI - Tous droits réservés
             </p>
@@ -417,24 +454,15 @@ export default function AdminPage() {
   // =============================================
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header admin EDF style */}
+      {/* Header */}
       <header className="bg-white sticky top-0 z-50">
-        {/* Bandeau bleu */}
         <div className="h-1 bg-gradient-to-r from-edf-blue via-edf-orange to-edf-green" />
-        
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-6">
-              <Image
-                src={IMAGES.logo.couleurs}
-                alt="EDF PEI"
-                width={140}
-                height={56}
-              />
-              <div className="h-8 w-px bg-gray-200" />
               <div>
                 <h1 className="text-lg font-bold text-gray-900">Tableau de bord</h1>
-                <p className="text-xs text-gray-500">Gestion du contenu CBDL</p>
+                <p className="text-xs text-gray-500">{user.email}</p>
               </div>
             </div>
 
@@ -463,7 +491,7 @@ export default function AdminPage() {
         </div>
       </header>
 
-      {/* Statistiques rapides */}
+      {/* Statistiques */}
       <div className="max-w-7xl mx-auto px-6 py-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <Card className="border border-gray-100">
@@ -505,7 +533,7 @@ export default function AdminPage() {
           </Card>
         </div>
 
-        {/* Onglets de gestion */}
+        {/* Onglets */}
         <Tabs 
           aria-label="Sections admin" 
           color="primary" 
@@ -524,9 +552,7 @@ export default function AdminPage() {
               <div className="flex items-center gap-2">
                 <Newspaper className="w-4 h-4" />
                 <span>Actualités</span>
-                <Chip size="sm" variant="flat" className="bg-gray-100">
-                  {news.length}
-                </Chip>
+                <Chip size="sm" variant="flat" className="bg-gray-100">{news.length}</Chip>
               </div>
             }
           >
@@ -622,9 +648,7 @@ export default function AdminPage() {
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4" />
                 <span>Partenariats</span>
-                <Chip size="sm" variant="flat" className="bg-gray-100">
-                  {partnerships.length}
-                </Chip>
+                <Chip size="sm" variant="flat" className="bg-gray-100">{partnerships.length}</Chip>
               </div>
             }
           >
@@ -632,7 +656,7 @@ export default function AdminPage() {
               <CardHeader className="flex justify-between items-center px-6 py-4 border-b border-gray-100">
                 <div>
                   <h2 className="text-lg font-bold text-gray-900">Gestion des partenariats</h2>
-                  <p className="text-sm text-gray-500">Gérez vos partenaires et leur affichage</p>
+                  <p className="text-sm text-gray-500">Gérez vos partenaires</p>
                 </div>
                 <Button
                   className="bg-edf-blue text-white font-medium"
@@ -754,7 +778,7 @@ export default function AdminPage() {
               />
               <Textarea
                 label="Extrait"
-                placeholder="Résumé court de l'actualité (affiché dans les listes)"
+                placeholder="Résumé court"
                 value={newsForm.excerpt}
                 onChange={(e) => setNewsForm({ ...newsForm, excerpt: e.target.value })}
                 minRows={2}
@@ -762,7 +786,7 @@ export default function AdminPage() {
               />
               <Textarea
                 label="Contenu"
-                placeholder="Contenu complet de l'actualité"
+                placeholder="Contenu complet"
                 value={newsForm.content}
                 onChange={(e) => setNewsForm({ ...newsForm, content: e.target.value })}
                 minRows={6}
@@ -778,7 +802,7 @@ export default function AdminPage() {
               <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
                 <div>
                   <p className="font-medium text-gray-900">Publier l&apos;actualité</p>
-                  <p className="text-sm text-gray-500">L&apos;actualité sera visible sur le site</p>
+                  <p className="text-sm text-gray-500">Visible sur le site</p>
                 </div>
                 <Switch
                   isSelected={newsForm.is_published}
@@ -789,11 +813,9 @@ export default function AdminPage() {
             </div>
           </ModalBody>
           <ModalFooter className="border-t border-gray-100 pt-4">
-            <Button variant="light" onPress={newsModal.onClose}>
-              Annuler
-            </Button>
+            <Button variant="light" onPress={newsModal.onClose}>Annuler</Button>
             <Button className="bg-edf-blue text-white" onPress={saveNews}>
-              {editingNews ? "Enregistrer" : "Créer l'actualité"}
+              {editingNews ? "Enregistrer" : "Créer"}
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -812,7 +834,7 @@ export default function AdminPage() {
                   {editingPartnership ? "Modifier le partenaire" : "Nouveau partenaire"}
                 </h3>
                 <p className="text-sm text-gray-500 font-normal">
-                  {editingPartnership ? "Modifiez les informations" : "Ajoutez un nouveau partenaire"}
+                  {editingPartnership ? "Modifiez les informations" : "Ajoutez un partenaire"}
                 </p>
               </div>
             </div>
@@ -833,16 +855,9 @@ export default function AdminPage() {
                 isRequired
                 labelPlacement="outside"
               />
-              <Input
-                label="Slug (URL)"
-                placeholder="nom-du-partenaire"
-                value={partnershipForm.slug}
-                onChange={(e) => setPartnershipForm({ ...partnershipForm, slug: e.target.value })}
-                labelPlacement="outside"
-              />
               <Textarea
                 label="Description"
-                placeholder="Description du partenaire"
+                placeholder="Description"
                 value={partnershipForm.description}
                 onChange={(e) => setPartnershipForm({ ...partnershipForm, description: e.target.value })}
                 minRows={3}
@@ -850,24 +865,8 @@ export default function AdminPage() {
               />
               <div className="grid grid-cols-2 gap-4">
                 <Input
-                  label="URL du logo"
-                  placeholder="https://..."
-                  value={partnershipForm.logo_url}
-                  onChange={(e) => setPartnershipForm({ ...partnershipForm, logo_url: e.target.value })}
-                  labelPlacement="outside"
-                />
-                <Input
-                  label="Site web"
-                  placeholder="https://..."
-                  value={partnershipForm.website_url}
-                  onChange={(e) => setPartnershipForm({ ...partnershipForm, website_url: e.target.value })}
-                  labelPlacement="outside"
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <Input
                   label="Catégorie"
-                  placeholder="institutionnel, technique..."
+                  placeholder="institutionnel..."
                   value={partnershipForm.category}
                   onChange={(e) => setPartnershipForm({ ...partnershipForm, category: e.target.value })}
                   labelPlacement="outside"
@@ -883,7 +882,7 @@ export default function AdminPage() {
               <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
                 <div>
                   <p className="font-medium text-gray-900">Partenaire actif</p>
-                  <p className="text-sm text-gray-500">Le partenaire sera visible sur le site</p>
+                  <p className="text-sm text-gray-500">Visible sur le site</p>
                 </div>
                 <Switch
                   isSelected={partnershipForm.is_active}
@@ -894,17 +893,15 @@ export default function AdminPage() {
             </div>
           </ModalBody>
           <ModalFooter className="border-t border-gray-100 pt-4">
-            <Button variant="light" onPress={partnershipModal.onClose}>
-              Annuler
-            </Button>
+            <Button variant="light" onPress={partnershipModal.onClose}>Annuler</Button>
             <Button className="bg-edf-blue text-white" onPress={savePartnership}>
-              {editingPartnership ? "Enregistrer" : "Créer le partenaire"}
+              {editingPartnership ? "Enregistrer" : "Créer"}
             </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
 
-      {/* Modal Confirmation suppression */}
+      {/* Modal Suppression */}
       <Modal isOpen={deleteModal.isOpen} onClose={deleteModal.onClose}>
         <ModalContent>
           <ModalHeader className="text-red-600">
@@ -920,12 +917,8 @@ export default function AdminPage() {
             <p className="text-sm text-gray-500">Cette action est irréversible.</p>
           </ModalBody>
           <ModalFooter>
-            <Button variant="light" onPress={deleteModal.onClose}>
-              Annuler
-            </Button>
-            <Button color="danger" onPress={handleDelete}>
-              Supprimer définitivement
-            </Button>
+            <Button variant="light" onPress={deleteModal.onClose}>Annuler</Button>
+            <Button color="danger" onPress={handleDelete}>Supprimer</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
