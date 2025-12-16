@@ -39,3 +39,20 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Fichiers médias volumineux (stockés sur Supabase Storage)
+*.mov
+*.mp4
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp
+*.pdf
+ressources/
+public/*.jpg
+public/*.jpeg
+public/*.png
+public/*.gif
+public/*.mov
+public/*.mp4
