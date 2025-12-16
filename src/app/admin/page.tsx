@@ -24,6 +24,7 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
+  Chip,
 } from "@nextui-org/react";
 import {
   Newspaper,
@@ -35,11 +36,15 @@ import {
   Eye,
   EyeOff,
   Lock,
+  Shield,
+  LayoutDashboard,
+  ArrowLeft,
 } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 import type { News, Partnership } from "@/lib/database.types";
 import { IMAGES } from "@/lib/media";
 import Image from "next/image";
+import Link from "next/link";
 
 // Client Supabase sans typage strict pour l'admin (permet CRUD complet)
 const supabaseAdmin = createClient(
@@ -95,6 +100,10 @@ export default function AdminPage() {
   const deleteModal = useDisclosure();
   const [deleteTarget, setDeleteTarget] = useState<{ type: "news" | "partnership"; id: string } | null>(null);
 
+  // Assertions
+  console.assert(typeof isAuthenticated === "boolean", "isAuthenticated doit être un booléen");
+  console.assert(Array.isArray(news), "news doit être un tableau");
+
   // Vérification authentification au montage
   useEffect(() => {
     const savedAuth = sessionStorage.getItem("cbdl_admin_auth");
@@ -131,13 +140,11 @@ export default function AdminPage() {
   const loadData = async () => {
     setLoading(true);
     try {
-      // Charger les actualités (toutes, pas seulement publiées)
       const { data: newsData } = await supabaseAdmin
         .from("news")
         .select("*")
         .order("created_at", { ascending: false });
 
-      // Charger les partenariats (tous)
       const { data: partnershipsData } = await supabaseAdmin
         .from("partnerships")
         .select("*")
@@ -308,110 +315,266 @@ export default function AdminPage() {
     }
   };
 
-  // Page de connexion
+  // =============================================
+  // PAGE DE CONNEXION
+  // =============================================
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-edf-blue to-edf-blue-dark p-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Card className="w-full max-w-md">
-            <CardHeader className="flex flex-col items-center pt-8 pb-0">
-              <Image
-                src={IMAGES.logo.couleurs}
-                alt="CBDL Logo"
-                width={150}
-                height={60}
-                className="mb-4"
-              />
-              <h1 className="text-xl font-bold text-gray-800">Administration</h1>
-              <p className="text-gray-500 text-sm">Centrale Bioénergie du Larivot</p>
-            </CardHeader>
-            <CardBody className="px-8 py-6">
-              <div className="space-y-4">
-                <Input
-                  type="password"
-                  label="Mot de passe"
-                  placeholder="Entrez le mot de passe"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleLogin()}
-                  startContent={<Lock className="w-4 h-4 text-gray-400" />}
-                  isInvalid={!!authError}
-                  errorMessage={authError}
+      <div className="min-h-screen bg-white relative overflow-hidden">
+        {/* Fond décoratif style EDF */}
+        <div className="absolute inset-0">
+          {/* Bandeau bleu en haut */}
+          <div className="absolute top-0 left-0 right-0 h-2 bg-edf-blue" />
+          
+          {/* Formes géométriques */}
+          <div className="absolute top-20 right-0 w-96 h-96 bg-edf-blue/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-20 left-0 w-80 h-80 bg-edf-orange/5 rounded-full blur-3xl" />
+          <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-edf-green/5 rounded-full blur-3xl" />
+          
+          {/* Lignes décoratives */}
+          <div className="absolute top-40 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+          <div className="absolute bottom-40 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+        </div>
+
+        {/* Header minimaliste */}
+        <header className="relative z-10 p-6">
+          <Link href="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-edf-blue transition-colors">
+            <ArrowLeft className="w-4 h-4" />
+            <span className="text-sm">Retour au site</span>
+          </Link>
+        </header>
+
+        {/* Contenu centré */}
+        <div className="relative z-10 flex items-center justify-center min-h-[calc(100vh-120px)] px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="w-full max-w-md"
+          >
+            {/* Logo et titre */}
+            <div className="text-center mb-10">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <Image
+                  src={IMAGES.logo.couleurs}
+                  alt="EDF PEI"
+                  width={180}
+                  height={72}
+                  className="mx-auto mb-6"
                 />
-                <Button
-                  color="primary"
-                  className="w-full bg-edf-blue"
-                  onPress={handleLogin}
-                >
-                  Se connecter
-                </Button>
+              </motion.div>
+              
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-edf-blue/10 rounded-full mb-4">
+                <Shield className="w-4 h-4 text-edf-blue" />
+                <span className="text-sm font-medium text-edf-blue">Espace sécurisé</span>
               </div>
-            </CardBody>
-          </Card>
-        </motion.div>
+              
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                Administration
+              </h1>
+              <p className="text-gray-500">
+                Centrale Bioénergie du Larivot
+              </p>
+            </div>
+
+            {/* Formulaire de connexion */}
+            <Card className="shadow-xl border border-gray-100">
+              <CardBody className="p-8">
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Mot de passe
+                    </label>
+                    <Input
+                      type="password"
+                      placeholder="Entrez votre mot de passe"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+                      startContent={<Lock className="w-4 h-4 text-gray-400" />}
+                      isInvalid={!!authError}
+                      errorMessage={authError}
+                      size="lg"
+                      classNames={{
+                        input: "text-base",
+                        inputWrapper: "h-14 bg-gray-50 border-gray-200 hover:bg-gray-100 focus-within:bg-white",
+                      }}
+                    />
+                  </div>
+
+                  <Button
+                    onPress={handleLogin}
+                    className="w-full h-14 bg-edf-blue hover:bg-edf-blue-dark text-white font-semibold text-base transition-all"
+                    radius="md"
+                  >
+                    <LayoutDashboard className="w-5 h-5 mr-2" />
+                    Accéder au tableau de bord
+                  </Button>
+
+                  <p className="text-center text-xs text-gray-400">
+                    Accès réservé aux administrateurs autorisés
+                  </p>
+                </div>
+              </CardBody>
+            </Card>
+
+            {/* Footer */}
+            <p className="text-center text-xs text-gray-400 mt-8">
+              © {new Date().getFullYear()} EDF PEI - Tous droits réservés
+            </p>
+          </motion.div>
+        </div>
       </div>
     );
   }
 
-  // Interface admin
+  // =============================================
+  // INTERFACE ADMIN
+  // =============================================
   return (
-    <div className="min-h-screen">
-      {/* Header admin */}
-      <header className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Image
-              src={IMAGES.logo.couleurs}
-              alt="CBDL Logo"
-              width={120}
-              height={48}
-            />
-            <div>
-              <h1 className="text-lg font-bold text-gray-800">Administration</h1>
-              <p className="text-xs text-gray-500">Gestion du contenu</p>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header admin EDF style */}
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+        {/* Bandeau bleu */}
+        <div className="h-1 bg-gradient-to-r from-edf-blue via-edf-orange to-edf-green" />
+        
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-6">
+              <Image
+                src={IMAGES.logo.couleurs}
+                alt="EDF PEI"
+                width={140}
+                height={56}
+              />
+              <div className="h-8 w-px bg-gray-200" />
+              <div>
+                <div className="flex items-center gap-2">
+                  <LayoutDashboard className="w-5 h-5 text-edf-blue" />
+                  <h1 className="text-lg font-bold text-gray-900">Tableau de bord</h1>
+                </div>
+                <p className="text-xs text-gray-500">Gestion du contenu CBDL</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <Link href="/">
+                <Button
+                  variant="light"
+                  size="sm"
+                  startContent={<Eye className="w-4 h-4" />}
+                  className="text-gray-600"
+                >
+                  Voir le site
+                </Button>
+              </Link>
+              <Button
+                variant="flat"
+                color="danger"
+                size="sm"
+                startContent={<LogOut className="w-4 h-4" />}
+                onPress={handleLogout}
+              >
+                Déconnexion
+              </Button>
             </div>
           </div>
-          <Button
-            variant="light"
-            color="danger"
-            startContent={<LogOut className="w-4 h-4" />}
-            onPress={handleLogout}
-          >
-            Déconnexion
-          </Button>
         </div>
       </header>
 
-      {/* Contenu principal */}
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        <Tabs aria-label="Sections admin" color="primary" variant="bordered">
+      {/* Statistiques rapides */}
+      <div className="max-w-7xl mx-auto px-6 py-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <Card className="border border-gray-100">
+            <CardBody className="flex flex-row items-center gap-4 p-4">
+              <div className="w-12 h-12 rounded-xl bg-edf-blue/10 flex items-center justify-center">
+                <Newspaper className="w-6 h-6 text-edf-blue" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-gray-900">{news.length}</p>
+                <p className="text-sm text-gray-500">Actualités</p>
+              </div>
+            </CardBody>
+          </Card>
+          
+          <Card className="border border-gray-100">
+            <CardBody className="flex flex-row items-center gap-4 p-4">
+              <div className="w-12 h-12 rounded-xl bg-edf-orange/10 flex items-center justify-center">
+                <Eye className="w-6 h-6 text-edf-orange" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-gray-900">
+                  {news.filter(n => n.is_published).length}
+                </p>
+                <p className="text-sm text-gray-500">Publiées</p>
+              </div>
+            </CardBody>
+          </Card>
+          
+          <Card className="border border-gray-100">
+            <CardBody className="flex flex-row items-center gap-4 p-4">
+              <div className="w-12 h-12 rounded-xl bg-edf-green/10 flex items-center justify-center">
+                <Users className="w-6 h-6 text-edf-green" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-gray-900">{partnerships.length}</p>
+                <p className="text-sm text-gray-500">Partenaires</p>
+              </div>
+            </CardBody>
+          </Card>
+        </div>
+
+        {/* Onglets de gestion */}
+        <Tabs 
+          aria-label="Sections admin" 
+          color="primary" 
+          variant="underlined"
+          classNames={{
+            tabList: "gap-6 w-full relative rounded-none p-0 border-b border-gray-200",
+            cursor: "w-full bg-edf-blue",
+            tab: "max-w-fit px-0 h-12",
+            tabContent: "group-data-[selected=true]:text-edf-blue font-medium",
+          }}
+        >
           {/* Onglet Actualités */}
           <Tab
             key="news"
             title={
               <div className="flex items-center gap-2">
                 <Newspaper className="w-4 h-4" />
-                <span>Actualités ({news.length})</span>
+                <span>Actualités</span>
+                <Chip size="sm" variant="flat" className="bg-gray-100">
+                  {news.length}
+                </Chip>
               </div>
             }
           >
-            <Card className="mt-4">
-              <CardHeader className="flex justify-between items-center">
-                <h2 className="text-lg font-bold">Gestion des actualités</h2>
+            <Card className="mt-6 border border-gray-100 shadow-sm">
+              <CardHeader className="flex justify-between items-center px-6 py-4 border-b border-gray-100">
+                <div>
+                  <h2 className="text-lg font-bold text-gray-900">Gestion des actualités</h2>
+                  <p className="text-sm text-gray-500">Créez et gérez vos actualités</p>
+                </div>
                 <Button
-                  color="primary"
+                  className="bg-edf-blue text-white font-medium"
                   startContent={<Plus className="w-4 h-4" />}
                   onPress={openCreateNews}
                 >
                   Nouvelle actualité
                 </Button>
               </CardHeader>
-              <CardBody>
-                <Table aria-label="Liste des actualités">
+              <CardBody className="p-0">
+                <Table 
+                  aria-label="Liste des actualités"
+                  classNames={{
+                    th: "bg-gray-50 text-gray-600 font-semibold",
+                    td: "py-4",
+                  }}
+                >
                   <TableHeader>
                     <TableColumn>TITRE</TableColumn>
                     <TableColumn>STATUT</TableColumn>
@@ -420,42 +583,48 @@ export default function AdminPage() {
                   </TableHeader>
                   <TableBody emptyContent="Aucune actualité">
                     {news.map((item) => (
-                      <TableRow key={item.id}>
+                      <TableRow key={item.id} className="hover:bg-gray-50">
                         <TableCell>
-                          <div className="max-w-xs truncate font-medium">
-                            {item.title}
+                          <div className="max-w-sm">
+                            <p className="font-medium text-gray-900 truncate">{item.title}</p>
+                            <p className="text-xs text-gray-400 truncate">/actualites/{item.slug}</p>
                           </div>
                         </TableCell>
                         <TableCell>
                           {item.is_published ? (
-                            <span className="inline-flex items-center gap-1 text-green-600 text-sm">
-                              <Eye className="w-3 h-3" /> Publié
-                            </span>
+                            <Chip color="success" variant="flat" size="sm" startContent={<Eye className="w-3 h-3" />}>
+                              Publié
+                            </Chip>
                           ) : (
-                            <span className="inline-flex items-center gap-1 text-gray-400 text-sm">
-                              <EyeOff className="w-3 h-3" /> Brouillon
-                            </span>
+                            <Chip color="default" variant="flat" size="sm" startContent={<EyeOff className="w-3 h-3" />}>
+                              Brouillon
+                            </Chip>
                           )}
                         </TableCell>
                         <TableCell className="text-sm text-gray-500">
-                          {new Date(item.created_at).toLocaleDateString("fr-FR")}
+                          {new Date(item.created_at).toLocaleDateString("fr-FR", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                          })}
                         </TableCell>
                         <TableCell>
-                          <div className="flex gap-2">
+                          <div className="flex gap-1">
                             <Button
                               size="sm"
                               variant="light"
                               isIconOnly
                               onPress={() => openEditNews(item)}
+                              className="text-gray-600 hover:text-edf-blue"
                             >
                               <Edit className="w-4 h-4" />
                             </Button>
                             <Button
                               size="sm"
                               variant="light"
-                              color="danger"
                               isIconOnly
                               onPress={() => confirmDelete("news", item.id)}
+                              className="text-gray-600 hover:text-red-500"
                             >
                               <Trash2 className="w-4 h-4" />
                             </Button>
@@ -475,23 +644,35 @@ export default function AdminPage() {
             title={
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4" />
-                <span>Partenariats ({partnerships.length})</span>
+                <span>Partenariats</span>
+                <Chip size="sm" variant="flat" className="bg-gray-100">
+                  {partnerships.length}
+                </Chip>
               </div>
             }
           >
-            <Card className="mt-4">
-              <CardHeader className="flex justify-between items-center">
-                <h2 className="text-lg font-bold">Gestion des partenariats</h2>
+            <Card className="mt-6 border border-gray-100 shadow-sm">
+              <CardHeader className="flex justify-between items-center px-6 py-4 border-b border-gray-100">
+                <div>
+                  <h2 className="text-lg font-bold text-gray-900">Gestion des partenariats</h2>
+                  <p className="text-sm text-gray-500">Gérez vos partenaires et leur affichage</p>
+                </div>
                 <Button
-                  color="primary"
+                  className="bg-edf-blue text-white font-medium"
                   startContent={<Plus className="w-4 h-4" />}
                   onPress={openCreatePartnership}
                 >
                   Nouveau partenaire
                 </Button>
               </CardHeader>
-              <CardBody>
-                <Table aria-label="Liste des partenariats">
+              <CardBody className="p-0">
+                <Table 
+                  aria-label="Liste des partenariats"
+                  classNames={{
+                    th: "bg-gray-50 text-gray-600 font-semibold",
+                    td: "py-4",
+                  }}
+                >
                   <TableHeader>
                     <TableColumn>NOM</TableColumn>
                     <TableColumn>CATÉGORIE</TableColumn>
@@ -500,36 +681,43 @@ export default function AdminPage() {
                   </TableHeader>
                   <TableBody emptyContent="Aucun partenariat">
                     {partnerships.map((item) => (
-                      <TableRow key={item.id}>
+                      <TableRow key={item.id} className="hover:bg-gray-50">
                         <TableCell>
-                          <div className="font-medium">{item.name}</div>
-                        </TableCell>
-                        <TableCell className="text-sm text-gray-500">
-                          {item.category || "-"}
+                          <p className="font-medium text-gray-900">{item.name}</p>
                         </TableCell>
                         <TableCell>
-                          {item.is_active ? (
-                            <span className="text-green-600 text-sm">Actif</span>
+                          {item.category ? (
+                            <Chip size="sm" variant="flat" className="bg-edf-blue/10 text-edf-blue">
+                              {item.category}
+                            </Chip>
                           ) : (
-                            <span className="text-gray-400 text-sm">Inactif</span>
+                            <span className="text-gray-400">-</span>
                           )}
                         </TableCell>
                         <TableCell>
-                          <div className="flex gap-2">
+                          {item.is_active ? (
+                            <Chip color="success" variant="flat" size="sm">Actif</Chip>
+                          ) : (
+                            <Chip color="default" variant="flat" size="sm">Inactif</Chip>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex gap-1">
                             <Button
                               size="sm"
                               variant="light"
                               isIconOnly
                               onPress={() => openEditPartnership(item)}
+                              className="text-gray-600 hover:text-edf-blue"
                             >
                               <Edit className="w-4 h-4" />
                             </Button>
                             <Button
                               size="sm"
                               variant="light"
-                              color="danger"
                               isIconOnly
                               onPress={() => confirmDelete("partnership", item.id)}
+                              className="text-gray-600 hover:text-red-500"
                             >
                               <Trash2 className="w-4 h-4" />
                             </Button>
@@ -543,16 +731,28 @@ export default function AdminPage() {
             </Card>
           </Tab>
         </Tabs>
-      </main>
+      </div>
 
       {/* Modal Actualité */}
       <Modal isOpen={newsModal.isOpen} onClose={newsModal.onClose} size="3xl">
         <ModalContent>
-          <ModalHeader>
-            {editingNews ? "Modifier l'actualité" : "Nouvelle actualité"}
+          <ModalHeader className="border-b border-gray-100 pb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-edf-blue/10 flex items-center justify-center">
+                <Newspaper className="w-5 h-5 text-edf-blue" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold">
+                  {editingNews ? "Modifier l'actualité" : "Nouvelle actualité"}
+                </h3>
+                <p className="text-sm text-gray-500 font-normal">
+                  {editingNews ? "Modifiez les informations" : "Créez une nouvelle actualité"}
+                </p>
+              </div>
+            </div>
           </ModalHeader>
-          <ModalBody>
-            <div className="space-y-4">
+          <ModalBody className="py-6">
+            <div className="space-y-5">
               <Input
                 label="Titre"
                 placeholder="Titre de l'actualité"
@@ -565,19 +765,23 @@ export default function AdminPage() {
                   });
                 }}
                 isRequired
+                labelPlacement="outside"
               />
               <Input
                 label="Slug (URL)"
                 placeholder="titre-de-lactualite"
                 value={newsForm.slug}
                 onChange={(e) => setNewsForm({ ...newsForm, slug: e.target.value })}
+                labelPlacement="outside"
+                description="URL de l'actualité : /actualites/votre-slug"
               />
               <Textarea
                 label="Extrait"
-                placeholder="Résumé court de l'actualité"
+                placeholder="Résumé court de l'actualité (affiché dans les listes)"
                 value={newsForm.excerpt}
                 onChange={(e) => setNewsForm({ ...newsForm, excerpt: e.target.value })}
                 minRows={2}
+                labelPlacement="outside"
               />
               <Textarea
                 label="Contenu"
@@ -585,27 +789,34 @@ export default function AdminPage() {
                 value={newsForm.content}
                 onChange={(e) => setNewsForm({ ...newsForm, content: e.target.value })}
                 minRows={6}
+                labelPlacement="outside"
               />
               <Input
                 label="URL de l'image"
                 placeholder="https://..."
                 value={newsForm.image_url}
                 onChange={(e) => setNewsForm({ ...newsForm, image_url: e.target.value })}
+                labelPlacement="outside"
               />
-              <Switch
-                isSelected={newsForm.is_published}
-                onValueChange={(value) => setNewsForm({ ...newsForm, is_published: value })}
-              >
-                Publier l&apos;actualité
-              </Switch>
+              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                <div>
+                  <p className="font-medium text-gray-900">Publier l&apos;actualité</p>
+                  <p className="text-sm text-gray-500">L&apos;actualité sera visible sur le site</p>
+                </div>
+                <Switch
+                  isSelected={newsForm.is_published}
+                  onValueChange={(value) => setNewsForm({ ...newsForm, is_published: value })}
+                  color="success"
+                />
+              </div>
             </div>
           </ModalBody>
-          <ModalFooter>
+          <ModalFooter className="border-t border-gray-100 pt-4">
             <Button variant="light" onPress={newsModal.onClose}>
               Annuler
             </Button>
-            <Button color="primary" onPress={saveNews}>
-              {editingNews ? "Modifier" : "Créer"}
+            <Button className="bg-edf-blue text-white" onPress={saveNews}>
+              {editingNews ? "Enregistrer" : "Créer l'actualité"}
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -614,11 +825,23 @@ export default function AdminPage() {
       {/* Modal Partenariat */}
       <Modal isOpen={partnershipModal.isOpen} onClose={partnershipModal.onClose} size="2xl">
         <ModalContent>
-          <ModalHeader>
-            {editingPartnership ? "Modifier le partenaire" : "Nouveau partenaire"}
+          <ModalHeader className="border-b border-gray-100 pb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-edf-green/10 flex items-center justify-center">
+                <Users className="w-5 h-5 text-edf-green" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold">
+                  {editingPartnership ? "Modifier le partenaire" : "Nouveau partenaire"}
+                </h3>
+                <p className="text-sm text-gray-500 font-normal">
+                  {editingPartnership ? "Modifiez les informations" : "Ajoutez un nouveau partenaire"}
+                </p>
+              </div>
+            </div>
           </ModalHeader>
-          <ModalBody>
-            <div className="space-y-4">
+          <ModalBody className="py-6">
+            <div className="space-y-5">
               <Input
                 label="Nom"
                 placeholder="Nom du partenaire"
@@ -631,12 +854,14 @@ export default function AdminPage() {
                   });
                 }}
                 isRequired
+                labelPlacement="outside"
               />
               <Input
                 label="Slug (URL)"
                 placeholder="nom-du-partenaire"
                 value={partnershipForm.slug}
                 onChange={(e) => setPartnershipForm({ ...partnershipForm, slug: e.target.value })}
+                labelPlacement="outside"
               />
               <Textarea
                 label="Description"
@@ -644,6 +869,7 @@ export default function AdminPage() {
                 value={partnershipForm.description}
                 onChange={(e) => setPartnershipForm({ ...partnershipForm, description: e.target.value })}
                 minRows={3}
+                labelPlacement="outside"
               />
               <div className="grid grid-cols-2 gap-4">
                 <Input
@@ -651,12 +877,14 @@ export default function AdminPage() {
                   placeholder="https://..."
                   value={partnershipForm.logo_url}
                   onChange={(e) => setPartnershipForm({ ...partnershipForm, logo_url: e.target.value })}
+                  labelPlacement="outside"
                 />
                 <Input
                   label="Site web"
                   placeholder="https://..."
                   value={partnershipForm.website_url}
                   onChange={(e) => setPartnershipForm({ ...partnershipForm, website_url: e.target.value })}
+                  labelPlacement="outside"
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -665,28 +893,35 @@ export default function AdminPage() {
                   placeholder="institutionnel, technique..."
                   value={partnershipForm.category}
                   onChange={(e) => setPartnershipForm({ ...partnershipForm, category: e.target.value })}
+                  labelPlacement="outside"
                 />
                 <Input
                   type="number"
                   label="Ordre d'affichage"
                   value={String(partnershipForm.display_order)}
                   onChange={(e) => setPartnershipForm({ ...partnershipForm, display_order: parseInt(e.target.value) || 0 })}
+                  labelPlacement="outside"
                 />
               </div>
-              <Switch
-                isSelected={partnershipForm.is_active}
-                onValueChange={(value) => setPartnershipForm({ ...partnershipForm, is_active: value })}
-              >
-                Partenaire actif
-              </Switch>
+              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                <div>
+                  <p className="font-medium text-gray-900">Partenaire actif</p>
+                  <p className="text-sm text-gray-500">Le partenaire sera visible sur le site</p>
+                </div>
+                <Switch
+                  isSelected={partnershipForm.is_active}
+                  onValueChange={(value) => setPartnershipForm({ ...partnershipForm, is_active: value })}
+                  color="success"
+                />
+              </div>
             </div>
           </ModalBody>
-          <ModalFooter>
+          <ModalFooter className="border-t border-gray-100 pt-4">
             <Button variant="light" onPress={partnershipModal.onClose}>
               Annuler
             </Button>
-            <Button color="primary" onPress={savePartnership}>
-              {editingPartnership ? "Modifier" : "Créer"}
+            <Button className="bg-edf-blue text-white" onPress={savePartnership}>
+              {editingPartnership ? "Enregistrer" : "Créer le partenaire"}
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -695,9 +930,16 @@ export default function AdminPage() {
       {/* Modal Confirmation suppression */}
       <Modal isOpen={deleteModal.isOpen} onClose={deleteModal.onClose}>
         <ModalContent>
-          <ModalHeader>Confirmer la suppression</ModalHeader>
+          <ModalHeader className="text-red-600">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+                <Trash2 className="w-5 h-5 text-red-600" />
+              </div>
+              <span>Confirmer la suppression</span>
+            </div>
+          </ModalHeader>
           <ModalBody>
-            <p>Êtes-vous sûr de vouloir supprimer cet élément ?</p>
+            <p className="text-gray-700">Êtes-vous sûr de vouloir supprimer cet élément ?</p>
             <p className="text-sm text-gray-500">Cette action est irréversible.</p>
           </ModalBody>
           <ModalFooter>
@@ -705,7 +947,7 @@ export default function AdminPage() {
               Annuler
             </Button>
             <Button color="danger" onPress={handleDelete}>
-              Supprimer
+              Supprimer définitivement
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -713,4 +955,3 @@ export default function AdminPage() {
     </div>
   );
 }
-
