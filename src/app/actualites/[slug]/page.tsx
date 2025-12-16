@@ -7,8 +7,16 @@ import { Skeleton } from "@nextui-org/react";
 import { Calendar, ArrowLeft, Share2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { getNewsBySlug } from "@/lib/api";
+import { createClient } from "@supabase/supabase-js";
 import type { News } from "@/lib/database.types";
+
+// Client Supabase créé côté client uniquement
+const getSupabaseClient = () => {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return null;
+  return createClient(url, key);
+};
 
 /**
  * Page de détail d'une actualité
@@ -28,11 +36,24 @@ export default function ActualiteDetailPage() {
       if (!slug) return;
       
       try {
-        const data = await getNewsBySlug(slug);
-        if (!data) {
+        const supabase = getSupabaseClient();
+        if (!supabase) {
+          setError("Configuration Supabase manquante");
+          setLoading(false);
+          return;
+        }
+
+        const { data, error: fetchError } = await supabase
+          .from("news")
+          .select("*")
+          .eq("slug", slug)
+          .eq("is_published", true)
+          .single();
+
+        if (fetchError || !data) {
           setError("Actualité non trouvée");
         } else {
-          setArticle(data);
+          setArticle(data as News);
         }
       } catch (err) {
         console.error("Erreur chargement actualité:", err);

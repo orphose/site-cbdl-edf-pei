@@ -6,8 +6,16 @@ import { Card, CardBody, Skeleton } from "@nextui-org/react";
 import { Calendar, ArrowRight, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { getPublishedNews } from "@/lib/api";
+import { createClient } from "@supabase/supabase-js";
 import type { News } from "@/lib/database.types";
+
+// Client Supabase créé côté client uniquement
+const getSupabaseClient = () => {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return null;
+  return createClient(url, key);
+};
 
 /**
  * Page des actualités
@@ -22,8 +30,22 @@ export default function ActualitesPage() {
   useEffect(() => {
     async function loadNews() {
       try {
-        const data = await getPublishedNews(50);
-        setNews(data);
+        const supabase = getSupabaseClient();
+        if (!supabase) {
+          setError("Configuration Supabase manquante");
+          setLoading(false);
+          return;
+        }
+
+        const { data, error: fetchError } = await supabase
+          .from("news")
+          .select("*")
+          .eq("is_published", true)
+          .order("published_at", { ascending: false })
+          .limit(50);
+
+        if (fetchError) throw fetchError;
+        setNews((data as News[]) || []);
       } catch (err) {
         console.error("Erreur chargement actualités:", err);
         setError("Impossible de charger les actualités");

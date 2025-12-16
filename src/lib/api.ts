@@ -2,7 +2,7 @@
  * Fonctions API pour récupérer les données du CMS
  * Actualités et Partenariats depuis Supabase
  */
-import { supabase } from './supabase';
+import { getSupabase } from './supabase';
 import type { News, Partnership } from './database.types';
 
 // ============================================
@@ -16,8 +16,12 @@ import type { News, Partnership } from './database.types';
  */
 export async function getPublishedNews(limit = 10): Promise<News[]> {
   // Assertions de validation
-  if (limit < 1 || limit > 100) {
-    throw new Error('Limit doit être entre 1 et 100');
+  console.assert(limit >= 1 && limit <= 100, 'Limit doit être entre 1 et 100');
+
+  const supabase = getSupabase();
+  if (!supabase) {
+    console.warn('Supabase non configuré, retour liste vide');
+    return [];
   }
 
   const { data, error } = await supabase
@@ -42,8 +46,12 @@ export async function getPublishedNews(limit = 10): Promise<News[]> {
  */
 export async function getNewsBySlug(slug: string): Promise<News | null> {
   // Assertions de validation
-  if (!slug || slug.trim().length === 0) {
-    throw new Error('Le slug est requis');
+  console.assert(slug && slug.trim().length > 0, 'Le slug est requis');
+
+  const supabase = getSupabase();
+  if (!supabase) {
+    console.warn('Supabase non configuré');
+    return null;
   }
 
   const { data, error } = await supabase
@@ -76,8 +84,15 @@ export async function getNewsBySlug(slug: string): Promise<News | null> {
  */
 export async function getActivePartnerships(category?: string): Promise<Partnership[]> {
   // Assertions de validation (category peut être undefined)
-  if (category !== undefined && category.trim().length === 0) {
-    throw new Error('La catégorie ne peut pas être vide si fournie');
+  console.assert(
+    category === undefined || category.trim().length > 0,
+    'La catégorie ne peut pas être vide si fournie'
+  );
+
+  const supabase = getSupabase();
+  if (!supabase) {
+    console.warn('Supabase non configuré, retour liste vide');
+    return [];
   }
 
   let query = supabase
@@ -107,8 +122,12 @@ export async function getActivePartnerships(category?: string): Promise<Partners
  */
 export async function getPartnershipBySlug(slug: string): Promise<Partnership | null> {
   // Assertions de validation
-  if (!slug || slug.trim().length === 0) {
-    throw new Error('Le slug est requis');
+  console.assert(slug && slug.trim().length > 0, 'Le slug est requis');
+
+  const supabase = getSupabase();
+  if (!supabase) {
+    console.warn('Supabase non configuré');
+    return null;
   }
 
   const { data, error } = await supabase
