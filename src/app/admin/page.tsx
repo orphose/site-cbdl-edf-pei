@@ -433,10 +433,7 @@ export default function AdminPage() {
               />
               <div className="h-8 w-px bg-gray-200" />
               <div>
-                <div className="flex items-center gap-2">
-                  <LayoutDashboard className="w-5 h-5 text-edf-blue" />
-                  <h1 className="text-lg font-bold text-gray-900">Tableau de bord</h1>
-                </div>
+                <h1 className="text-lg font-bold text-gray-900">Tableau de bord</h1>
                 <p className="text-xs text-gray-500">Gestion du contenu CBDL</p>
               </div>
             </div>
