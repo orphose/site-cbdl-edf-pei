@@ -36,10 +36,16 @@ import {
   EyeOff,
   Lock,
 } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@supabase/supabase-js";
 import type { News, Partnership } from "@/lib/database.types";
 import { IMAGES } from "@/lib/media";
 import Image from "next/image";
+
+// Client Supabase sans typage strict pour l'admin (permet CRUD complet)
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 // Mot de passe admin (en production, utiliser Supabase Auth)
 const ADMIN_PASSWORD = "cbdl2024admin";
@@ -126,13 +132,13 @@ export default function AdminPage() {
     setLoading(true);
     try {
       // Charger les actualités (toutes, pas seulement publiées)
-      const { data: newsData } = await supabase
+      const { data: newsData } = await supabaseAdmin
         .from("news")
         .select("*")
         .order("created_at", { ascending: false });
 
       // Charger les partenariats (tous)
-      const { data: partnershipsData } = await supabase
+      const { data: partnershipsData } = await supabaseAdmin
         .from("partnerships")
         .select("*")
         .order("display_order", { ascending: true });
@@ -198,13 +204,13 @@ export default function AdminPage() {
       };
 
       if (editingNews) {
-        const { error } = await supabase
+        const { error } = await supabaseAdmin
           .from("news")
           .update(newsData)
           .eq("id", editingNews.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("news").insert(newsData);
+        const { error } = await supabaseAdmin.from("news").insert(newsData);
         if (error) throw error;
       }
 
@@ -262,13 +268,13 @@ export default function AdminPage() {
       };
 
       if (editingPartnership) {
-        const { error } = await supabase
+        const { error } = await supabaseAdmin
           .from("partnerships")
           .update(partnershipData)
           .eq("id", editingPartnership.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("partnerships").insert(partnershipData);
+        const { error } = await supabaseAdmin.from("partnerships").insert(partnershipData);
         if (error) throw error;
       }
 
@@ -291,9 +297,9 @@ export default function AdminPage() {
 
     try {
       if (deleteTarget.type === "news") {
-        await supabase.from("news").delete().eq("id", deleteTarget.id);
+        await supabaseAdmin.from("news").delete().eq("id", deleteTarget.id);
       } else {
-        await supabase.from("partnerships").delete().eq("id", deleteTarget.id);
+        await supabaseAdmin.from("partnerships").delete().eq("id", deleteTarget.id);
       }
       deleteModal.onClose();
       loadData();
