@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { TreePine, Waves, MapPin } from "lucide-react";
 import Image from "next/image";
+import { getMediaUrl } from "@/lib/supabase";
 
 /**
  * Données des mesures ERC
@@ -16,7 +17,7 @@ const ERC_MEASURES = [
     color: "#88D910",
     highlight: "Murumuru",
     highlightLabel: "Palmier protégé",
-    image: "/murumuru_1.jpg",
+    image: getMediaUrl("murumuru_1.jpg"),
   },
   {
     icon: Waves,
@@ -26,7 +27,7 @@ const ERC_MEASURES = [
     color: "#00d4ff",
     highlight: "100%",
     highlightLabel: "Mangrove préservée",
-    image: "/mangrove_1.png",
+    image: getMediaUrl("mangrove_1.png"),
   },
   {
     icon: MapPin,
@@ -36,7 +37,7 @@ const ERC_MEASURES = [
     color: "#FFB210",
     highlight: "150 ha",
     highlightLabel: "Zones sanctuarisées",
-    image: "/resp_approch.jpg",
+    image: getMediaUrl("resp_approch.jpg"),
   },
 ];
 

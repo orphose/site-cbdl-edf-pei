@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Card, CardBody, Button } from "@nextui-org/react";
 import { ChevronLeft, ChevronRight, Zap, Flower2, Heart, TreePine } from "lucide-react";
 import Image from "next/image";
+import { getMediaUrl } from "@/lib/supabase";
 
 /**
  * Données des partenariats locaux
@@ -16,7 +17,7 @@ const PARTNERSHIPS = [
     title: "Électrification du village Palikour",
     description:
       "EDF PEI travaille en étroite collaboration avec le village Palikour et la municipalité de Matoury pour promouvoir un développement durable et réfléchi de la Guyane. L'électrification du village favorise un accès juste et équilibré aux ressources énergétiques, stimule les opportunités de croissance et renforce l'égalité des chances pour tous.",
-    image: "/village_palikour_1.jpg",
+    image: getMediaUrl("village_palikour_1.jpg"),
     color: "#001A70",
   },
   {
@@ -25,7 +26,7 @@ const PARTNERSHIPS = [
     title: "Installation de ruches à miel sur le site",
     description:
       "Au dernier trimestre 2022, la Miellerie de Macouria a initié une action ambitieuse et innovante : installer des ruches à miel sur le site de la future centrale bioénergie du Larivot. Cette action favorise la pollinisation des espèces végétales avoisinantes et dynamise la biodiversité régionale.",
-    image: "/miellerie_macouria_1.jpg",
+    image: getMediaUrl("miellerie_macouria_1.jpg"),
     color: "#FFB210",
   },
   {
@@ -34,7 +35,7 @@ const PARTNERSHIPS = [
     title: "Soutien à l'Association Protecta",
     description:
       "EDF PEI apporte un soutien financier important à l'Association Protecta, gestionnaire de la Ferme Pédagogique du Larivot, un écosystème foisonnant qui offre aux jeunes Guyanais l'opportunité d'explorer la biodiversité locale.",
-    image: "/ferme_peda_1.jpg",
+    image: getMediaUrl("ferme_peda_1.jpg"),
     color: "#001A70",
   },
   {
@@ -43,7 +44,7 @@ const PARTNERSHIPS = [
     title: "Le Palmetum de Macouria",
     description:
       "EDF PEI a souhaité participer à ce jardin botanique à la suite de la découverte, sur son site, de plans de palmiers présentant un intérêt patrimonial. Ces plans d'Astrocaryum murumuru ont été replantés sur le site du Palmetum.",
-    image: "/palmetum_macouria_1.jpg",
+    image: getMediaUrl("palmetum_macouria_1.jpg"),
     color: "#88D910",
   },
 ];
