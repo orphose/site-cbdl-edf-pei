@@ -134,20 +134,19 @@ export async function getPartnershipBySlug(slug: string): Promise<Partnership | 
  * Récupère les catégories de partenaires disponibles
  */
 export async function getPartnershipCategories(): Promise<string[]> {
-  const { data, error } = await supabase
-    .from('partnerships')
-    .select('category')
-    .eq('is_active', true)
-    .not('category', 'is', null);
-
-  // Vérification du retour
-  if (error) {
-    console.error('Erreur lors de la récupération des catégories:', error);
-    throw error;
+  // Assertions de validation
+  const partnerships = await getActivePartnerships();
+  
+  if (partnerships.length === 0) {
+    return [];
   }
 
-  // Extraire les catégories uniques
-  const categories = [...new Set(data?.map(p => p.category).filter(Boolean) as string[])];
+  // Extraire les catégories uniques non nulles
+  const categories = [...new Set(
+    partnerships
+      .map(p => p.category)
+      .filter((cat): cat is string => cat !== null && cat !== undefined)
+  )];
   
   return categories;
 }
