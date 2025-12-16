@@ -72,7 +72,7 @@ const cardVariants = {
 export default function BeneficesAirQualitySection() {
   // Assertions de validation
   console.assert(AIR_QUALITY_ITEMS.length === 4, "4 éléments attendus pour la qualité de l'air");
-  console.assert(AIR_QUALITY_ITEMS.every(item => item.icon && item.title), "Données complètes requises");
+  console.assert(AIR_QUALITY_ITEMS.every(item => typeof item.icon === 'function' && item.title.length > 0), "Données complètes requises");
 
   return (
     <section className="section-padding bg-gray-50 relative overflow-hidden">
