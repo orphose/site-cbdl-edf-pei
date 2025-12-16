@@ -365,7 +365,7 @@ export default function AdminPage() {
             className="w-full max-w-md"
           >
             {/* Titre */}
-            <div className="text-center mb-10">
+            <div className="text-center mb-10 mt-8">
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
                 Administration
               </h1>
