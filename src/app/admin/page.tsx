@@ -726,12 +726,12 @@ export default function AdminPage() {
       <Modal 
         isOpen={newsModal.isOpen} 
         onClose={newsModal.onClose} 
-        size="2xl"
+        size="lg"
         backdrop="opaque"
         scrollBehavior="inside"
         classNames={{
           backdrop: "bg-black/50",
-          base: "bg-white",
+          base: "bg-white max-h-[85vh]",
         }}
       >
         <ModalContent>
@@ -823,12 +823,12 @@ export default function AdminPage() {
       <Modal 
         isOpen={partnershipModal.isOpen} 
         onClose={partnershipModal.onClose} 
-        size="xl"
+        size="md"
         backdrop="opaque"
         scrollBehavior="inside"
         classNames={{
           backdrop: "bg-black/50",
-          base: "bg-white",
+          base: "bg-white max-h-[85vh]",
         }}
       >
         <ModalContent>
