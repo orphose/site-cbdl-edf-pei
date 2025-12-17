@@ -547,46 +547,48 @@ export default function AdminPage() {
   // =============================================
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white sticky top-0 z-50 h-[80px]">
-        <div className="max-w-7xl mx-auto px-6 h-full">
-          <div className="flex items-center justify-between h-full">
-            <div className="flex items-center gap-4">
+      {/* Header - même style que le site principal */}
+      <header className="bg-white sticky top-0 z-50 shadow-md h-[100px]">
+        <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
+          {/* Logo + Titre */}
+          <div className="flex items-center gap-6">
+            <Link href="/">
               <Image
                 src={IMAGES.logo.couleurs}
                 alt="EDF PEI"
-                width={160}
-                height={64}
-                className="h-14 w-auto"
+                width={200}
+                height={80}
+                className="h-20 w-auto"
               />
-              <div className="h-10 w-px bg-gray-200" />
-              <div>
-                <h1 className="text-lg font-bold text-gray-900">Administration</h1>
-                <p className="text-xs text-gray-500">{user.email}</p>
-              </div>
+            </Link>
+            <div className="h-12 w-px bg-gray-200" />
+            <div>
+              <h1 className="text-lg font-bold text-gray-900">Administration</h1>
+              <p className="text-xs text-gray-500">{user.email}</p>
             </div>
+          </div>
 
-            <div className="flex items-center gap-4">
-              <Link href="/">
-                <Button
-                  variant="light"
-                  size="sm"
-                  startContent={<Eye className="w-4 h-4" />}
-                  className="text-gray-600"
-                >
-                  Voir le site
-                </Button>
-              </Link>
+          {/* Actions */}
+          <div className="flex items-center gap-4">
+            <Link href="/">
               <Button
-                variant="flat"
-                color="danger"
+                variant="light"
                 size="sm"
-                startContent={<LogOut className="w-4 h-4" />}
-                onPress={handleLogout}
+                startContent={<Eye className="w-4 h-4" />}
+                className="text-gray-600"
               >
-                Déconnexion
+                Voir le site
               </Button>
-            </div>
+            </Link>
+            <Button
+              variant="flat"
+              color="danger"
+              size="sm"
+              startContent={<LogOut className="w-4 h-4" />}
+              onPress={handleLogout}
+            >
+              Déconnexion
+            </Button>
           </div>
         </div>
       </header>
