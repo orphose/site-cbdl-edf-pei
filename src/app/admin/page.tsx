@@ -265,10 +265,8 @@ export default function AdminPage() {
     // Construire le texte du post avec hashtags et lien
     const hashtags = linkedInShare.hashtags.map(h => `#${h}`).join(" ");
     const postText = linkedInShare.customText || content;
-    // Limiter le texte pour éviter les problèmes d'URL trop longue
-    const truncatedText = postText.length > 500 ? postText.substring(0, 497) + "..." : postText;
-    // Inclure le lien et les hashtags dans le texte
-    const fullText = `${truncatedText}\n\n🔗 ${articleUrl}\n\n${hashtags}`;
+    // Inclure le lien et les hashtags dans le texte (pas de limite de caractères)
+    const fullText = `${postText}\n\n🔗 ${articleUrl}\n\n${hashtags}`;
     
     // Utiliser l'URL de création de post LinkedIn (permet de pré-remplir le texte)
     // Format: https://www.linkedin.com/feed/?shareActive=true&text=TEXTE_ENCODE
@@ -1404,12 +1402,12 @@ export default function AdminPage() {
                               </div>
 
                               {/* Aperçu */}
-                              <div className="p-3 bg-gray-50 rounded-lg">
+                              <div className="p-3 bg-gray-50 rounded-lg max-h-48 overflow-y-auto">
                                 <p className="text-xs font-medium text-gray-500 mb-2 flex items-center gap-1">
                                   <Eye className="w-3 h-3" />
                                   Aperçu du post
                                 </p>
-                                <p className="text-xs text-gray-700 whitespace-pre-wrap line-clamp-4">
+                                <p className="text-xs text-gray-700 whitespace-pre-wrap">
                                   {linkedInShare.customText || newsForm.content || "Votre texte apparaîtra ici..."}
                                   {linkedInShare.hashtags.length > 0 && (
                                     <>
