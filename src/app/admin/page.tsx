@@ -739,11 +739,10 @@ export default function AdminPage() {
           <ModalHeader>
             {editingNews ? "Modifier l'actualité" : "Nouvelle actualité"}
           </ModalHeader>
-          <ModalBody className="py-4">
-            <div className="flex flex-col gap-4">
+          <ModalBody>
+            <div className="flex flex-col gap-3">
               <Input
                 label="Titre"
-                placeholder="Titre de l'actualité"
                 value={newsForm.title}
                 onChange={(e) => {
                   setNewsForm({
@@ -753,37 +752,28 @@ export default function AdminPage() {
                   });
                 }}
                 isRequired
-                variant="bordered"
               />
               <Input
                 label="Slug (URL)"
-                placeholder="titre-de-lactualite"
                 value={newsForm.slug}
                 onChange={(e) => setNewsForm({ ...newsForm, slug: e.target.value })}
-                variant="bordered"
               />
               <Textarea
                 label="Extrait"
-                placeholder="Résumé court de l'actualité"
                 value={newsForm.excerpt}
                 onChange={(e) => setNewsForm({ ...newsForm, excerpt: e.target.value })}
                 minRows={2}
-                variant="bordered"
               />
               <Textarea
                 label="Contenu"
-                placeholder="Contenu complet de l'actualité"
                 value={newsForm.content}
                 onChange={(e) => setNewsForm({ ...newsForm, content: e.target.value })}
-                minRows={4}
-                variant="bordered"
+                minRows={3}
               />
               <Input
                 label="Nom du fichier image"
-                placeholder="photo.jpg"
                 value={newsForm.image_url}
                 onChange={(e) => setNewsForm({ ...newsForm, image_url: e.target.value })}
-                variant="bordered"
               />
               <div className="flex items-center justify-between py-2">
                 <span className="text-sm">Publier l&apos;actualité</span>
@@ -821,11 +811,10 @@ export default function AdminPage() {
           <ModalHeader>
             {editingPartnership ? "Modifier le partenaire" : "Nouveau partenaire"}
           </ModalHeader>
-          <ModalBody className="py-4">
-            <div className="flex flex-col gap-4">
+          <ModalBody>
+            <div className="flex flex-col gap-3">
               <Input
                 label="Nom"
-                placeholder="Nom du partenaire"
                 value={partnershipForm.name}
                 onChange={(e) => {
                   setPartnershipForm({
@@ -835,30 +824,24 @@ export default function AdminPage() {
                   });
                 }}
                 isRequired
-                variant="bordered"
               />
               <Textarea
                 label="Description"
-                placeholder="Description du partenaire"
                 value={partnershipForm.description}
                 onChange={(e) => setPartnershipForm({ ...partnershipForm, description: e.target.value })}
                 minRows={2}
-                variant="bordered"
               />
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3">
                 <Input
                   label="Catégorie"
-                  placeholder="institutionnel..."
                   value={partnershipForm.category}
                   onChange={(e) => setPartnershipForm({ ...partnershipForm, category: e.target.value })}
-                  variant="bordered"
                 />
                 <Input
                   type="number"
                   label="Ordre"
                   value={String(partnershipForm.display_order)}
                   onChange={(e) => setPartnershipForm({ ...partnershipForm, display_order: parseInt(e.target.value) || 0 })}
-                  variant="bordered"
                 />
               </div>
               <div className="flex items-center justify-between py-2">
