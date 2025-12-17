@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { motion } from "framer-motion";
-import { Skeleton } from "@nextui-org/react";
-import { Calendar, ArrowLeft, Share2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Skeleton, Button } from "@nextui-org/react";
+import { Calendar, ArrowLeft, Share2, X, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
@@ -29,6 +29,10 @@ export default function ActualiteDetailPage() {
   const [article, setArticle] = useState<News | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  // État pour la lightbox de la galerie
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
 
   // Chargement de l'actualité au montage
   useEffect(() => {
@@ -211,6 +215,116 @@ export default function ActualiteDetailPage() {
                 </p>
               )}
             </motion.div>
+
+            {/* Galerie photos */}
+            {article.gallery && article.gallery.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+                className="mt-12"
+              >
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Galerie photos</h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {article.gallery.map((url, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.4, delay: index * 0.1 }}
+                      className="relative aspect-square cursor-pointer group overflow-hidden rounded-lg shadow-md"
+                      onClick={() => {
+                        setLightboxIndex(index);
+                        setLightboxOpen(true);
+                      }}
+                    >
+                      <Image
+                        src={url}
+                        alt={`Photo ${index + 1}`}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+
+            {/* Lightbox */}
+            <AnimatePresence>
+              {lightboxOpen && article.gallery && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
+                  onClick={() => setLightboxOpen(false)}
+                >
+                  {/* Bouton fermer */}
+                  <Button
+                    isIconOnly
+                    variant="light"
+                    className="absolute top-4 right-4 text-white z-10"
+                    onPress={() => setLightboxOpen(false)}
+                  >
+                    <X className="w-8 h-8" />
+                  </Button>
+
+                  {/* Navigation précédent */}
+                  {lightboxIndex > 0 && (
+                    <Button
+                      isIconOnly
+                      variant="light"
+                      className="absolute left-4 text-white z-10"
+                      onPress={(e) => {
+                        e.stopPropagation();
+                        setLightboxIndex(lightboxIndex - 1);
+                      }}
+                    >
+                      <ChevronLeft className="w-10 h-10" />
+                    </Button>
+                  )}
+
+                  {/* Image */}
+                  <motion.div
+                    key={lightboxIndex}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    className="relative w-full h-full max-w-5xl max-h-[80vh] mx-4"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <Image
+                      src={article.gallery[lightboxIndex]}
+                      alt={`Photo ${lightboxIndex + 1}`}
+                      fill
+                      className="object-contain"
+                    />
+                  </motion.div>
+
+                  {/* Navigation suivant */}
+                  {lightboxIndex < article.gallery.length - 1 && (
+                    <Button
+                      isIconOnly
+                      variant="light"
+                      className="absolute right-4 text-white z-10"
+                      onPress={(e) => {
+                        e.stopPropagation();
+                        setLightboxIndex(lightboxIndex + 1);
+                      }}
+                    >
+                      <ChevronRight className="w-10 h-10" />
+                    </Button>
+                  )}
+
+                  {/* Indicateur */}
+                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white text-sm">
+                    {lightboxIndex + 1} / {article.gallery.length}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Actions */}
             <motion.div

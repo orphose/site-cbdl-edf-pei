@@ -86,6 +86,7 @@ export default function AdminPage() {
     excerpt: "",
     content: "",
     image_url: "",
+    gallery: [] as string[],
     is_published: false,
   });
 
@@ -104,6 +105,7 @@ export default function AdminPage() {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadError, setUploadError] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const galleryInputRef = useRef<HTMLInputElement>(null);
 
   // États de sauvegarde
   const [saving, setSaving] = useState(false);
@@ -321,6 +323,48 @@ export default function AdminPage() {
     }
   };
 
+  // Gestionnaire de sélection de fichiers pour la galerie (max 8)
+  const handleGalleryFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const remainingSlots = 8 - newsForm.gallery.length;
+    if (remainingSlots <= 0) {
+      setUploadError("La galerie est pleine (max 8 photos)");
+      return;
+    }
+
+    const filesToUpload = Array.from(files).slice(0, remainingSlots);
+    const newGalleryUrls: string[] = [];
+
+    for (const file of filesToUpload) {
+      const url = await handleImageUpload(file, "actualites");
+      if (url) {
+        newGalleryUrls.push(url);
+      }
+    }
+
+    if (newGalleryUrls.length > 0) {
+      setNewsForm({
+        ...newsForm,
+        gallery: [...newsForm.gallery, ...newGalleryUrls],
+      });
+    }
+
+    // Reset l'input pour permettre de re-sélectionner les mêmes fichiers
+    if (galleryInputRef.current) {
+      galleryInputRef.current.value = "";
+    }
+  };
+
+  // Supprimer une photo de la galerie
+  const removeGalleryPhoto = (index: number) => {
+    setNewsForm({
+      ...newsForm,
+      gallery: newsForm.gallery.filter((_, i) => i !== index),
+    });
+  };
+
   // Ouvrir création actualité
   const openCreateNews = () => {
     setEditingNews(null);
@@ -330,6 +374,7 @@ export default function AdminPage() {
       excerpt: "",
       content: "",
       image_url: "",
+      gallery: [],
       is_published: false,
     });
     setViewMode("create");
@@ -344,6 +389,7 @@ export default function AdminPage() {
       excerpt: item.excerpt || "",
       content: item.content || "",
       image_url: item.image_url || "",
+      gallery: item.gallery || [],
       is_published: item.is_published,
     });
     setViewMode("edit");
@@ -361,6 +407,7 @@ export default function AdminPage() {
         excerpt: newsForm.excerpt || null,
         content: newsForm.content || null,
         image_url: newsForm.image_url || null,
+        gallery: newsForm.gallery || [],
         is_published: newsForm.is_published,
         published_at: newsForm.is_published ? new Date().toISOString() : null,
       };
@@ -1067,6 +1114,68 @@ export default function AdminPage() {
                               <p className="text-xs text-red-500 mt-2">{uploadError}</p>
                             )}
                           </div>
+                        </div>
+
+                        {/* Galerie photos (max 8) */}
+                        <div>
+                          <div className="flex justify-between items-center mb-2">
+                            <label className="block text-sm font-medium text-gray-700">
+                              Galerie photos
+                            </label>
+                            <span className="text-xs text-gray-400">
+                              {newsForm.gallery.length}/8
+                            </span>
+                          </div>
+                          
+                          {/* Grille des photos de la galerie */}
+                          <div className="grid grid-cols-2 gap-2 mb-3">
+                            {newsForm.gallery.map((url, index) => (
+                              <div key={index} className="relative aspect-square">
+                                <Image
+                                  src={url}
+                                  alt={`Galerie ${index + 1}`}
+                                  fill
+                                  className="object-cover rounded-lg"
+                                />
+                                <Button
+                                  size="sm"
+                                  isIconOnly
+                                  variant="flat"
+                                  className="absolute top-1 right-1 bg-white/90 min-w-6 w-6 h-6"
+                                  onPress={() => removeGalleryPhoto(index)}
+                                >
+                                  <X className="w-3 h-3" />
+                                </Button>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Bouton ajouter si moins de 8 photos */}
+                          {newsForm.gallery.length < 8 && (
+                            <div
+                              className="border-2 border-dashed border-gray-200 rounded-xl p-4 hover:border-edf-blue/50 transition-colors cursor-pointer"
+                              onClick={() => galleryInputRef.current?.click()}
+                            >
+                              <div className="flex flex-col items-center justify-center py-2">
+                                <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mb-2">
+                                  <Plus className="w-5 h-5 text-gray-400" />
+                                </div>
+                                <p className="text-sm font-medium text-gray-700">Ajouter des photos</p>
+                                <p className="text-xs text-gray-400 mt-1">
+                                  {8 - newsForm.gallery.length} emplacement{newsForm.gallery.length < 7 ? "s" : ""} disponible{newsForm.gallery.length < 7 ? "s" : ""}
+                                </p>
+                              </div>
+                            </div>
+                          )}
+                          
+                          <input
+                            ref={galleryInputRef}
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp,image/gif"
+                            multiple
+                            onChange={handleGalleryFileSelect}
+                            className="hidden"
+                          />
                         </div>
 
                         {/* Publication */}

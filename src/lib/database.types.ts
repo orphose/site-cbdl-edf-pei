@@ -14,6 +14,7 @@ export interface Database {
           excerpt: string | null;
           content: string | null;
           image_url: string | null;
+          gallery: string[];
           published_at: string | null;
           is_published: boolean;
           created_at: string;
@@ -26,6 +27,7 @@ export interface Database {
           excerpt?: string | null;
           content?: string | null;
           image_url?: string | null;
+          gallery?: string[];
           published_at?: string | null;
           is_published?: boolean;
           created_at?: string;
@@ -38,6 +40,7 @@ export interface Database {
           excerpt?: string | null;
           content?: string | null;
           image_url?: string | null;
+          gallery?: string[];
           published_at?: string | null;
           is_published?: boolean;
           created_at?: string;
