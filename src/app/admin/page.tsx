@@ -725,168 +725,184 @@ export default function AdminPage() {
       {/* Modal Actualité */}
       <Modal 
         isOpen={newsModal.isOpen} 
-        onOpenChange={newsModal.onOpenChange}
-        size="2xl"
+        onClose={newsModal.onClose} 
+        size="lg"
+        backdrop="opaque"
+        scrollBehavior="inside"
+        placement="center"
+        classNames={{
+          backdrop: "bg-black/50",
+          base: "bg-white max-h-[85vh]",
+        }}
       >
         <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                {editingNews ? "Modifier l'actualité" : "Nouvelle actualité"}
-              </ModalHeader>
-              <ModalBody>
-                <div className="flex flex-col gap-4">
-                  <Input
-                    label="Titre"
-                    placeholder="Titre de l'actualité"
-                    value={newsForm.title}
-                    onChange={(e) => {
-                      setNewsForm({
-                        ...newsForm,
-                        title: e.target.value,
-                        slug: generateSlug(e.target.value),
-                      });
-                    }}
-                    isRequired
-                  />
-                  <Input
-                    label="Slug (URL)"
-                    placeholder="titre-de-lactualite"
-                    value={newsForm.slug}
-                    onChange={(e) => setNewsForm({ ...newsForm, slug: e.target.value })}
-                  />
-                  <Textarea
-                    label="Extrait"
-                    placeholder="Résumé court"
-                    value={newsForm.excerpt}
-                    onChange={(e) => setNewsForm({ ...newsForm, excerpt: e.target.value })}
-                    minRows={2}
-                  />
-                  <Textarea
-                    label="Contenu"
-                    placeholder="Contenu complet"
-                    value={newsForm.content}
-                    onChange={(e) => setNewsForm({ ...newsForm, content: e.target.value })}
-                    minRows={4}
-                  />
-                  <Input
-                    label="Nom du fichier image"
-                    placeholder="photo.jpg"
-                    value={newsForm.image_url}
-                    onChange={(e) => setNewsForm({ ...newsForm, image_url: e.target.value })}
-                  />
-                  <div className="flex items-center justify-between">
-                    <span>Publier l&apos;actualité</span>
-                    <Switch
-                      isSelected={newsForm.is_published}
-                      onValueChange={(value) => setNewsForm({ ...newsForm, is_published: value })}
-                      color="success"
-                    />
-                  </div>
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button variant="light" onPress={onClose}>Annuler</Button>
-                <Button className="bg-edf-blue text-white" onPress={() => { saveNews(); onClose(); }}>
-                  {editingNews ? "Enregistrer" : "Créer"}
-                </Button>
-              </ModalFooter>
-            </>
-          )}
+          <ModalHeader>
+            {editingNews ? "Modifier l'actualité" : "Nouvelle actualité"}
+          </ModalHeader>
+          <ModalBody className="py-4">
+            <div className="flex flex-col gap-4">
+              <Input
+                label="Titre"
+                placeholder="Titre de l'actualité"
+                value={newsForm.title}
+                onChange={(e) => {
+                  setNewsForm({
+                    ...newsForm,
+                    title: e.target.value,
+                    slug: generateSlug(e.target.value),
+                  });
+                }}
+                isRequired
+                variant="bordered"
+              />
+              <Input
+                label="Slug (URL)"
+                placeholder="titre-de-lactualite"
+                value={newsForm.slug}
+                onChange={(e) => setNewsForm({ ...newsForm, slug: e.target.value })}
+                variant="bordered"
+              />
+              <Textarea
+                label="Extrait"
+                placeholder="Résumé court de l'actualité"
+                value={newsForm.excerpt}
+                onChange={(e) => setNewsForm({ ...newsForm, excerpt: e.target.value })}
+                minRows={2}
+                variant="bordered"
+              />
+              <Textarea
+                label="Contenu"
+                placeholder="Contenu complet de l'actualité"
+                value={newsForm.content}
+                onChange={(e) => setNewsForm({ ...newsForm, content: e.target.value })}
+                minRows={4}
+                variant="bordered"
+              />
+              <Input
+                label="Nom du fichier image"
+                placeholder="photo.jpg"
+                value={newsForm.image_url}
+                onChange={(e) => setNewsForm({ ...newsForm, image_url: e.target.value })}
+                variant="bordered"
+              />
+              <div className="flex items-center justify-between py-2">
+                <span className="text-sm">Publier l&apos;actualité</span>
+                <Switch
+                  isSelected={newsForm.is_published}
+                  onValueChange={(value) => setNewsForm({ ...newsForm, is_published: value })}
+                  color="success"
+                />
+              </div>
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button variant="light" onPress={newsModal.onClose}>Annuler</Button>
+            <Button className="bg-edf-blue text-white" onPress={saveNews}>
+              {editingNews ? "Enregistrer" : "Créer"}
+            </Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
 
       {/* Modal Partenariat */}
       <Modal 
         isOpen={partnershipModal.isOpen} 
-        onOpenChange={partnershipModal.onOpenChange}
-        size="lg"
+        onClose={partnershipModal.onClose} 
+        size="md"
+        backdrop="opaque"
+        scrollBehavior="inside"
+        placement="center"
+        classNames={{
+          backdrop: "bg-black/50",
+          base: "bg-white max-h-[85vh]",
+        }}
       >
         <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                {editingPartnership ? "Modifier le partenaire" : "Nouveau partenaire"}
-              </ModalHeader>
-              <ModalBody>
-                <div className="flex flex-col gap-4">
-                  <Input
-                    label="Nom"
-                    placeholder="Nom du partenaire"
-                    value={partnershipForm.name}
-                    onChange={(e) => {
-                      setPartnershipForm({
-                        ...partnershipForm,
-                        name: e.target.value,
-                        slug: generateSlug(e.target.value),
-                      });
-                    }}
-                    isRequired
-                  />
-                  <Textarea
-                    label="Description"
-                    placeholder="Description"
-                    value={partnershipForm.description}
-                    onChange={(e) => setPartnershipForm({ ...partnershipForm, description: e.target.value })}
-                    minRows={2}
-                  />
-                  <div className="grid grid-cols-2 gap-4">
-                    <Input
-                      label="Catégorie"
-                      placeholder="institutionnel..."
-                      value={partnershipForm.category}
-                      onChange={(e) => setPartnershipForm({ ...partnershipForm, category: e.target.value })}
-                    />
-                    <Input
-                      type="number"
-                      label="Ordre"
-                      value={String(partnershipForm.display_order)}
-                      onChange={(e) => setPartnershipForm({ ...partnershipForm, display_order: parseInt(e.target.value) || 0 })}
-                    />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span>Partenaire actif</span>
-                    <Switch
-                      isSelected={partnershipForm.is_active}
-                      onValueChange={(value) => setPartnershipForm({ ...partnershipForm, is_active: value })}
-                      color="success"
-                    />
-                  </div>
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button variant="light" onPress={onClose}>Annuler</Button>
-                <Button className="bg-edf-blue text-white" onPress={() => { savePartnership(); onClose(); }}>
-                  {editingPartnership ? "Enregistrer" : "Créer"}
-                </Button>
-              </ModalFooter>
-            </>
-          )}
+          <ModalHeader>
+            {editingPartnership ? "Modifier le partenaire" : "Nouveau partenaire"}
+          </ModalHeader>
+          <ModalBody className="py-4">
+            <div className="flex flex-col gap-4">
+              <Input
+                label="Nom"
+                placeholder="Nom du partenaire"
+                value={partnershipForm.name}
+                onChange={(e) => {
+                  setPartnershipForm({
+                    ...partnershipForm,
+                    name: e.target.value,
+                    slug: generateSlug(e.target.value),
+                  });
+                }}
+                isRequired
+                variant="bordered"
+              />
+              <Textarea
+                label="Description"
+                placeholder="Description du partenaire"
+                value={partnershipForm.description}
+                onChange={(e) => setPartnershipForm({ ...partnershipForm, description: e.target.value })}
+                minRows={2}
+                variant="bordered"
+              />
+              <div className="grid grid-cols-2 gap-4">
+                <Input
+                  label="Catégorie"
+                  placeholder="institutionnel..."
+                  value={partnershipForm.category}
+                  onChange={(e) => setPartnershipForm({ ...partnershipForm, category: e.target.value })}
+                  variant="bordered"
+                />
+                <Input
+                  type="number"
+                  label="Ordre"
+                  value={String(partnershipForm.display_order)}
+                  onChange={(e) => setPartnershipForm({ ...partnershipForm, display_order: parseInt(e.target.value) || 0 })}
+                  variant="bordered"
+                />
+              </div>
+              <div className="flex items-center justify-between py-2">
+                <span className="text-sm">Partenaire actif</span>
+                <Switch
+                  isSelected={partnershipForm.is_active}
+                  onValueChange={(value) => setPartnershipForm({ ...partnershipForm, is_active: value })}
+                  color="success"
+                />
+              </div>
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button variant="light" onPress={partnershipModal.onClose}>Annuler</Button>
+            <Button className="bg-edf-blue text-white" onPress={savePartnership}>
+              {editingPartnership ? "Enregistrer" : "Créer"}
+            </Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
 
       {/* Modal Suppression */}
       <Modal 
         isOpen={deleteModal.isOpen} 
-        onOpenChange={deleteModal.onOpenChange}
-        size="sm"
+        onClose={deleteModal.onClose}
+        backdrop="opaque"
+        placement="center"
+        classNames={{
+          backdrop: "bg-black/50",
+          base: "bg-white",
+        }}
       >
         <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="text-red-600">
-                Confirmer la suppression
-              </ModalHeader>
-              <ModalBody>
-                <p>Êtes-vous sûr de vouloir supprimer cet élément ?</p>
-                <p className="text-sm text-gray-500">Cette action est irréversible.</p>
-              </ModalBody>
-              <ModalFooter>
-                <Button variant="light" onPress={onClose}>Annuler</Button>
-                <Button color="danger" onPress={() => { handleDelete(); onClose(); }}>Supprimer</Button>
-              </ModalFooter>
-            </>
-          )}
+          <ModalHeader className="text-red-600">
+            Confirmer la suppression
+          </ModalHeader>
+          <ModalBody>
+            <p>Êtes-vous sûr de vouloir supprimer cet élément ?</p>
+            <p className="text-sm text-gray-500">Cette action est irréversible.</p>
+          </ModalBody>
+          <ModalFooter>
+            <Button variant="light" onPress={deleteModal.onClose}>Annuler</Button>
+            <Button color="danger" onPress={handleDelete}>Supprimer</Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </div>
