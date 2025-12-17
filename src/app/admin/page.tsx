@@ -8,7 +8,6 @@ import {
   CardHeader,
   Button,
   Input,
-  Textarea,
   Switch,
   Tabs,
   Tab,
@@ -550,8 +549,7 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white sticky top-0 z-50 shadow-sm">
-        <div className="h-1 bg-gradient-to-r from-edf-blue via-edf-orange to-edf-green" />
+      <header className="bg-white sticky top-0 z-50 shadow-sm border-t-4 border-t-edf-blue">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -868,14 +866,12 @@ export default function AdminPage() {
                           <label className="block text-sm font-medium text-gray-700 mb-2">
                             Extrait
                           </label>
-                          <Textarea
+                          <textarea
                             placeholder="Résumé court affiché dans les listes"
                             value={newsForm.excerpt}
                             onChange={(e) => setNewsForm({ ...newsForm, excerpt: e.target.value })}
-                            minRows={2}
-                            classNames={{
-                              inputWrapper: "bg-gray-50 border border-gray-200",
-                            }}
+                            rows={3}
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-edf-blue/20 focus:border-edf-blue resize-y"
                           />
                         </div>
                         
@@ -883,14 +879,12 @@ export default function AdminPage() {
                           <label className="block text-sm font-medium text-gray-700 mb-2">
                             Contenu
                           </label>
-                          <Textarea
+                          <textarea
                             placeholder="Contenu complet de l'actualité"
                             value={newsForm.content}
                             onChange={(e) => setNewsForm({ ...newsForm, content: e.target.value })}
-                            minRows={10}
-                            classNames={{
-                              inputWrapper: "bg-gray-50 border border-gray-200",
-                            }}
+                            rows={12}
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-edf-blue/20 focus:border-edf-blue resize-y"
                           />
                         </div>
                       </div>
@@ -1152,14 +1146,12 @@ export default function AdminPage() {
                           <label className="block text-sm font-medium text-gray-700 mb-2">
                             Description
                           </label>
-                          <Textarea
+                          <textarea
                             placeholder="Description du partenaire"
                             value={partnershipForm.description}
                             onChange={(e) => setPartnershipForm({ ...partnershipForm, description: e.target.value })}
-                            minRows={4}
-                            classNames={{
-                              inputWrapper: "bg-gray-50 border border-gray-200",
-                            }}
+                            rows={5}
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-edf-blue/20 focus:border-edf-blue resize-y"
                           />
                         </div>
 
