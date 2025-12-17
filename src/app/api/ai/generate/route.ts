@@ -81,9 +81,9 @@ export async function POST(request: NextRequest) {
         ? `Écris une actualité (environ ${maxLength} caractères) sur : ${prompt}`
         : `Écris une actualité sur : ${prompt}`;
 
-    // Appeler Claude
+    // Appeler Claude Opus 4.5
     const message = await anthropic.messages.create({
-      model: "claude-sonnet-4-5", // Modèle le plus récent disponible
+      model: "claude-opus-4-5-20251101",
       max_tokens: 1000,
       temperature: 0.7,
       system: SYSTEM_PROMPTS[type],
