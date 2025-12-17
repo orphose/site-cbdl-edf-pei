@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
 import {
   Card,
   CardBody,
@@ -25,6 +24,7 @@ import {
   ModalFooter,
   useDisclosure,
   Chip,
+  Progress,
 } from "@nextui-org/react";
 import {
   Newspaper,
@@ -36,15 +36,22 @@ import {
   Eye,
   EyeOff,
   Lock,
-  LayoutDashboard,
   ArrowLeft,
   Mail,
   AlertCircle,
+  Upload,
+  X,
+  Image as ImageIcon,
+  Check,
 } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 import type { News, Partnership } from "@/lib/database.types";
 import type { User } from "@supabase/supabase-js";
 import Link from "next/link";
+import Image from "next/image";
+
+// URL de base pour le storage Supabase
+const STORAGE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL + "/storage/v1/object/public";
 
 /**
  * Page d'administration du CMS avec Supabase Auth
@@ -78,6 +85,12 @@ export default function AdminPage() {
     is_published: false,
   });
 
+  // États upload image
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   // États du formulaire partenariat
   const [editingPartnership, setEditingPartnership] = useState<Partnership | null>(null);
   const [partnershipForm, setPartnershipForm] = useState({
@@ -90,6 +103,9 @@ export default function AdminPage() {
     display_order: 0,
     is_active: true,
   });
+
+  // États sauvegarde
+  const [saving, setSaving] = useState(false);
 
   // Modals
   const newsModal = useDisclosure();
@@ -107,7 +123,6 @@ export default function AdminPage() {
 
     checkUser();
 
-    // Écouter les changements d'authentification
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
     });
@@ -115,7 +130,7 @@ export default function AdminPage() {
     return () => subscription.unsubscribe();
   }, [supabase.auth]);
 
-  // Chargement des données quand l'utilisateur est connecté
+  // Chargement des données
   useEffect(() => {
     if (user) {
       loadData();
@@ -124,13 +139,13 @@ export default function AdminPage() {
 
   // Fonction de connexion
   const handleLogin = async () => {
+    console.assert(email.length > 0, "Email requis");
+    console.assert(password.length > 0, "Mot de passe requis");
+
     setAuthLoading(true);
     setAuthError("");
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
       setAuthError(error.message === "Invalid login credentials" 
@@ -149,25 +164,21 @@ export default function AdminPage() {
 
   // Chargement des données
   const loadData = async () => {
-    try {
-      const { data: newsData } = await supabase
-        .from("news")
-        .select("*")
-        .order("created_at", { ascending: false });
+    const { data: newsData } = await supabase
+      .from("news")
+      .select("*")
+      .order("created_at", { ascending: false });
 
-      const { data: partnershipsData } = await supabase
-        .from("partnerships")
-        .select("*")
-        .order("display_order", { ascending: true });
+    const { data: partnershipsData } = await supabase
+      .from("partnerships")
+      .select("*")
+      .order("display_order", { ascending: true });
 
-      setNews(newsData || []);
-      setPartnerships(partnershipsData || []);
-    } catch (error) {
-      console.error("Erreur chargement données:", error);
-    }
+    setNews(newsData || []);
+    setPartnerships(partnershipsData || []);
   };
 
-  // Générer un slug à partir du titre
+  // Générer un slug
   const generateSlug = (title: string): string => {
     return title
       .toLowerCase()
@@ -175,6 +186,56 @@ export default function AdminPage() {
       .replace(/[\u0300-\u036f]/g, "")
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "");
+  };
+
+  // Upload d'image
+  const handleImageUpload = async (file: File) => {
+    console.assert(file, "Fichier requis");
+    console.assert(file.type.startsWith("image/"), "Le fichier doit être une image");
+
+    setUploading(true);
+    setUploadProgress(0);
+
+    try {
+      // Générer un nom unique
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+
+      // Simuler la progression
+      const progressInterval = setInterval(() => {
+        setUploadProgress(prev => Math.min(prev + 10, 90));
+      }, 100);
+
+      // Upload vers Supabase Storage
+      const { error } = await supabase.storage
+        .from("actualites")
+        .upload(fileName, file, { cacheControl: "3600", upsert: false });
+
+      clearInterval(progressInterval);
+
+      if (error) throw error;
+
+      setUploadProgress(100);
+      setNewsForm(prev => ({ ...prev, image_url: fileName }));
+      setImagePreview(URL.createObjectURL(file));
+
+      // Reset après succès
+      setTimeout(() => setUploadProgress(0), 1000);
+    } catch (error) {
+      console.error("Erreur upload:", error);
+      setUploadProgress(0);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  // Supprimer image
+  const handleRemoveImage = async () => {
+    if (newsForm.image_url && !editingNews) {
+      await supabase.storage.from("actualites").remove([newsForm.image_url]);
+    }
+    setNewsForm(prev => ({ ...prev, image_url: "" }));
+    setImagePreview(null);
   };
 
   // Ouvrir modal création actualité
@@ -188,6 +249,7 @@ export default function AdminPage() {
       image_url: "",
       is_published: false,
     });
+    setImagePreview(null);
     newsModal.onOpen();
   };
 
@@ -202,11 +264,16 @@ export default function AdminPage() {
       image_url: item.image_url || "",
       is_published: item.is_published,
     });
+    setImagePreview(item.image_url ? `${STORAGE_URL}/actualites/${item.image_url}` : null);
     newsModal.onOpen();
   };
 
   // Sauvegarder actualité
   const saveNews = async () => {
+    console.assert(newsForm.title.length > 0, "Titre requis");
+
+    setSaving(true);
+
     try {
       const newsData = {
         title: newsForm.title,
@@ -219,10 +286,7 @@ export default function AdminPage() {
       };
 
       if (editingNews) {
-        const { error } = await supabase
-          .from("news")
-          .update(newsData)
-          .eq("id", editingNews.id);
+        const { error } = await supabase.from("news").update(newsData).eq("id", editingNews.id);
         if (error) throw error;
       } else {
         const { error } = await supabase.from("news").insert(newsData);
@@ -232,7 +296,9 @@ export default function AdminPage() {
       newsModal.onClose();
       loadData();
     } catch (error) {
-      console.error("Erreur sauvegarde actualité:", error);
+      console.error("Erreur sauvegarde:", error);
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -270,6 +336,10 @@ export default function AdminPage() {
 
   // Sauvegarder partenariat
   const savePartnership = async () => {
+    console.assert(partnershipForm.name.length > 0, "Nom requis");
+
+    setSaving(true);
+
     try {
       const partnershipData = {
         name: partnershipForm.name,
@@ -283,10 +353,7 @@ export default function AdminPage() {
       };
 
       if (editingPartnership) {
-        const { error } = await supabase
-          .from("partnerships")
-          .update(partnershipData)
-          .eq("id", editingPartnership.id);
+        const { error } = await supabase.from("partnerships").update(partnershipData).eq("id", editingPartnership.id);
         if (error) throw error;
       } else {
         const { error } = await supabase.from("partnerships").insert(partnershipData);
@@ -296,7 +363,9 @@ export default function AdminPage() {
       partnershipModal.onClose();
       loadData();
     } catch (error) {
-      console.error("Erreur sauvegarde partenariat:", error);
+      console.error("Erreur sauvegarde:", error);
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -312,6 +381,11 @@ export default function AdminPage() {
 
     try {
       if (deleteTarget.type === "news") {
+        // Supprimer l'image associée
+        const newsItem = news.find(n => n.id === deleteTarget.id);
+        if (newsItem?.image_url) {
+          await supabase.storage.from("actualites").remove([newsItem.image_url]);
+        }
         await supabase.from("news").delete().eq("id", deleteTarget.id);
       } else {
         await supabase.from("partnerships").delete().eq("id", deleteTarget.id);
@@ -338,15 +412,12 @@ export default function AdminPage() {
   if (!user) {
     return (
       <div className="min-h-screen bg-white relative overflow-hidden">
-        {/* Fond décoratif */}
         <div className="absolute inset-0">
-          <div className="absolute top-0 left-0 right-0 h-2 bg-edf-blue" />
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-edf-blue via-edf-orange to-edf-green" />
           <div className="absolute top-20 right-0 w-96 h-96 bg-edf-blue/5 rounded-full blur-3xl" />
           <div className="absolute bottom-20 left-0 w-80 h-80 bg-edf-orange/5 rounded-full blur-3xl" />
-          <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-edf-green/5 rounded-full blur-3xl" />
         </div>
 
-        {/* Header */}
         <header className="relative z-10 p-6">
           <Link href="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-edf-blue transition-colors">
             <ArrowLeft className="w-4 h-4" />
@@ -354,19 +425,11 @@ export default function AdminPage() {
           </Link>
         </header>
 
-        {/* Formulaire de connexion */}
         <div className="relative z-10 flex items-center justify-center min-h-[calc(100vh-120px)] px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="w-full max-w-md"
-          >
-            {/* Formulaire */}
+          <div className="w-full max-w-md">
             <Card className="shadow-xl border border-gray-100">
               <CardBody className="p-8">
-                <div className="space-y-5">
-                  {/* Message d'erreur */}
+                <div className="space-y-6">
                   {authError && (
                     <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
                       <AlertCircle className="w-4 h-4 flex-shrink-0" />
@@ -374,64 +437,34 @@ export default function AdminPage() {
                     </div>
                   )}
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Email
-                    </label>
-                    <Input
-                      type="email"
-                      placeholder="admin@exemple.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      startContent={<Mail className="w-4 h-4 text-gray-400" />}
-                      size="lg"
-                      classNames={{
-                        input: "text-base",
-                        inputWrapper: "h-14 bg-gray-50 border-gray-200 hover:bg-gray-100 focus-within:bg-white",
-                      }}
-                    />
-                  </div>
+                  <Input
+                    label="Email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    startContent={<Mail className="w-4 h-4 text-gray-400" />}
+                  />
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Mot de passe
-                    </label>
-                    <Input
-                      type="password"
-                      placeholder="••••••••"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && handleLogin()}
-                      startContent={<Lock className="w-4 h-4 text-gray-400" />}
-                      size="lg"
-                      classNames={{
-                        input: "text-base",
-                        inputWrapper: "h-14 bg-gray-50 border-gray-200 hover:bg-gray-100 focus-within:bg-white",
-                      }}
-                    />
-                  </div>
+                  <Input
+                    label="Mot de passe"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+                    startContent={<Lock className="w-4 h-4 text-gray-400" />}
+                  />
 
                   <Button
                     onPress={handleLogin}
                     isLoading={authLoading}
-                    className="w-full h-14 bg-edf-blue hover:bg-edf-blue-dark text-white font-semibold text-base transition-all"
-                    radius="md"
+                    className="w-full h-12 bg-edf-blue hover:bg-edf-blue/90 text-white font-semibold"
                   >
-                    {!authLoading && <LayoutDashboard className="w-5 h-5 mr-2" />}
-                    Accéder au tableau de bord
+                    Se connecter
                   </Button>
-
-                  <p className="text-center text-xs text-gray-400">
-                    Accès réservé aux administrateurs autorisés
-                  </p>
                 </div>
               </CardBody>
             </Card>
-
-            <p className="text-center text-xs text-gray-400 mt-8">
-              © {new Date().getFullYear()} EDF PEI - Tous droits réservés
-            </p>
-          </motion.div>
+          </div>
         </div>
       </div>
     );
@@ -443,25 +476,18 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white sticky top-0 z-50">
+      <header className="bg-white sticky top-0 z-50 border-b border-gray-100">
         <div className="h-1 bg-gradient-to-r from-edf-blue via-edf-orange to-edf-green" />
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
-              <div>
-                <h1 className="text-lg font-bold text-gray-900">Tableau de bord</h1>
-                <p className="text-xs text-gray-500">{user.email}</p>
-              </div>
+            <div>
+              <h1 className="text-lg font-bold text-gray-900">Administration</h1>
+              <p className="text-xs text-gray-500">{user.email}</p>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <Link href="/">
-                <Button
-                  variant="light"
-                  size="sm"
-                  startContent={<Eye className="w-4 h-4" />}
-                  className="text-gray-600"
-                >
+                <Button variant="light" size="sm" startContent={<Eye className="w-4 h-4" />}>
                   Voir le site
                 </Button>
               </Link>
@@ -500,9 +526,7 @@ export default function AdminPage() {
                 <Eye className="w-6 h-6 text-edf-orange" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-gray-900">
-                  {news.filter(n => n.is_published).length}
-                </p>
+                <p className="text-2xl font-bold text-gray-900">{news.filter(n => n.is_published).length}</p>
                 <p className="text-sm text-gray-500">Publiées</p>
               </div>
             </CardBody>
@@ -544,14 +568,14 @@ export default function AdminPage() {
               </div>
             }
           >
-            <Card className="mt-6 border border-gray-100 shadow-sm">
+            <Card className="mt-6 border border-gray-100">
               <CardHeader className="flex justify-between items-center px-6 py-4 border-b border-gray-100">
                 <div>
                   <h2 className="text-lg font-bold text-gray-900">Gestion des actualités</h2>
                   <p className="text-sm text-gray-500">Créez et gérez vos actualités</p>
                 </div>
                 <Button
-                  className="bg-edf-blue text-white font-medium"
+                  className="bg-edf-blue text-white"
                   startContent={<Plus className="w-4 h-4" />}
                   onPress={openCreateNews}
                 >
@@ -559,14 +583,9 @@ export default function AdminPage() {
                 </Button>
               </CardHeader>
               <CardBody className="p-0">
-                <Table 
-                  aria-label="Liste des actualités"
-                  classNames={{
-                    th: "bg-gray-50 text-gray-600 font-semibold",
-                    td: "py-4",
-                  }}
-                >
+                <Table aria-label="Liste des actualités" classNames={{ th: "bg-gray-50 text-gray-600 font-semibold" }}>
                   <TableHeader>
+                    <TableColumn>IMAGE</TableColumn>
                     <TableColumn>TITRE</TableColumn>
                     <TableColumn>STATUT</TableColumn>
                     <TableColumn>DATE</TableColumn>
@@ -576,10 +595,24 @@ export default function AdminPage() {
                     {news.map((item) => (
                       <TableRow key={item.id} className="hover:bg-gray-50">
                         <TableCell>
-                          <div className="max-w-sm">
-                            <p className="font-medium text-gray-900 truncate">{item.title}</p>
-                            <p className="text-xs text-gray-400 truncate">/actualites/{item.slug}</p>
+                          <div className="w-16 h-12 rounded-lg overflow-hidden bg-gray-100">
+                            {item.image_url ? (
+                              <Image
+                                src={`${STORAGE_URL}/actualites/${item.image_url}`}
+                                alt={item.title}
+                                width={64}
+                                height={48}
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center">
+                                <ImageIcon className="w-5 h-5 text-gray-400" />
+                              </div>
+                            )}
                           </div>
+                        </TableCell>
+                        <TableCell>
+                          <p className="font-medium text-gray-900 truncate max-w-xs">{item.title}</p>
                         </TableCell>
                         <TableCell>
                           {item.is_published ? (
@@ -593,30 +626,14 @@ export default function AdminPage() {
                           )}
                         </TableCell>
                         <TableCell className="text-sm text-gray-500">
-                          {new Date(item.created_at).toLocaleDateString("fr-FR", {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          })}
+                          {new Date(item.created_at).toLocaleDateString("fr-FR")}
                         </TableCell>
                         <TableCell>
                           <div className="flex gap-1">
-                            <Button
-                              size="sm"
-                              variant="light"
-                              isIconOnly
-                              onPress={() => openEditNews(item)}
-                              className="text-gray-600 hover:text-edf-blue"
-                            >
+                            <Button size="sm" variant="light" isIconOnly onPress={() => openEditNews(item)}>
                               <Edit className="w-4 h-4" />
                             </Button>
-                            <Button
-                              size="sm"
-                              variant="light"
-                              isIconOnly
-                              onPress={() => confirmDelete("news", item.id)}
-                              className="text-gray-600 hover:text-red-500"
-                            >
+                            <Button size="sm" variant="light" isIconOnly color="danger" onPress={() => confirmDelete("news", item.id)}>
                               <Trash2 className="w-4 h-4" />
                             </Button>
                           </div>
@@ -640,14 +657,14 @@ export default function AdminPage() {
               </div>
             }
           >
-            <Card className="mt-6 border border-gray-100 shadow-sm">
+            <Card className="mt-6 border border-gray-100">
               <CardHeader className="flex justify-between items-center px-6 py-4 border-b border-gray-100">
                 <div>
                   <h2 className="text-lg font-bold text-gray-900">Gestion des partenariats</h2>
                   <p className="text-sm text-gray-500">Gérez vos partenaires</p>
                 </div>
                 <Button
-                  className="bg-edf-blue text-white font-medium"
+                  className="bg-edf-blue text-white"
                   startContent={<Plus className="w-4 h-4" />}
                   onPress={openCreatePartnership}
                 >
@@ -655,13 +672,7 @@ export default function AdminPage() {
                 </Button>
               </CardHeader>
               <CardBody className="p-0">
-                <Table 
-                  aria-label="Liste des partenariats"
-                  classNames={{
-                    th: "bg-gray-50 text-gray-600 font-semibold",
-                    td: "py-4",
-                  }}
-                >
+                <Table aria-label="Liste des partenariats" classNames={{ th: "bg-gray-50 text-gray-600 font-semibold" }}>
                   <TableHeader>
                     <TableColumn>NOM</TableColumn>
                     <TableColumn>CATÉGORIE</TableColumn>
@@ -692,22 +703,10 @@ export default function AdminPage() {
                         </TableCell>
                         <TableCell>
                           <div className="flex gap-1">
-                            <Button
-                              size="sm"
-                              variant="light"
-                              isIconOnly
-                              onPress={() => openEditPartnership(item)}
-                              className="text-gray-600 hover:text-edf-blue"
-                            >
+                            <Button size="sm" variant="light" isIconOnly onPress={() => openEditPartnership(item)}>
                               <Edit className="w-4 h-4" />
                             </Button>
-                            <Button
-                              size="sm"
-                              variant="light"
-                              isIconOnly
-                              onPress={() => confirmDelete("partnership", item.id)}
-                              className="text-gray-600 hover:text-red-500"
-                            >
+                            <Button size="sm" variant="light" isIconOnly color="danger" onPress={() => confirmDelete("partnership", item.id)}>
                               <Trash2 className="w-4 h-4" />
                             </Button>
                           </div>
@@ -722,27 +721,113 @@ export default function AdminPage() {
         </Tabs>
       </div>
 
-      {/* Modal Actualité */}
+      {/* Modal Actualité - Design EDF */}
       <Modal 
         isOpen={newsModal.isOpen} 
         onClose={newsModal.onClose} 
-        size="lg"
-        backdrop="opaque"
-        scrollBehavior="inside"
+        size="2xl"
+        backdrop="blur"
         placement="center"
-        classNames={{
-          backdrop: "bg-black/50",
-          base: "bg-white max-h-[85vh]",
-        }}
+        scrollBehavior="inside"
       >
         <ModalContent>
-          <ModalHeader>
-            {editingNews ? "Modifier l'actualité" : "Nouvelle actualité"}
+          <ModalHeader className="flex flex-col gap-1 border-b border-gray-100 pb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-edf-blue flex items-center justify-center">
+                <Newspaper className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-gray-900">
+                  {editingNews ? "Modifier l'actualité" : "Nouvelle actualité"}
+                </h3>
+                <p className="text-sm text-gray-500 font-normal">
+                  {editingNews ? "Modifiez les informations ci-dessous" : "Remplissez les informations ci-dessous"}
+                </p>
+              </div>
+            </div>
           </ModalHeader>
-          <ModalBody>
-            <div className="flex flex-col gap-3">
+
+          <ModalBody className="py-6">
+            <div className="space-y-6">
+              {/* Zone d'upload image */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Image de couverture
+                </label>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleImageUpload(file);
+                  }}
+                />
+                
+                {imagePreview ? (
+                  <div className="relative rounded-xl overflow-hidden border border-gray-200 bg-gray-50">
+                    <Image
+                      src={imagePreview}
+                      alt="Prévisualisation"
+                      width={600}
+                      height={300}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="absolute top-2 right-2 flex gap-2">
+                      <Button
+                        size="sm"
+                        isIconOnly
+                        className="bg-white/90 hover:bg-white"
+                        onPress={() => fileInputRef.current?.click()}
+                      >
+                        <Edit className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        isIconOnly
+                        color="danger"
+                        className="bg-white/90 hover:bg-red-50"
+                        onPress={handleRemoveImage}
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    {uploadProgress > 0 && uploadProgress < 100 && (
+                      <div className="absolute bottom-0 left-0 right-0 p-2 bg-black/50">
+                        <Progress value={uploadProgress} size="sm" color="primary" />
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => !uploading && fileInputRef.current?.click()}
+                    className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-edf-blue hover:bg-edf-blue/5 transition-all cursor-pointer"
+                  >
+                    {uploading ? (
+                      <div className="space-y-3">
+                        <div className="w-12 h-12 mx-auto rounded-full bg-edf-blue/10 flex items-center justify-center">
+                          <Upload className="w-6 h-6 text-edf-blue animate-pulse" />
+                        </div>
+                        <Progress value={uploadProgress} size="sm" color="primary" className="max-w-xs mx-auto" />
+                        <p className="text-sm text-gray-500">Upload en cours...</p>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="w-12 h-12 mx-auto rounded-full bg-gray-100 flex items-center justify-center mb-3">
+                          <Upload className="w-6 h-6 text-gray-400" />
+                        </div>
+                        <p className="text-sm font-medium text-gray-700">Cliquez pour uploader une image</p>
+                        <p className="text-xs text-gray-500 mt-1">PNG, JPG jusqu&apos;à 5MB</p>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Titre */}
               <Input
-                label="Titre"
+                label="Titre de l'actualité"
                 value={newsForm.title}
                 onChange={(e) => {
                   setNewsForm({
@@ -752,43 +837,84 @@ export default function AdminPage() {
                   });
                 }}
                 isRequired
+                variant="bordered"
+                classNames={{ label: "text-gray-700" }}
               />
+
+              {/* Slug */}
               <Input
-                label="Slug (URL)"
+                label="URL (slug)"
                 value={newsForm.slug}
                 onChange={(e) => setNewsForm({ ...newsForm, slug: e.target.value })}
+                variant="bordered"
+                description={`Accessible sur : /actualites/${newsForm.slug || "..."}`}
+                classNames={{ label: "text-gray-700" }}
               />
+
+              {/* Extrait */}
               <Textarea
-                label="Extrait"
+                label="Extrait (résumé)"
                 value={newsForm.excerpt}
                 onChange={(e) => setNewsForm({ ...newsForm, excerpt: e.target.value })}
+                variant="bordered"
                 minRows={2}
+                maxRows={3}
+                classNames={{ label: "text-gray-700" }}
               />
+
+              {/* Contenu */}
               <Textarea
-                label="Contenu"
+                label="Contenu complet"
                 value={newsForm.content}
                 onChange={(e) => setNewsForm({ ...newsForm, content: e.target.value })}
-                minRows={3}
+                variant="bordered"
+                minRows={4}
+                maxRows={8}
+                classNames={{ label: "text-gray-700" }}
               />
-              <Input
-                label="Nom du fichier image"
-                value={newsForm.image_url}
-                onChange={(e) => setNewsForm({ ...newsForm, image_url: e.target.value })}
-              />
-              <div className="flex items-center justify-between py-2">
-                <span className="text-sm">Publier l&apos;actualité</span>
+
+              {/* Switch publication */}
+              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100">
+                <div className="flex items-center gap-3">
+                  {newsForm.is_published ? (
+                    <div className="w-10 h-10 rounded-lg bg-edf-green/10 flex items-center justify-center">
+                      <Check className="w-5 h-5 text-edf-green" />
+                    </div>
+                  ) : (
+                    <div className="w-10 h-10 rounded-lg bg-gray-200 flex items-center justify-center">
+                      <EyeOff className="w-5 h-5 text-gray-500" />
+                    </div>
+                  )}
+                  <div>
+                    <p className="font-medium text-gray-900">
+                      {newsForm.is_published ? "Publié" : "Brouillon"}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      {newsForm.is_published ? "Visible sur le site" : "Non visible sur le site"}
+                    </p>
+                  </div>
+                </div>
                 <Switch
                   isSelected={newsForm.is_published}
                   onValueChange={(value) => setNewsForm({ ...newsForm, is_published: value })}
                   color="success"
+                  size="lg"
                 />
               </div>
             </div>
           </ModalBody>
-          <ModalFooter>
-            <Button variant="light" onPress={newsModal.onClose}>Annuler</Button>
-            <Button className="bg-edf-blue text-white" onPress={saveNews}>
-              {editingNews ? "Enregistrer" : "Créer"}
+
+          <ModalFooter className="border-t border-gray-100 pt-4">
+            <Button variant="light" onPress={newsModal.onClose}>
+              Annuler
+            </Button>
+            <Button 
+              className="bg-edf-blue text-white" 
+              onPress={saveNews}
+              isLoading={saving}
+              isDisabled={!newsForm.title}
+            >
+              {editingNews ? "Enregistrer" : "Créer l'actualité"}
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -798,23 +924,31 @@ export default function AdminPage() {
       <Modal 
         isOpen={partnershipModal.isOpen} 
         onClose={partnershipModal.onClose} 
-        size="md"
-        backdrop="opaque"
-        scrollBehavior="inside"
+        size="lg"
+        backdrop="blur"
         placement="center"
-        classNames={{
-          backdrop: "bg-black/50",
-          base: "bg-white max-h-[85vh]",
-        }}
       >
         <ModalContent>
-          <ModalHeader>
-            {editingPartnership ? "Modifier le partenaire" : "Nouveau partenaire"}
+          <ModalHeader className="border-b border-gray-100 pb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-edf-green flex items-center justify-center">
+                <Users className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-gray-900">
+                  {editingPartnership ? "Modifier le partenaire" : "Nouveau partenaire"}
+                </h3>
+                <p className="text-sm text-gray-500 font-normal">
+                  {editingPartnership ? "Modifiez les informations" : "Ajoutez un nouveau partenaire"}
+                </p>
+              </div>
+            </div>
           </ModalHeader>
-          <ModalBody>
-            <div className="flex flex-col gap-3">
+
+          <ModalBody className="py-6">
+            <div className="space-y-4">
               <Input
-                label="Nom"
+                label="Nom du partenaire"
                 value={partnershipForm.name}
                 onChange={(e) => {
                   setPartnershipForm({
@@ -824,28 +958,38 @@ export default function AdminPage() {
                   });
                 }}
                 isRequired
+                variant="bordered"
               />
+
               <Textarea
                 label="Description"
                 value={partnershipForm.description}
                 onChange={(e) => setPartnershipForm({ ...partnershipForm, description: e.target.value })}
+                variant="bordered"
                 minRows={2}
               />
-              <div className="grid grid-cols-2 gap-3">
+
+              <div className="grid grid-cols-2 gap-4">
                 <Input
                   label="Catégorie"
                   value={partnershipForm.category}
                   onChange={(e) => setPartnershipForm({ ...partnershipForm, category: e.target.value })}
+                  variant="bordered"
                 />
                 <Input
                   type="number"
-                  label="Ordre"
+                  label="Ordre d'affichage"
                   value={String(partnershipForm.display_order)}
                   onChange={(e) => setPartnershipForm({ ...partnershipForm, display_order: parseInt(e.target.value) || 0 })}
+                  variant="bordered"
                 />
               </div>
-              <div className="flex items-center justify-between py-2">
-                <span className="text-sm">Partenaire actif</span>
+
+              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                <div>
+                  <p className="font-medium text-gray-900">Partenaire actif</p>
+                  <p className="text-sm text-gray-500">Visible sur le site</p>
+                </div>
                 <Switch
                   isSelected={partnershipForm.is_active}
                   onValueChange={(value) => setPartnershipForm({ ...partnershipForm, is_active: value })}
@@ -854,9 +998,15 @@ export default function AdminPage() {
               </div>
             </div>
           </ModalBody>
-          <ModalFooter>
+
+          <ModalFooter className="border-t border-gray-100 pt-4">
             <Button variant="light" onPress={partnershipModal.onClose}>Annuler</Button>
-            <Button className="bg-edf-blue text-white" onPress={savePartnership}>
+            <Button 
+              className="bg-edf-blue text-white" 
+              onPress={savePartnership}
+              isLoading={saving}
+              isDisabled={!partnershipForm.name}
+            >
               {editingPartnership ? "Enregistrer" : "Créer"}
             </Button>
           </ModalFooter>
@@ -867,20 +1017,21 @@ export default function AdminPage() {
       <Modal 
         isOpen={deleteModal.isOpen} 
         onClose={deleteModal.onClose}
-        backdrop="opaque"
+        backdrop="blur"
         placement="center"
-        classNames={{
-          backdrop: "bg-black/50",
-          base: "bg-white",
-        }}
+        size="sm"
       >
         <ModalContent>
-          <ModalHeader className="text-red-600">
-            Confirmer la suppression
+          <ModalHeader className="pb-0">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+                <Trash2 className="w-5 h-5 text-red-600" />
+              </div>
+              <span className="text-lg font-bold text-gray-900">Supprimer ?</span>
+            </div>
           </ModalHeader>
           <ModalBody>
-            <p>Êtes-vous sûr de vouloir supprimer cet élément ?</p>
-            <p className="text-sm text-gray-500">Cette action est irréversible.</p>
+            <p className="text-gray-600">Cette action est irréversible. L&apos;élément sera définitivement supprimé.</p>
           </ModalBody>
           <ModalFooter>
             <Button variant="light" onPress={deleteModal.onClose}>Annuler</Button>
