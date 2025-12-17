@@ -38,6 +38,8 @@ import {
   Image as ImageIcon,
   Save,
   Check,
+  Sparkles,
+  Wand2,
 } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 import type { News, Partnership } from "@/lib/database.types";
@@ -106,6 +108,60 @@ export default function AdminPage() {
   // États de sauvegarde
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+
+  // États assistant IA
+  const [aiMode, setAiMode] = useState(false);
+  const [aiPrompt, setAiPrompt] = useState("");
+  const [aiGenerating, setAiGenerating] = useState(false);
+  const [aiError, setAiError] = useState("");
+
+  // Fonction pour générer du contenu avec l'IA
+  const generateWithAI = async (type: "news" | "partnership", targetField: "content" | "excerpt" | "description") => {
+    if (!aiPrompt.trim()) {
+      setAiError("Décrivez ce que vous souhaitez rédiger");
+      return;
+    }
+
+    setAiGenerating(true);
+    setAiError("");
+
+    try {
+      const response = await fetch("/api/ai/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type,
+          prompt: aiPrompt,
+          maxLength: type === "partnership" ? 280 : undefined,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Erreur lors de la génération");
+      }
+
+      // Mettre à jour le champ correspondant
+      if (type === "news") {
+        if (targetField === "content") {
+          setNewsForm({ ...newsForm, content: data.content });
+        } else if (targetField === "excerpt") {
+          setNewsForm({ ...newsForm, excerpt: data.content });
+        }
+      } else {
+        setPartnershipForm({ ...partnershipForm, description: data.content });
+      }
+
+      setAiPrompt("");
+      setAiMode(false);
+    } catch (error) {
+      console.error("Erreur IA:", error);
+      setAiError(error instanceof Error ? error.message : "Erreur de génération");
+    } finally {
+      setAiGenerating(false);
+    }
+  };
 
   // Vérification de l'utilisateur au montage
   useEffect(() => {
@@ -871,16 +927,83 @@ export default function AdminPage() {
                         </div>
                         
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Contenu
-                          </label>
-                          <textarea
-                            placeholder="Contenu complet de l'actualité"
-                            value={newsForm.content}
-                            onChange={(e) => setNewsForm({ ...newsForm, content: e.target.value })}
-                            rows={12}
-                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-edf-blue/20 focus:border-edf-blue resize-y"
-                          />
+                          <div className="flex items-center gap-3 mb-2">
+                            <label className="block text-sm font-medium text-gray-700">
+                              Contenu
+                            </label>
+                            {/* Toggle Assistant IA */}
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setAiMode(!aiMode);
+                                setAiPrompt("");
+                                setAiError("");
+                              }}
+                              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
+                                aiMode
+                                  ? "bg-gradient-to-r from-purple-500 to-indigo-500 text-white"
+                                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                              }`}
+                            >
+                              <Sparkles className="w-3.5 h-3.5" />
+                              Assistant IA
+                            </button>
+                          </div>
+                          
+                          {/* Mode Assistant IA pour actualités */}
+                          {aiMode ? (
+                            <div className="space-y-3">
+                              <div className="p-4 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl border border-purple-100">
+                                <p className="text-sm text-purple-800 mb-3 flex items-center gap-2">
+                                  <Wand2 className="w-4 h-4" />
+                                  Décrivez le sujet, l&apos;IA rédigera l&apos;actualité
+                                </p>
+                                <textarea
+                                  placeholder="Ex: Inauguration de la centrale prévue en 2025 avec présence du préfet, mise en service progressive, création de 50 emplois locaux..."
+                                  value={aiPrompt}
+                                  onChange={(e) => setAiPrompt(e.target.value)}
+                                  rows={4}
+                                  className="w-full px-4 py-3 bg-white border border-purple-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-300 resize-none"
+                                />
+                                {aiError && (
+                                  <p className="text-xs text-red-500 mt-2 flex items-center gap-1">
+                                    <AlertCircle className="w-3 h-3" />
+                                    {aiError}
+                                  </p>
+                                )}
+                                <div className="flex justify-end gap-2 mt-3">
+                                  <Button
+                                    size="sm"
+                                    variant="flat"
+                                    onPress={() => {
+                                      setAiMode(false);
+                                      setAiPrompt("");
+                                      setAiError("");
+                                    }}
+                                  >
+                                    Annuler
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white"
+                                    startContent={aiGenerating ? null : <Sparkles className="w-4 h-4" />}
+                                    isLoading={aiGenerating}
+                                    onPress={() => generateWithAI("news", "content")}
+                                  >
+                                    {aiGenerating ? "Génération..." : "Générer"}
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          ) : (
+                            <textarea
+                              placeholder="Contenu complet de l'actualité"
+                              value={newsForm.content}
+                              onChange={(e) => setNewsForm({ ...newsForm, content: e.target.value })}
+                              rows={12}
+                              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-edf-blue/20 focus:border-edf-blue resize-y"
+                            />
+                          )}
                         </div>
                       </div>
 
@@ -1164,28 +1287,97 @@ export default function AdminPage() {
                         {/* Description - max 280 caractères (5 lignes) */}
                         <div>
                           <div className="flex justify-between items-center mb-2">
-                            <label className="block text-sm font-medium text-gray-700">
-                              Description
-                            </label>
+                            <div className="flex items-center gap-3">
+                              <label className="block text-sm font-medium text-gray-700">
+                                Description
+                              </label>
+                              {/* Toggle Assistant IA */}
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setAiMode(!aiMode);
+                                  setAiPrompt("");
+                                  setAiError("");
+                                }}
+                                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
+                                  aiMode
+                                    ? "bg-gradient-to-r from-purple-500 to-indigo-500 text-white"
+                                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                                }`}
+                              >
+                                <Sparkles className="w-3.5 h-3.5" />
+                                Assistant IA
+                              </button>
+                            </div>
                             <span className={`text-xs ${partnershipForm.description.length > 280 ? 'text-red-500 font-medium' : 'text-gray-400'}`}>
                               {partnershipForm.description.length}/280
                             </span>
                           </div>
-                          <textarea
-                            placeholder="Décrivez le partenariat et son impact..."
-                            value={partnershipForm.description}
-                            onChange={(e) => {
-                              if (e.target.value.length <= 280) {
-                                setPartnershipForm({ ...partnershipForm, description: e.target.value });
-                              }
-                            }}
-                            rows={5}
-                            className={`w-full px-4 py-3 bg-gray-50 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-edf-blue/20 focus:border-edf-blue resize-none ${
-                              partnershipForm.description.length > 250 ? 'border-orange-300' : 'border-gray-200'
-                            }`}
-                          />
-                          {partnershipForm.description.length > 250 && (
-                            <p className="text-xs text-orange-500 mt-1">Approche de la limite ({280 - partnershipForm.description.length} caractères restants)</p>
+                          
+                          {/* Mode Assistant IA */}
+                          {aiMode ? (
+                            <div className="space-y-3">
+                              <div className="p-4 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl border border-purple-100">
+                                <p className="text-sm text-purple-800 mb-3 flex items-center gap-2">
+                                  <Wand2 className="w-4 h-4" />
+                                  Décrivez brièvement le partenariat, l&apos;IA rédigera la description
+                                </p>
+                                <textarea
+                                  placeholder="Ex: Partenariat avec la miellerie locale pour installer des ruches sur le site et favoriser la biodiversité..."
+                                  value={aiPrompt}
+                                  onChange={(e) => setAiPrompt(e.target.value)}
+                                  rows={3}
+                                  className="w-full px-4 py-3 bg-white border border-purple-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-300 resize-none"
+                                />
+                                {aiError && (
+                                  <p className="text-xs text-red-500 mt-2 flex items-center gap-1">
+                                    <AlertCircle className="w-3 h-3" />
+                                    {aiError}
+                                  </p>
+                                )}
+                                <div className="flex justify-end gap-2 mt-3">
+                                  <Button
+                                    size="sm"
+                                    variant="flat"
+                                    onPress={() => {
+                                      setAiMode(false);
+                                      setAiPrompt("");
+                                      setAiError("");
+                                    }}
+                                  >
+                                    Annuler
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white"
+                                    startContent={aiGenerating ? null : <Sparkles className="w-4 h-4" />}
+                                    isLoading={aiGenerating}
+                                    onPress={() => generateWithAI("partnership", "description")}
+                                  >
+                                    {aiGenerating ? "Génération..." : "Générer"}
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          ) : (
+                            <>
+                              <textarea
+                                placeholder="Décrivez le partenariat et son impact..."
+                                value={partnershipForm.description}
+                                onChange={(e) => {
+                                  if (e.target.value.length <= 280) {
+                                    setPartnershipForm({ ...partnershipForm, description: e.target.value });
+                                  }
+                                }}
+                                rows={5}
+                                className={`w-full px-4 py-3 bg-gray-50 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-edf-blue/20 focus:border-edf-blue resize-none ${
+                                  partnershipForm.description.length > 250 ? 'border-orange-300' : 'border-gray-200'
+                                }`}
+                              />
+                              {partnershipForm.description.length > 250 && (
+                                <p className="text-xs text-orange-500 mt-1">Approche de la limite ({280 - partnershipForm.description.length} caractères restants)</p>
+                              )}
+                            </>
                           )}
                         </div>
 
