@@ -548,18 +548,18 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
+      <header className="bg-white sticky top-0 z-50 h-[80px]">
+        <div className="max-w-7xl mx-auto px-6 h-full">
+          <div className="flex items-center justify-between h-full">
             <div className="flex items-center gap-4">
               <Image
                 src={IMAGES.logo.couleurs}
                 alt="EDF PEI"
-                width={80}
-                height={40}
-                className="h-10 w-auto"
+                width={160}
+                height={64}
+                className="h-14 w-auto"
               />
-              <div className="h-8 w-px bg-gray-200" />
+              <div className="h-10 w-px bg-gray-200" />
               <div>
                 <h1 className="text-lg font-bold text-gray-900">Administration</h1>
                 <p className="text-xs text-gray-500">{user.email}</p>
