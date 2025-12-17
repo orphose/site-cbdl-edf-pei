@@ -40,11 +40,16 @@ export const STORAGE_URL = supabaseUrl
 
 /**
  * Génère l'URL publique d'un fichier dans le bucket media
- * @param path - Chemin du fichier dans le bucket
+ * @param path - Chemin du fichier dans le bucket ou URL complète
  * @returns URL publique du fichier
  */
 export function getMediaUrl(path: string): string {
   console.assert(path && path.length > 0, 'Le chemin du fichier est requis');
+  
+  // Si c'est déjà une URL complète, la retourner telle quelle
+  if (path.startsWith('http://') || path.startsWith('https://')) {
+    return path;
+  }
   
   // Fallback vers le chemin local si Supabase non configuré
   if (!STORAGE_URL) {
