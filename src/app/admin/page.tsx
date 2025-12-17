@@ -269,20 +269,10 @@ export default function AdminPage() {
     const fullText = `${postText}\n\n${hashtags}`;
     
     // Utiliser l'URL de création de post LinkedIn (permet de pré-remplir le texte)
-    // Format: https://www.linkedin.com/feed/?shareActive=true&text=TEXTE_ENCODE
     const linkedInUrl = `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(fullText)}`;
     
-    // Ouvrir dans une nouvelle fenêtre popup
-    const width = 600;
-    const height = 700;
-    const left = (window.innerWidth - width) / 2;
-    const top = (window.innerHeight - height) / 2;
-    
-    window.open(
-      linkedInUrl,
-      "linkedin-share",
-      `width=${width},height=${height},left=${left},top=${top},scrollbars=yes`
-    );
+    // Ouvrir dans un nouvel onglet (évite le blocage des popups)
+    window.open(linkedInUrl, "_blank");
   };
 
   // Ajouter un hashtag
@@ -1421,10 +1411,10 @@ export default function AdminPage() {
                               </div>
 
                               {/* Info */}
-                              <p className="text-xs text-gray-400 flex items-center gap-1">
-                                <ExternalLink className="w-3 h-3" />
-                                Ouvrira LinkedIn après la sauvegarde
-                              </p>
+                               <p className="text-xs text-gray-400 flex items-center gap-1">
+                                 <ExternalLink className="w-3 h-3" />
+                                 Ouvrira LinkedIn dans un nouvel onglet
+                               </p>
                             </div>
                           )}
                         </div>
