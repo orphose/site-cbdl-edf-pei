@@ -8,7 +8,6 @@ import {
   CardHeader,
   Button,
   Input,
-  Switch,
   Tabs,
   Tab,
   Table,
@@ -950,17 +949,26 @@ export default function AdminPage() {
                         </div>
 
                         {/* Publication */}
-                        <div className="p-4 bg-gray-50 rounded-xl">
+                        <div 
+                          className="p-4 bg-gray-50 rounded-xl cursor-pointer hover:bg-gray-100 transition-colors"
+                          onClick={() => setNewsForm({ ...newsForm, is_published: !newsForm.is_published })}
+                        >
                           <div className="flex items-center justify-between">
                             <div>
                               <p className="font-medium text-gray-900">Publier</p>
                               <p className="text-sm text-gray-500">Visible sur le site</p>
                             </div>
-                            <Switch
-                              isSelected={newsForm.is_published}
-                              onValueChange={(value) => setNewsForm({ ...newsForm, is_published: value })}
-                              color="success"
-                            />
+                            <div 
+                              className={`w-12 h-7 rounded-full transition-colors flex items-center px-1 ${
+                                newsForm.is_published ? "bg-green-500" : "bg-gray-300"
+                              }`}
+                            >
+                              <div 
+                                className={`w-5 h-5 rounded-full bg-white shadow-md transition-transform ${
+                                  newsForm.is_published ? "translate-x-5" : "translate-x-0"
+                                }`}
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -1260,17 +1268,26 @@ export default function AdminPage() {
                         </div>
 
                         {/* Statut actif */}
-                        <div className="p-4 bg-gray-50 rounded-xl">
+                        <div 
+                          className="p-4 bg-gray-50 rounded-xl cursor-pointer hover:bg-gray-100 transition-colors"
+                          onClick={() => setPartnershipForm({ ...partnershipForm, is_active: !partnershipForm.is_active })}
+                        >
                           <div className="flex items-center justify-between">
                             <div>
                               <p className="font-medium text-gray-900">Actif</p>
                               <p className="text-sm text-gray-500">Visible sur le site</p>
                             </div>
-                            <Switch
-                              isSelected={partnershipForm.is_active}
-                              onValueChange={(value) => setPartnershipForm({ ...partnershipForm, is_active: value })}
-                              color="success"
-                            />
+                            <div 
+                              className={`w-12 h-7 rounded-full transition-colors flex items-center px-1 ${
+                                partnershipForm.is_active ? "bg-green-500" : "bg-gray-300"
+                              }`}
+                            >
+                              <div 
+                                className={`w-5 h-5 rounded-full bg-white shadow-md transition-transform ${
+                                  partnershipForm.is_active ? "translate-x-5" : "translate-x-0"
+                                }`}
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
