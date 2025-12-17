@@ -304,7 +304,7 @@ export default function TimelineSection() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 * index }}
-              className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 text-center"
+              className="bg-white p-6 shadow-lg border border-gray-100 text-center"
             >
               <motion.span
                 initial={{ opacity: 0 }}
