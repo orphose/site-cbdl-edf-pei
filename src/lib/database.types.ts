@@ -55,6 +55,8 @@ export interface Database {
           category: string | null;
           display_order: number;
           is_active: boolean;
+          color: string | null;
+          icon_name: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -68,6 +70,8 @@ export interface Database {
           category?: string | null;
           display_order?: number;
           is_active?: boolean;
+          color?: string | null;
+          icon_name?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -81,6 +85,8 @@ export interface Database {
           category?: string | null;
           display_order?: number;
           is_active?: boolean;
+          color?: string | null;
+          icon_name?: string | null;
           created_at?: string;
           updated_at?: string;
         };

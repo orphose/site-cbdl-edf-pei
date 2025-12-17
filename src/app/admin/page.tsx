@@ -45,6 +45,7 @@ import type { User } from "@supabase/supabase-js";
 import Link from "next/link";
 import Image from "next/image";
 import { IMAGES } from "@/lib/media";
+import { getMediaUrl } from "@/lib/supabase";
 
 // Types pour les vues
 type ViewMode = "list" | "create" | "edit";
@@ -86,16 +87,13 @@ export default function AdminPage() {
     is_published: false,
   });
 
-  // États du formulaire partenariat
+  // États du formulaire partenariat (simplifié)
   const [editingPartnership, setEditingPartnership] = useState<Partnership | null>(null);
   const [partnershipForm, setPartnershipForm] = useState({
     name: "",
-    slug: "",
     description: "",
     logo_url: "",
-    website_url: "",
-    category: "",
-    display_order: 0,
+    color: "#001A70",
     is_active: true,
   });
 
@@ -346,12 +344,9 @@ export default function AdminPage() {
     setEditingPartnership(null);
     setPartnershipForm({
       name: "",
-      slug: "",
       description: "",
       logo_url: "",
-      website_url: "",
-      category: "",
-      display_order: partnerships.length,
+      color: "#001A70",
       is_active: true,
     });
     setViewMode("create");
@@ -362,12 +357,9 @@ export default function AdminPage() {
     setEditingPartnership(item);
     setPartnershipForm({
       name: item.name,
-      slug: item.slug,
       description: item.description || "",
       logo_url: item.logo_url || "",
-      website_url: item.website_url || "",
-      category: item.category || "",
-      display_order: item.display_order,
+      color: item.color || "#001A70",
       is_active: item.is_active,
     });
     setViewMode("edit");
@@ -381,13 +373,15 @@ export default function AdminPage() {
     try {
       const partnershipData = {
         name: partnershipForm.name,
-        slug: partnershipForm.slug || generateSlug(partnershipForm.name),
+        slug: generateSlug(partnershipForm.name),
         description: partnershipForm.description || null,
         logo_url: partnershipForm.logo_url || null,
-        website_url: partnershipForm.website_url || null,
-        category: partnershipForm.category || null,
-        display_order: partnershipForm.display_order,
+        website_url: null,
+        category: "local", // Étiquette "Partenariat local" par défaut
+        display_order: editingPartnership?.display_order ?? partnerships.length,
         is_active: partnershipForm.is_active,
+        color: partnershipForm.color || "#001A70",
+        icon_name: "zap", // Icône par défaut
       };
 
       if (editingPartnership) {
@@ -1025,7 +1019,7 @@ export default function AdminPage() {
                               {item.logo_url && (
                                 <div className="w-10 h-10 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
                                   <Image
-                                    src={item.logo_url}
+                                    src={getMediaUrl(item.logo_url)}
                                     alt={item.name}
                                     width={40}
                                     height={40}
@@ -1033,7 +1027,15 @@ export default function AdminPage() {
                                   />
                                 </div>
                               )}
-                              <p className="font-medium text-gray-900">{item.name}</p>
+                              <div>
+                                <p className="font-medium text-gray-900">{item.name}</p>
+                                {item.color && (
+                                  <div 
+                                    className="w-3 h-3 rounded-full mt-1" 
+                                    style={{ backgroundColor: item.color }}
+                                  />
+                                )}
+                              </div>
                             </div>
                           </TableCell>
                           <TableCell>
@@ -1129,22 +1131,17 @@ export default function AdminPage() {
                   </CardHeader>
                   <CardBody className="p-6">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                      {/* Colonne principale */}
+                      {/* Colonne principale - Formulaire simplifié */}
                       <div className="lg:col-span-2 space-y-6">
+                        {/* Titre du partenariat */}
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Nom <span className="text-red-500">*</span>
+                            Titre du partenariat <span className="text-red-500">*</span>
                           </label>
                           <Input
-                            placeholder="Nom du partenaire"
+                            placeholder="Ex: Électrification du village Palikour"
                             value={partnershipForm.name}
-                            onChange={(e) => {
-                              setPartnershipForm({
-                                ...partnershipForm,
-                                name: e.target.value,
-                                slug: generateSlug(e.target.value),
-                              });
-                            }}
+                            onChange={(e) => setPartnershipForm({ ...partnershipForm, name: e.target.value })}
                             size="lg"
                             classNames={{
                               inputWrapper: "bg-gray-50 border border-gray-200",
@@ -1152,69 +1149,58 @@ export default function AdminPage() {
                           />
                         </div>
                         
+                        {/* Description */}
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
                             Description
                           </label>
                           <textarea
-                            placeholder="Description du partenaire"
+                            placeholder="Décrivez le partenariat et son impact..."
                             value={partnershipForm.description}
                             onChange={(e) => setPartnershipForm({ ...partnershipForm, description: e.target.value })}
-                            rows={5}
+                            rows={6}
                             className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-edf-blue/20 focus:border-edf-blue resize-y"
                           />
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                              Catégorie
-                            </label>
-                            <Input
-                              placeholder="institutionnel, local..."
-                              value={partnershipForm.category}
-                              onChange={(e) => setPartnershipForm({ ...partnershipForm, category: e.target.value })}
-                              classNames={{
-                                inputWrapper: "bg-gray-50 border border-gray-200",
-                              }}
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                              Site web
-                            </label>
-                            <Input
-                              placeholder="https://..."
-                              value={partnershipForm.website_url}
-                              onChange={(e) => setPartnershipForm({ ...partnershipForm, website_url: e.target.value })}
-                              classNames={{
-                                inputWrapper: "bg-gray-50 border border-gray-200",
-                              }}
-                            />
-                          </div>
-                        </div>
-
+                        {/* Couleur de l'étiquette */}
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Ordre d&apos;affichage
+                            Couleur de l&apos;étiquette
                           </label>
-                          <Input
-                            type="number"
-                            value={String(partnershipForm.display_order)}
-                            onChange={(e) => setPartnershipForm({ ...partnershipForm, display_order: parseInt(e.target.value) || 0 })}
-                            classNames={{
-                              inputWrapper: "bg-gray-50 border border-gray-200",
-                            }}
-                          />
+                          <div className="flex items-center gap-3">
+                            <input
+                              type="color"
+                              value={partnershipForm.color}
+                              onChange={(e) => setPartnershipForm({ ...partnershipForm, color: e.target.value })}
+                              className="w-12 h-12 rounded-lg cursor-pointer border border-gray-200"
+                            />
+                            <div className="flex-1">
+                              <Input
+                                value={partnershipForm.color}
+                                onChange={(e) => setPartnershipForm({ ...partnershipForm, color: e.target.value })}
+                                classNames={{
+                                  inputWrapper: "bg-gray-50 border border-gray-200",
+                                }}
+                              />
+                            </div>
+                            {/* Aperçu de l'étiquette */}
+                            <span
+                              className="px-3 py-1 text-xs font-medium text-white rounded"
+                              style={{ backgroundColor: partnershipForm.color }}
+                            >
+                              PARTENARIAT LOCAL
+                            </span>
+                          </div>
                         </div>
                       </div>
 
                       {/* Colonne latérale */}
                       <div className="space-y-6">
-                        {/* Upload logo */}
+                        {/* Upload photo */}
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Logo
+                            Photo du partenariat
                           </label>
                           <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 hover:border-edf-blue/50 transition-colors">
                             {partnershipForm.logo_url ? (

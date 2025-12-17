@@ -1,73 +1,78 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Card, CardBody, Button } from "@nextui-org/react";
-import { ChevronLeft, ChevronRight, Zap, Flower2, Heart, TreePine } from "lucide-react";
+import { Card, CardBody, Button, Skeleton } from "@nextui-org/react";
+import { ChevronLeft, ChevronRight, Zap, Flower2, Heart, TreePine, LucideIcon } from "lucide-react";
 import Image from "next/image";
 import { getMediaUrl } from "@/lib/supabase";
+import { getActivePartnerships } from "@/lib/api";
+import type { Partnership } from "@/lib/database.types";
 
 /**
- * Données des partenariats locaux
+ * Mapping des noms d'icônes vers les composants Lucide
  */
-const PARTNERSHIPS = [
-  {
-    id: 1,
-    icon: Zap,
-    title: "Électrification du village Palikour",
-    description:
-      "EDF PEI travaille en étroite collaboration avec le village Palikour et la municipalité de Matoury pour promouvoir un développement durable et réfléchi de la Guyane. L'électrification du village favorise un accès juste et équilibré aux ressources énergétiques, stimule les opportunités de croissance et renforce l'égalité des chances pour tous.",
-    image: getMediaUrl("village_palikour_1.jpg"),
-    color: "#001A70",
-  },
-  {
-    id: 2,
-    icon: Flower2,
-    title: "Installation de ruches à miel sur le site",
-    description:
-      "Au dernier trimestre 2022, la Miellerie de Macouria a initié une action ambitieuse et innovante : installer des ruches à miel sur le site de la future centrale bioénergie du Larivot. Cette action favorise la pollinisation des espèces végétales avoisinantes et dynamise la biodiversité régionale.",
-    image: getMediaUrl("miellerie_macouria_1.jpg"),
-    color: "#FFB210",
-  },
-  {
-    id: 3,
-    icon: Heart,
-    title: "Soutien à l'Association Protecta",
-    description:
-      "EDF PEI apporte un soutien financier important à l'Association Protecta, gestionnaire de la Ferme Pédagogique du Larivot, un écosystème foisonnant qui offre aux jeunes Guyanais l'opportunité d'explorer la biodiversité locale.",
-    image: getMediaUrl("ferme_peda_1.jpg"),
-    color: "#001A70",
-  },
-  {
-    id: 4,
-    icon: TreePine,
-    title: "Le Palmetum de Macouria",
-    description:
-      "EDF PEI a souhaité participer à ce jardin botanique à la suite de la découverte, sur son site, de plans de palmiers présentant un intérêt patrimonial. Ces plans d'Astrocaryum murumuru ont été replantés sur le site du Palmetum.",
-    image: getMediaUrl("palmetum_macouria_1.jpg"),
-    color: "#88D910",
-  },
-];
+const ICON_MAP: Record<string, LucideIcon> = {
+  zap: Zap,
+  flower: Flower2,
+  heart: Heart,
+  "tree-pine": TreePine,
+};
 
 /**
  * Section Partenariats - Section 7
  * Carousel centré avec carte active au milieu - transitions fluides
+ * Données dynamiques depuis Supabase
  */
 export default function PartnershipsSection() {
+  const [partnerships, setPartnerships] = useState<Partnership[]>([]);
+  const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Chargement des partenariats
+  useEffect(() => {
+    async function loadPartnerships() {
+      try {
+        const data = await getActivePartnerships();
+        setPartnerships(data);
+      } catch (error) {
+        console.error("Erreur chargement partenariats:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadPartnerships();
+  }, []);
+
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % PARTNERSHIPS.length);
+    if (partnerships.length === 0) return;
+    setCurrentIndex((prev) => (prev + 1) % partnerships.length);
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + PARTNERSHIPS.length) % PARTNERSHIPS.length);
+    if (partnerships.length === 0) return;
+    setCurrentIndex((prev) => (prev - 1 + partnerships.length) % partnerships.length);
   };
 
-  // Calcul des index pour les cartes visibles (précédente, active, suivante)
-  const getCardIndex = (offset: number) => {
-    return (currentIndex + offset + PARTNERSHIPS.length) % PARTNERSHIPS.length;
-  };
+  // Écran de chargement
+  if (loading) {
+    return (
+      <section className="section-padding bg-gray-50 relative overflow-hidden">
+        <div className="container-custom">
+          <Skeleton className="h-8 w-32 mb-6 rounded-lg" />
+          <Skeleton className="h-12 w-96 mb-12 rounded-lg" />
+          <div className="flex justify-center">
+            <Skeleton className="w-[850px] h-[340px] rounded-xl" />
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Si pas de partenariats
+  if (partnerships.length === 0) {
+    return null;
+  }
 
   return (
     <section className="section-padding bg-gray-50 relative overflow-hidden">
@@ -100,15 +105,15 @@ export default function PartnershipsSection() {
       <div className="relative z-10 h-[420px] md:h-[380px]">
         <div className="absolute inset-0 flex items-center justify-center">
           {/* Toutes les cartes avec animation fluide */}
-          {PARTNERSHIPS.map((partnership, index) => {
+          {partnerships.map((partnership, index) => {
             // Calcul de la position relative par rapport à la carte active
             let position = index - currentIndex;
             
             // Gestion du wrap-around pour l'effet infini
-            if (position > PARTNERSHIPS.length / 2) {
-              position -= PARTNERSHIPS.length;
-            } else if (position < -PARTNERSHIPS.length / 2) {
-              position += PARTNERSHIPS.length;
+            if (position > partnerships.length / 2) {
+              position -= partnerships.length;
+            } else if (position < -partnerships.length / 2) {
+              position += partnerships.length;
             }
 
             // Déterminer les styles selon la position
@@ -180,7 +185,7 @@ export default function PartnershipsSection() {
 
           {/* Indicateurs */}
           <div className="flex gap-2">
-            {PARTNERSHIPS.map((_, index) => (
+            {partnerships.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
@@ -212,13 +217,15 @@ export default function PartnershipsSection() {
  * Composant carte de partenariat
  */
 interface PartnershipCardProps {
-  partnership: typeof PARTNERSHIPS[0];
+  partnership: Partnership;
   isActive: boolean;
 }
 
 function PartnershipCard({ partnership, isActive }: PartnershipCardProps) {
-  const Icon = partnership.icon;
-  const hasRealImage = partnership.image && !partnership.image.includes("/images/");
+  const Icon = ICON_MAP[partnership.icon_name || "zap"] || Zap;
+  const color = partnership.color || "#001A70";
+  const imageUrl = partnership.logo_url ? getMediaUrl(partnership.logo_url) : null;
+  const hasRealImage = imageUrl && !imageUrl.includes("/images/");
   
   return (
     <Card className={`bg-white border-none overflow-hidden transition-shadow duration-300 ${
@@ -229,12 +236,12 @@ function PartnershipCard({ partnership, isActive }: PartnershipCardProps) {
           {/* Image */}
           <div
             className="h-[180px] md:h-[340px] relative"
-            style={{ backgroundColor: `${partnership.color}15` }}
+            style={{ backgroundColor: `${color}15` }}
           >
             {hasRealImage ? (
               <Image
-                src={partnership.image}
-                alt={partnership.title}
+                src={imageUrl}
+                alt={partnership.name}
                 fill
                 className="object-cover"
               />
@@ -242,7 +249,7 @@ function PartnershipCard({ partnership, isActive }: PartnershipCardProps) {
               <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
                 <div
                   className="w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center mb-3"
-                  style={{ backgroundColor: partnership.color }}
+                  style={{ backgroundColor: color }}
                 >
                   <Icon className="w-10 h-10 md:w-12 md:h-12 text-white" />
                 </div>
@@ -257,12 +264,12 @@ function PartnershipCard({ partnership, isActive }: PartnershipCardProps) {
           <div className="h-[180px] md:h-[340px] p-5 md:p-8 flex flex-col justify-center">
             <span
               className="inline-block self-start px-3 py-1 text-xs font-medium mb-3 text-white"
-              style={{ backgroundColor: partnership.color }}
+              style={{ backgroundColor: color }}
             >
               PARTENARIAT LOCAL
             </span>
             <h3 className="text-lg md:text-xl font-bold text-black mb-3 line-clamp-2">
-              {partnership.title}
+              {partnership.name}
             </h3>
             <p className="text-gray-600 leading-relaxed text-sm line-clamp-4 md:line-clamp-5">
               {partnership.description}
