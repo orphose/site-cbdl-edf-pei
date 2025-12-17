@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { Settings } from "lucide-react";
 import { IMAGES } from "@/lib/media";
+import { createClient } from "@/utils/supabase/client";
 
 /**
  * Liens de navigation du site
@@ -24,6 +26,24 @@ const NAV_LINKS = [
  */
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  // Vérifier si un admin est connecté
+  useEffect(() => {
+    const supabase = createClient();
+    
+    // Vérifier la session actuelle
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsAdmin(!!session?.user);
+    });
+
+    // Écouter les changements d'authentification
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAdmin(!!session?.user);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md h-[100px]">
@@ -63,6 +83,22 @@ export default function Header() {
               </Link>
             </motion.div>
           ))}
+          
+          {/* Bouton Admin - visible uniquement si connecté */}
+          {isAdmin && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+            >
+              <Link
+                href="/admin"
+                className="flex items-center gap-2 px-4 py-2 bg-edf-blue text-white text-sm font-medium hover:bg-edf-blue-light transition-colors"
+              >
+                <Settings className="w-4 h-4" />
+                Admin
+              </Link>
+            </motion.div>
+          )}
         </nav>
 
         {/* Bouton menu mobile */}
@@ -115,6 +151,24 @@ export default function Header() {
                 </Link>
               </motion.div>
             ))}
+            
+            {/* Bouton Admin mobile - visible uniquement si connecté */}
+            {isAdmin && (
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: NAV_LINKS.length * 0.05 }}
+              >
+                <Link
+                  href="/admin"
+                  className="flex items-center gap-2 px-6 py-3 text-white bg-edf-orange hover:bg-edf-orange-light transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <Settings className="w-4 h-4" />
+                  Administration
+                </Link>
+              </motion.div>
+            )}
           </div>
         </motion.nav>
       )}
