@@ -63,8 +63,8 @@ export default function HeroSection() {
 
   return (
     <>
-      <section className="relative h-screen">
-        {/* Colonne droite - Vidéo fixée en haut à droite */}
+      <section className="relative flex flex-col lg:block lg:h-screen">
+        {/* Colonne droite - Vidéo fixée en haut à droite (desktop uniquement) */}
         <div className="hidden lg:block fixed top-[100px] right-0 w-1/2 h-[calc(100vh-100px)] bg-edf-blue z-0 overflow-hidden">
           {/* Vidéo de modélisation */}
           <video
@@ -84,8 +84,8 @@ export default function HeroSection() {
         </div>
 
         {/* Colonne gauche - Contenu texte */}
-        <div className="relative z-10 w-full lg:w-1/2 min-h-screen flex items-center bg-white pt-[100px]">
-          <div className="px-8 lg:px-16 py-12 max-w-2xl">
+        <div className="relative z-10 w-full lg:w-1/2 flex-1 lg:min-h-screen flex items-start lg:items-center bg-white pt-[100px]">
+          <div className="px-8 lg:px-16 py-8 lg:py-12 max-w-2xl">
             {/* Badge */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -164,8 +164,8 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Version mobile de la vidéo */}
-        <div className="lg:hidden absolute bottom-0 left-0 right-0 h-64 bg-edf-blue z-20 overflow-hidden">
+        {/* Version mobile de la vidéo - Dans le flux normal */}
+        <div className="lg:hidden relative w-full h-64 bg-edf-blue overflow-hidden flex-shrink-0">
           <video
             ref={mobileVideoRef}
             autoPlay

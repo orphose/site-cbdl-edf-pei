@@ -102,7 +102,7 @@ export default function PartnershipsSection() {
       </div>
 
       {/* Carousel centré */}
-      <div className="relative z-10 h-[420px] md:h-[380px]">
+      <div className="relative z-10 h-[520px] md:h-[380px]">
         <div className="absolute inset-0 flex items-center justify-center">
           {/* Toutes les cartes avec animation fluide */}
           {partnerships.map((partnership, index) => {
@@ -235,7 +235,7 @@ function PartnershipCard({ partnership, isActive }: PartnershipCardProps) {
         <div className="grid md:grid-cols-2 gap-0">
           {/* Image */}
           <div
-            className="h-[180px] md:h-[340px] relative"
+            className="h-[200px] md:h-[340px] relative"
             style={{ backgroundColor: `${color}15` }}
           >
             {hasRealImage ? (
@@ -261,7 +261,7 @@ function PartnershipCard({ partnership, isActive }: PartnershipCardProps) {
           </div>
 
           {/* Contenu */}
-          <div className="h-[180px] md:h-[340px] p-5 md:p-8 flex flex-col justify-center">
+          <div className="h-auto min-h-[200px] md:h-[340px] p-5 md:p-8 flex flex-col justify-center">
             <span
               className="inline-block self-start px-3 py-1 text-xs font-medium mb-3 text-white"
               style={{ backgroundColor: color }}

@@ -143,7 +143,7 @@ export default function ChantierSecuritySection() {
                 </p>
 
                 {/* Indicateurs avec couleurs EDF */}
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-3 gap-2 md:gap-4">
                   {[
                     { label: "Coordination", color: "#001A70", bgColor: "rgba(0, 26, 112, 0.1)" },
                     { label: "Prévention", color: "#88D910", bgColor: "rgba(136, 217, 16, 0.1)" },
@@ -158,7 +158,7 @@ export default function ChantierSecuritySection() {
                       className="text-center"
                     >
                       <motion.div 
-                        className="w-16 h-16 mx-auto flex items-center justify-center mb-3 border-2"
+                        className="w-12 h-12 md:w-16 md:h-16 mx-auto flex items-center justify-center mb-2 md:mb-3 border-2"
                         style={{ 
                           borderColor: item.color,
                           backgroundColor: item.bgColor,
@@ -174,12 +174,12 @@ export default function ChantierSecuritySection() {
                         }}
                       >
                         <CheckCircle2 
-                          className="w-8 h-8" 
+                          className="w-5 h-5 md:w-8 md:h-8" 
                           style={{ color: item.color }}
                         />
                       </motion.div>
                       <div 
-                        className="font-bold text-sm uppercase tracking-wide"
+                        className="font-bold text-[10px] md:text-sm uppercase tracking-wide"
                         style={{ color: item.color }}
                       >
                         {item.label}

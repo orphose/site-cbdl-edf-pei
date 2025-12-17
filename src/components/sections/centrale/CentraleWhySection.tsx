@@ -186,10 +186,10 @@ export default function CentraleWhySection() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.6 }}
-              className="absolute -bottom-6 -left-6 bg-white rounded-xl shadow-xl p-6 border border-gray-100"
+              className="mt-4 lg:mt-0 lg:absolute lg:-bottom-6 lg:-left-6 bg-white rounded-xl shadow-xl p-4 lg:p-6 border border-gray-100 inline-block"
             >
-              <div className="text-4xl font-bold text-edf-blue">50%</div>
-              <div className="text-sm text-gray-500 mt-1">
+              <div className="text-3xl lg:text-4xl font-bold text-edf-blue">50%</div>
+              <div className="text-xs lg:text-sm text-gray-500 mt-1">
                 de la population<br />guyanaise alimentée
               </div>
             </motion.div>

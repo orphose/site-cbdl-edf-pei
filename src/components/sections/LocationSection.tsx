@@ -56,17 +56,17 @@ export default function LocationSection() {
 
           {/* Carte info supplémentaire */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="absolute -bottom-6 -right-6 md:right-8 md:bottom-auto md:top-8 bg-white shadow-lg p-6 max-w-xs"
+            className="mt-4 md:mt-0 md:absolute md:right-8 md:top-8 bg-white shadow-lg p-4 md:p-6 md:max-w-xs"
           >
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-lg bg-edf-green/10 flex items-center justify-center">
-                <Navigation className="w-5 h-5 text-edf-green" />
+            <div className="flex items-center gap-3 mb-2 md:mb-3">
+              <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-edf-green/10 flex items-center justify-center flex-shrink-0">
+                <Navigation className="w-4 h-4 md:w-5 md:h-5 text-edf-green" />
               </div>
-              <h4 className="font-bold text-black">Accès</h4>
+              <h4 className="font-bold text-black text-sm md:text-base">Accès</h4>
             </div>
             <p className="text-gray-600 text-sm">
               À 15 minutes de Cayenne, accessible par la RN1 en direction de Kourou.

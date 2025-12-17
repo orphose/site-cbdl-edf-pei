@@ -14,7 +14,7 @@ import Image from "next/image";
  */
 export default function AirQualitySection() {
   return (
-    <section className="relative min-h-[756px] lg:min-h-[650px] flex bg-edf-blue overflow-hidden">
+    <section className="relative flex flex-col lg:flex-row lg:min-h-[650px] bg-edf-blue overflow-hidden">
       {/* Fond avec motif */}
       <div className="absolute inset-0 opacity-10 pointer-events-none">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(136,217,16,0.3),transparent_50%)]" />
@@ -22,8 +22,8 @@ export default function AirQualitySection() {
       </div>
 
       {/* Colonne gauche - Contenu texte (50%) */}
-      <div className="w-full lg:w-1/2 flex items-center relative z-10">
-        <div className="px-8 lg:px-16 py-16 max-w-2xl">
+      <div className="w-full lg:w-1/2 flex items-center relative z-10 flex-1">
+        <div className="px-8 lg:px-16 py-12 lg:py-16 max-w-2xl">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -104,8 +104,8 @@ export default function AirQualitySection() {
         </motion.div>
       </div>
 
-      {/* Version mobile - Image en bas */}
-      <div className="lg:hidden absolute bottom-0 left-0 right-0 h-64">
+      {/* Version mobile - Image en bas (dans le flux) */}
+      <div className="lg:hidden relative w-full h-64 flex-shrink-0">
         <Image
           src={IMAGES.centrale.modelisation}
           alt="Modélisation de la centrale bioénergie du Larivot"
