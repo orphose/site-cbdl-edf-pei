@@ -40,6 +40,9 @@ import {
   Check,
   Sparkles,
   Wand2,
+  Linkedin,
+  Hash,
+  ExternalLink,
 } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 import type { News, Partnership } from "@/lib/database.types";
@@ -88,6 +91,14 @@ export default function AdminPage() {
     image_url: "",
     gallery: [] as string[],
     is_published: false,
+  });
+
+  // États pour le partage LinkedIn
+  const [linkedInShare, setLinkedInShare] = useState({
+    enabled: false,
+    customText: "",
+    hashtags: ["CBDL", "EnergieRenouvelable", "Guyane"] as string[],
+    newHashtag: "",
   });
 
   // États du formulaire partenariat (simplifié)
@@ -249,6 +260,53 @@ export default function AdminPage() {
       .replace(/^-+|-+$/g, "");
   };
 
+  // Ouvrir la fenêtre de partage LinkedIn
+  const openLinkedInShare = (articleUrl: string, title: string, summary: string) => {
+    // Construire le texte du post avec hashtags
+    const hashtags = linkedInShare.hashtags.map(h => `#${h}`).join(" ");
+    const postText = linkedInShare.customText || summary;
+    const fullText = `${postText}\n\n${hashtags}`;
+    
+    // Construire l'URL LinkedIn
+    const linkedInUrl = new URL("https://www.linkedin.com/shareArticle");
+    linkedInUrl.searchParams.set("mini", "true");
+    linkedInUrl.searchParams.set("url", articleUrl);
+    linkedInUrl.searchParams.set("title", title);
+    linkedInUrl.searchParams.set("summary", fullText);
+    
+    // Ouvrir dans une nouvelle fenêtre popup
+    const width = 600;
+    const height = 600;
+    const left = (window.innerWidth - width) / 2;
+    const top = (window.innerHeight - height) / 2;
+    
+    window.open(
+      linkedInUrl.toString(),
+      "linkedin-share",
+      `width=${width},height=${height},left=${left},top=${top},scrollbars=yes`
+    );
+  };
+
+  // Ajouter un hashtag
+  const addHashtag = () => {
+    const tag = linkedInShare.newHashtag.trim().replace(/^#/, "");
+    if (tag && !linkedInShare.hashtags.includes(tag) && linkedInShare.hashtags.length < 10) {
+      setLinkedInShare({
+        ...linkedInShare,
+        hashtags: [...linkedInShare.hashtags, tag],
+        newHashtag: "",
+      });
+    }
+  };
+
+  // Supprimer un hashtag
+  const removeHashtag = (tagToRemove: string) => {
+    setLinkedInShare({
+      ...linkedInShare,
+      hashtags: linkedInShare.hashtags.filter(tag => tag !== tagToRemove),
+    });
+  };
+
   // Upload d'image
   const handleImageUpload = async (file: File, bucket: "actualites" | "media") => {
     setUploading(true);
@@ -377,6 +435,13 @@ export default function AdminPage() {
       gallery: [],
       is_published: false,
     });
+    // Réinitialiser les options LinkedIn
+    setLinkedInShare({
+      enabled: false,
+      customText: "",
+      hashtags: ["CBDL", "EnergieRenouvelable", "Guyane"],
+      newHashtag: "",
+    });
     setViewMode("create");
   };
 
@@ -392,6 +457,13 @@ export default function AdminPage() {
       gallery: item.gallery || [],
       is_published: item.is_published,
     });
+    // Réinitialiser les options LinkedIn
+    setLinkedInShare({
+      enabled: false,
+      customText: "",
+      hashtags: ["CBDL", "EnergieRenouvelable", "Guyane"],
+      newHashtag: "",
+    });
     setViewMode("edit");
   };
 
@@ -401,9 +473,10 @@ export default function AdminPage() {
     setSaveSuccess(false);
 
     try {
+      const finalSlug = newsForm.slug || generateSlug(newsForm.title);
       const newsData = {
         title: newsForm.title,
-        slug: newsForm.slug || generateSlug(newsForm.title),
+        slug: finalSlug,
         excerpt: newsForm.excerpt || null,
         content: newsForm.content || null,
         image_url: newsForm.image_url || null,
@@ -424,6 +497,23 @@ export default function AdminPage() {
       }
 
       setSaveSuccess(true);
+
+      // Ouvrir LinkedIn si l'option est activée et l'article est publié
+      if (linkedInShare.enabled && newsForm.is_published) {
+        // Construire l'URL de l'article (adapter selon votre domaine)
+        const baseUrl = window.location.origin;
+        const articleUrl = `${baseUrl}/actualites/${finalSlug}`;
+        
+        // Ouvrir la fenêtre LinkedIn après un court délai
+        setTimeout(() => {
+          openLinkedInShare(
+            articleUrl,
+            newsForm.title,
+            newsForm.excerpt || newsForm.title
+          );
+        }, 500);
+      }
+
       setTimeout(() => {
         setViewMode("list");
         loadData();
@@ -1200,6 +1290,144 @@ export default function AdminPage() {
                               />
                             </div>
                           </div>
+                        </div>
+
+                        {/* Partage LinkedIn */}
+                        <div className="border border-[#0A66C2]/20 rounded-xl overflow-hidden">
+                          <div 
+                            className={`p-4 cursor-pointer transition-colors ${
+                              linkedInShare.enabled ? "bg-[#0A66C2]/10" : "bg-gray-50 hover:bg-gray-100"
+                            }`}
+                            onClick={() => setLinkedInShare({ ...linkedInShare, enabled: !linkedInShare.enabled })}
+                          >
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-3">
+                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                                  linkedInShare.enabled ? "bg-[#0A66C2]" : "bg-gray-200"
+                                }`}>
+                                  <Linkedin className={`w-4 h-4 ${linkedInShare.enabled ? "text-white" : "text-gray-500"}`} />
+                                </div>
+                                <div>
+                                  <p className="font-medium text-gray-900">Partager sur LinkedIn</p>
+                                  <p className="text-xs text-gray-500">Ouvre une fenêtre pré-remplie</p>
+                                </div>
+                              </div>
+                              <div 
+                                className={`w-12 h-7 rounded-full transition-colors flex items-center px-1 ${
+                                  linkedInShare.enabled ? "bg-[#0A66C2]" : "bg-gray-300"
+                                }`}
+                              >
+                                <div 
+                                  className={`w-5 h-5 rounded-full bg-white shadow-md transition-transform ${
+                                    linkedInShare.enabled ? "translate-x-5" : "translate-x-0"
+                                  }`}
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Options LinkedIn (visible si activé) */}
+                          {linkedInShare.enabled && (
+                            <div className="p-4 border-t border-[#0A66C2]/20 space-y-4">
+                              {/* Texte personnalisé */}
+                              <div>
+                                <label className="block text-xs font-medium text-gray-600 mb-1.5">
+                                  Texte du post (optionnel)
+                                </label>
+                                <textarea
+                                  placeholder={`Par défaut : "${newsForm.excerpt || "L'extrait de l'actualité sera utilisé"}"`}
+                                  value={linkedInShare.customText}
+                                  onChange={(e) => setLinkedInShare({ ...linkedInShare, customText: e.target.value })}
+                                  rows={3}
+                                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0A66C2]/30 focus:border-[#0A66C2] resize-none"
+                                />
+                              </div>
+
+                              {/* Hashtags */}
+                              <div>
+                                <label className="block text-xs font-medium text-gray-600 mb-1.5">
+                                  Hashtags
+                                </label>
+                                
+                                {/* Liste des hashtags */}
+                                <div className="flex flex-wrap gap-1.5 mb-2">
+                                  {linkedInShare.hashtags.map((tag) => (
+                                    <span
+                                      key={tag}
+                                      className="inline-flex items-center gap-1 px-2 py-1 bg-[#0A66C2]/10 text-[#0A66C2] text-xs rounded-full"
+                                    >
+                                      <Hash className="w-3 h-3" />
+                                      {tag}
+                                      <button
+                                        type="button"
+                                        onClick={() => removeHashtag(tag)}
+                                        className="ml-0.5 hover:text-red-500"
+                                      >
+                                        <X className="w-3 h-3" />
+                                      </button>
+                                    </span>
+                                  ))}
+                                </div>
+
+                                {/* Ajouter un hashtag */}
+                                {linkedInShare.hashtags.length < 10 && (
+                                  <div className="flex gap-2">
+                                    <Input
+                                      size="sm"
+                                      placeholder="Ajouter un hashtag"
+                                      value={linkedInShare.newHashtag}
+                                      onChange={(e) => setLinkedInShare({ ...linkedInShare, newHashtag: e.target.value })}
+                                      onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                          e.preventDefault();
+                                          addHashtag();
+                                        }
+                                      }}
+                                      startContent={<Hash className="w-3 h-3 text-gray-400" />}
+                                      classNames={{
+                                        inputWrapper: "h-8 bg-white border border-gray-200",
+                                        input: "text-xs",
+                                      }}
+                                    />
+                                    <Button
+                                      size="sm"
+                                      variant="flat"
+                                      className="h-8 min-w-8 bg-[#0A66C2]/10 text-[#0A66C2]"
+                                      isIconOnly
+                                      onPress={addHashtag}
+                                    >
+                                      <Plus className="w-4 h-4" />
+                                    </Button>
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Aperçu */}
+                              <div className="p-3 bg-gray-50 rounded-lg">
+                                <p className="text-xs font-medium text-gray-500 mb-2 flex items-center gap-1">
+                                  <Eye className="w-3 h-3" />
+                                  Aperçu du post
+                                </p>
+                                <p className="text-xs text-gray-700 whitespace-pre-wrap">
+                                  {linkedInShare.customText || newsForm.excerpt || "Votre texte apparaîtra ici..."}
+                                  {linkedInShare.hashtags.length > 0 && (
+                                    <>
+                                      {"\n\n"}
+                                      <span className="text-[#0A66C2]">
+                                        {linkedInShare.hashtags.map(h => `#${h}`).join(" ")}
+                                      </span>
+                                    </>
+                                  )}
+                                </p>
+                              </div>
+
+                              {/* Info */}
+                              <p className="text-xs text-gray-400 flex items-center gap-1">
+                                <ExternalLink className="w-3 h-3" />
+                                Ouvrira LinkedIn après la sauvegarde
+                              </p>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>

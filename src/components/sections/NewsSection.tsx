@@ -88,13 +88,13 @@ export default function NewsSection() {
             </h2>
           </div>
           <Link href="/actualites">
-            <Button
-              className="bg-edf-blue text-white font-medium hover:bg-edf-blue-light transition-all"
-              radius="none"
-              endContent={<ArrowRight className="w-4 h-4" />}
-            >
-              Toutes les actualités
-            </Button>
+          <Button
+            className="bg-edf-blue text-white font-medium hover:bg-edf-blue-light transition-all"
+            radius="none"
+            endContent={<ArrowRight className="w-4 h-4" />}
+          >
+            Toutes les actualités
+          </Button>
           </Link>
         </motion.div>
 
@@ -120,17 +120,17 @@ export default function NewsSection() {
           ) : (
             // Affichage des actualités
             news.map((item, index) => (
-              <motion.div
+            <motion.div
                 key={item.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+            >
                 <Link href={`/actualites/${item.slug}`}>
                   <Card className="h-full card-hover bg-white border border-gray-100 shadow-sm cursor-pointer">
                     {/* Image */}
-                    <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 relative overflow-hidden">
+                <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 relative overflow-hidden">
                       {item.image_url ? (
                         <Image
                           src={item.image_url}
@@ -139,46 +139,46 @@ export default function NewsSection() {
                           className="object-cover"
                         />
                       ) : (
-                        <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="absolute inset-0 flex items-center justify-center">
                           <p className="text-gray-400 text-sm">📷 Image actualité</p>
-                        </div>
+                  </div>
                       )}
-                      {/* Badge catégorie */}
-                      <span className="absolute top-4 left-4 px-3 py-1 bg-edf-blue text-white text-xs font-medium">
+                  {/* Badge catégorie */}
+                  <span className="absolute top-4 left-4 px-3 py-1 bg-edf-blue text-white text-xs font-medium">
                         Actualité
-                      </span>
-                    </div>
+                  </span>
+                </div>
 
-                    <CardBody className="p-6">
-                      {/* Date */}
-                      <div className="flex items-center gap-2 text-gray-500 text-sm mb-3">
-                        <Calendar className="w-4 h-4" />
+                <CardBody className="p-6">
+                  {/* Date */}
+                  <div className="flex items-center gap-2 text-gray-500 text-sm mb-3">
+                    <Calendar className="w-4 h-4" />
                         <span>{formatDate(item.published_at)}</span>
-                      </div>
+                  </div>
 
-                      {/* Titre */}
-                      <h3 className="text-lg font-bold text-black mb-3 line-clamp-2">
+                  {/* Titre */}
+                  <h3 className="text-lg font-bold text-black mb-3 line-clamp-2">
                         {item.title}
-                      </h3>
+                  </h3>
 
-                      {/* Extrait */}
-                      <p className="text-gray-600 text-sm line-clamp-2">
+                  {/* Extrait */}
+                  <p className="text-gray-600 text-sm line-clamp-2">
                         {item.excerpt || ""}
-                      </p>
-                    </CardBody>
+                  </p>
+                </CardBody>
 
-                    <CardFooter className="px-6 pb-6 pt-0">
-                      <Button
-                        variant="light"
-                        className="text-edf-orange font-medium p-0 h-auto hover:text-edf-orange-light"
-                        endContent={<ArrowRight className="w-4 h-4" />}
-                      >
-                        Lire la suite
-                      </Button>
-                    </CardFooter>
-                  </Card>
+                <CardFooter className="px-6 pb-6 pt-0">
+                  <Button
+                    variant="light"
+                    className="text-edf-orange font-medium p-0 h-auto hover:text-edf-orange-light"
+                    endContent={<ArrowRight className="w-4 h-4" />}
+                  >
+                    Lire la suite
+                  </Button>
+                </CardFooter>
+              </Card>
                 </Link>
-              </motion.div>
+            </motion.div>
             ))
           )}
         </div>

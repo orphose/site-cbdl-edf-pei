@@ -308,10 +308,7 @@ export default function ActualiteDetailPage() {
                       isIconOnly
                       variant="light"
                       className="absolute left-4 text-white z-10"
-                      onPress={(e) => {
-                        e.stopPropagation();
-                        setLightboxIndex(lightboxIndex - 1);
-                      }}
+                      onPress={() => setLightboxIndex(lightboxIndex - 1)}
                     >
                       <ChevronLeft className="w-10 h-10" />
                     </Button>
@@ -340,10 +337,7 @@ export default function ActualiteDetailPage() {
                       isIconOnly
                       variant="light"
                       className="absolute right-4 text-white z-10"
-                      onPress={(e) => {
-                        e.stopPropagation();
-                        setLightboxIndex(lightboxIndex + 1);
-                      }}
+                      onPress={() => setLightboxIndex(lightboxIndex + 1)}
                     >
                       <ChevronRight className="w-10 h-10" />
                     </Button>
