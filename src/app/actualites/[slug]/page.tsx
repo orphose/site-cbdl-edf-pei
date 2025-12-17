@@ -204,8 +204,6 @@ export default function ActualiteDetailPage() {
           </motion.div>
         </div>
 
-        {/* Dégradé vers le contenu */}
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent" />
       </section>
 
       {/* Contenu de l'article */}
