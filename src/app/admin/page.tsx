@@ -46,6 +46,7 @@ import type { News, Partnership } from "@/lib/database.types";
 import type { User } from "@supabase/supabase-js";
 import Link from "next/link";
 import Image from "next/image";
+import { IMAGES } from "@/lib/media";
 
 // Types pour les vues
 type ViewMode = "list" | "create" | "edit";
@@ -553,9 +554,17 @@ export default function AdminPage() {
         <div className="h-1 bg-gradient-to-r from-edf-blue via-edf-orange to-edf-green" />
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-4">
+              <Image
+                src={IMAGES.logo.couleurs}
+                alt="EDF PEI"
+                width={80}
+                height={40}
+                className="h-10 w-auto"
+              />
+              <div className="h-8 w-px bg-gray-200" />
               <div>
-                <h1 className="text-lg font-bold text-gray-900">Tableau de bord</h1>
+                <h1 className="text-lg font-bold text-gray-900">Administration</h1>
                 <p className="text-xs text-gray-500">{user.email}</p>
               </div>
             </div>
@@ -819,48 +828,71 @@ export default function AdminPage() {
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                       {/* Colonne principale */}
                       <div className="lg:col-span-2 space-y-6">
-                        <Input
-                          label="Titre"
-                          placeholder="Titre de l'actualité"
-                          value={newsForm.title}
-                          onChange={(e) => {
-                            setNewsForm({
-                              ...newsForm,
-                              title: e.target.value,
-                              slug: generateSlug(e.target.value),
-                            });
-                          }}
-                          isRequired
-                          labelPlacement="outside"
-                          size="lg"
-                        />
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Titre <span className="text-red-500">*</span>
+                          </label>
+                          <Input
+                            placeholder="Titre de l'actualité"
+                            value={newsForm.title}
+                            onChange={(e) => {
+                              setNewsForm({
+                                ...newsForm,
+                                title: e.target.value,
+                                slug: generateSlug(e.target.value),
+                              });
+                            }}
+                            size="lg"
+                            classNames={{
+                              inputWrapper: "bg-gray-50 border border-gray-200",
+                            }}
+                          />
+                        </div>
                         
-                        <Input
-                          label="Slug (URL)"
-                          placeholder="titre-de-lactualite"
-                          value={newsForm.slug}
-                          onChange={(e) => setNewsForm({ ...newsForm, slug: e.target.value })}
-                          labelPlacement="outside"
-                          description={`URL : /actualites/${newsForm.slug || "..."}`}
-                        />
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Slug (URL)
+                          </label>
+                          <Input
+                            placeholder="titre-de-lactualite"
+                            value={newsForm.slug}
+                            onChange={(e) => setNewsForm({ ...newsForm, slug: e.target.value })}
+                            classNames={{
+                              inputWrapper: "bg-gray-50 border border-gray-200",
+                            }}
+                          />
+                          <p className="text-xs text-gray-400 mt-1">URL : /actualites/{newsForm.slug || "..."}</p>
+                        </div>
                         
-                        <Textarea
-                          label="Extrait"
-                          placeholder="Résumé court affiché dans les listes"
-                          value={newsForm.excerpt}
-                          onChange={(e) => setNewsForm({ ...newsForm, excerpt: e.target.value })}
-                          minRows={2}
-                          labelPlacement="outside"
-                        />
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Extrait
+                          </label>
+                          <Textarea
+                            placeholder="Résumé court affiché dans les listes"
+                            value={newsForm.excerpt}
+                            onChange={(e) => setNewsForm({ ...newsForm, excerpt: e.target.value })}
+                            minRows={2}
+                            classNames={{
+                              inputWrapper: "bg-gray-50 border border-gray-200",
+                            }}
+                          />
+                        </div>
                         
-                        <Textarea
-                          label="Contenu"
-                          placeholder="Contenu complet de l'actualité"
-                          value={newsForm.content}
-                          onChange={(e) => setNewsForm({ ...newsForm, content: e.target.value })}
-                          minRows={10}
-                          labelPlacement="outside"
-                        />
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Contenu
+                          </label>
+                          <Textarea
+                            placeholder="Contenu complet de l'actualité"
+                            value={newsForm.content}
+                            onChange={(e) => setNewsForm({ ...newsForm, content: e.target.value })}
+                            minRows={10}
+                            classNames={{
+                              inputWrapper: "bg-gray-50 border border-gray-200",
+                            }}
+                          />
+                        </div>
                       </div>
 
                       {/* Colonne latérale */}
@@ -1095,55 +1127,84 @@ export default function AdminPage() {
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                       {/* Colonne principale */}
                       <div className="lg:col-span-2 space-y-6">
-                        <Input
-                          label="Nom"
-                          placeholder="Nom du partenaire"
-                          value={partnershipForm.name}
-                          onChange={(e) => {
-                            setPartnershipForm({
-                              ...partnershipForm,
-                              name: e.target.value,
-                              slug: generateSlug(e.target.value),
-                            });
-                          }}
-                          isRequired
-                          labelPlacement="outside"
-                          size="lg"
-                        />
-                        
-                        <Textarea
-                          label="Description"
-                          placeholder="Description du partenaire"
-                          value={partnershipForm.description}
-                          onChange={(e) => setPartnershipForm({ ...partnershipForm, description: e.target.value })}
-                          minRows={4}
-                          labelPlacement="outside"
-                        />
-
-                        <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Nom <span className="text-red-500">*</span>
+                          </label>
                           <Input
-                            label="Catégorie"
-                            placeholder="institutionnel, local..."
-                            value={partnershipForm.category}
-                            onChange={(e) => setPartnershipForm({ ...partnershipForm, category: e.target.value })}
-                            labelPlacement="outside"
+                            placeholder="Nom du partenaire"
+                            value={partnershipForm.name}
+                            onChange={(e) => {
+                              setPartnershipForm({
+                                ...partnershipForm,
+                                name: e.target.value,
+                                slug: generateSlug(e.target.value),
+                              });
+                            }}
+                            size="lg"
+                            classNames={{
+                              inputWrapper: "bg-gray-50 border border-gray-200",
+                            }}
                           />
-                          <Input
-                            label="Site web"
-                            placeholder="https://..."
-                            value={partnershipForm.website_url}
-                            onChange={(e) => setPartnershipForm({ ...partnershipForm, website_url: e.target.value })}
-                            labelPlacement="outside"
+                        </div>
+                        
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Description
+                          </label>
+                          <Textarea
+                            placeholder="Description du partenaire"
+                            value={partnershipForm.description}
+                            onChange={(e) => setPartnershipForm({ ...partnershipForm, description: e.target.value })}
+                            minRows={4}
+                            classNames={{
+                              inputWrapper: "bg-gray-50 border border-gray-200",
+                            }}
                           />
                         </div>
 
-                        <Input
-                          type="number"
-                          label="Ordre d'affichage"
-                          value={String(partnershipForm.display_order)}
-                          onChange={(e) => setPartnershipForm({ ...partnershipForm, display_order: parseInt(e.target.value) || 0 })}
-                          labelPlacement="outside"
-                        />
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Catégorie
+                            </label>
+                            <Input
+                              placeholder="institutionnel, local..."
+                              value={partnershipForm.category}
+                              onChange={(e) => setPartnershipForm({ ...partnershipForm, category: e.target.value })}
+                              classNames={{
+                                inputWrapper: "bg-gray-50 border border-gray-200",
+                              }}
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Site web
+                            </label>
+                            <Input
+                              placeholder="https://..."
+                              value={partnershipForm.website_url}
+                              onChange={(e) => setPartnershipForm({ ...partnershipForm, website_url: e.target.value })}
+                              classNames={{
+                                inputWrapper: "bg-gray-50 border border-gray-200",
+                              }}
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Ordre d&apos;affichage
+                          </label>
+                          <Input
+                            type="number"
+                            value={String(partnershipForm.display_order)}
+                            onChange={(e) => setPartnershipForm({ ...partnershipForm, display_order: parseInt(e.target.value) || 0 })}
+                            classNames={{
+                              inputWrapper: "bg-gray-50 border border-gray-200",
+                            }}
+                          />
+                        </div>
                       </div>
 
                       {/* Colonne latérale */}
