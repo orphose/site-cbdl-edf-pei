@@ -114,7 +114,7 @@ export default function PreservationSection() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className={`p-6 rounded-2xl bg-gradient-to-br from-gray-50 to-white border border-gray-100 shadow-sm ${
+                className={`p-6 bg-gradient-to-br from-gray-50 to-white border border-gray-100 shadow-sm ${
                   index === 4 ? "col-span-2" : ""
                 }`}
               >
