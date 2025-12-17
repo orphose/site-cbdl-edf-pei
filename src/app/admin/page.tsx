@@ -1133,34 +1133,60 @@ export default function AdminPage() {
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                       {/* Colonne principale - Formulaire simplifié */}
                       <div className="lg:col-span-2 space-y-6">
-                        {/* Titre du partenariat */}
+                        {/* Titre du partenariat - max 80 caractères (2 lignes) */}
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Titre du partenariat <span className="text-red-500">*</span>
-                          </label>
+                          <div className="flex justify-between items-center mb-2">
+                            <label className="block text-sm font-medium text-gray-700">
+                              Titre du partenariat <span className="text-red-500">*</span>
+                            </label>
+                            <span className={`text-xs ${partnershipForm.name.length > 80 ? 'text-red-500 font-medium' : 'text-gray-400'}`}>
+                              {partnershipForm.name.length}/80
+                            </span>
+                          </div>
                           <Input
                             placeholder="Ex: Électrification du village Palikour"
                             value={partnershipForm.name}
-                            onChange={(e) => setPartnershipForm({ ...partnershipForm, name: e.target.value })}
+                            onChange={(e) => {
+                              if (e.target.value.length <= 80) {
+                                setPartnershipForm({ ...partnershipForm, name: e.target.value });
+                              }
+                            }}
                             size="lg"
                             classNames={{
-                              inputWrapper: "bg-gray-50 border border-gray-200",
+                              inputWrapper: `bg-gray-50 border ${partnershipForm.name.length > 70 ? 'border-orange-300' : 'border-gray-200'}`,
                             }}
                           />
+                          {partnershipForm.name.length > 70 && (
+                            <p className="text-xs text-orange-500 mt-1">Approche de la limite</p>
+                          )}
                         </div>
                         
-                        {/* Description */}
+                        {/* Description - max 280 caractères (5 lignes) */}
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Description
-                          </label>
+                          <div className="flex justify-between items-center mb-2">
+                            <label className="block text-sm font-medium text-gray-700">
+                              Description
+                            </label>
+                            <span className={`text-xs ${partnershipForm.description.length > 280 ? 'text-red-500 font-medium' : 'text-gray-400'}`}>
+                              {partnershipForm.description.length}/280
+                            </span>
+                          </div>
                           <textarea
                             placeholder="Décrivez le partenariat et son impact..."
                             value={partnershipForm.description}
-                            onChange={(e) => setPartnershipForm({ ...partnershipForm, description: e.target.value })}
-                            rows={6}
-                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-edf-blue/20 focus:border-edf-blue resize-y"
+                            onChange={(e) => {
+                              if (e.target.value.length <= 280) {
+                                setPartnershipForm({ ...partnershipForm, description: e.target.value });
+                              }
+                            }}
+                            rows={5}
+                            className={`w-full px-4 py-3 bg-gray-50 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-edf-blue/20 focus:border-edf-blue resize-none ${
+                              partnershipForm.description.length > 250 ? 'border-orange-300' : 'border-gray-200'
+                            }`}
                           />
+                          {partnershipForm.description.length > 250 && (
+                            <p className="text-xs text-orange-500 mt-1">Approche de la limite ({280 - partnershipForm.description.length} caractères restants)</p>
+                          )}
                         </div>
 
                         {/* Couleur de l'étiquette - Palette EDF */}
