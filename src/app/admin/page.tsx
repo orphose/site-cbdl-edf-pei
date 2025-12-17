@@ -729,6 +729,7 @@ export default function AdminPage() {
         size="lg"
         backdrop="opaque"
         scrollBehavior="inside"
+        placement="center"
         classNames={{
           backdrop: "bg-black/50",
           base: "bg-white max-h-[85vh]",
@@ -826,6 +827,7 @@ export default function AdminPage() {
         size="md"
         backdrop="opaque"
         scrollBehavior="inside"
+        placement="center"
         classNames={{
           backdrop: "bg-black/50",
           base: "bg-white max-h-[85vh]",
@@ -914,6 +916,7 @@ export default function AdminPage() {
         isOpen={deleteModal.isOpen} 
         onClose={deleteModal.onClose}
         backdrop="opaque"
+        placement="center"
         classNames={{
           backdrop: "bg-black/50",
           base: "bg-white",
