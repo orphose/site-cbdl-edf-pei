@@ -505,11 +505,12 @@ export default function AdminPage() {
         const articleUrl = `${baseUrl}/actualites/${finalSlug}`;
         
         // Ouvrir la fenêtre LinkedIn après un court délai
+        // Utiliser le contenu (description) par défaut, pas l'extrait
         setTimeout(() => {
           openLinkedInShare(
             articleUrl,
             newsForm.title,
-            newsForm.excerpt || newsForm.title
+            newsForm.content || newsForm.title
           );
         }, 500);
       }
@@ -1335,7 +1336,7 @@ export default function AdminPage() {
                                   Texte du post (optionnel)
                                 </label>
                                 <textarea
-                                  placeholder={`Par défaut : "${newsForm.excerpt || "L'extrait de l'actualité sera utilisé"}"`}
+                                  placeholder="Par défaut : le contenu de l'actualité sera utilisé"
                                   value={linkedInShare.customText}
                                   onChange={(e) => setLinkedInShare({ ...linkedInShare, customText: e.target.value })}
                                   rows={3}
@@ -1408,8 +1409,8 @@ export default function AdminPage() {
                                   <Eye className="w-3 h-3" />
                                   Aperçu du post
                                 </p>
-                                <p className="text-xs text-gray-700 whitespace-pre-wrap">
-                                  {linkedInShare.customText || newsForm.excerpt || "Votre texte apparaîtra ici..."}
+                                <p className="text-xs text-gray-700 whitespace-pre-wrap line-clamp-4">
+                                  {linkedInShare.customText || newsForm.content || "Votre texte apparaîtra ici..."}
                                   {linkedInShare.hashtags.length > 0 && (
                                     <>
                                       {"\n\n"}
