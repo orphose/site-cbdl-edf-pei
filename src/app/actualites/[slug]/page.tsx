@@ -139,40 +139,73 @@ export default function ActualiteDetailPage() {
 
   return (
     <div className="pt-[100px]">
-      {/* Header de l'article */}
-      <section className="bg-edf-blue text-white py-16">
-        <div className="container-custom">
+      {/* Header de l'article - Design amélioré */}
+      <section className="relative bg-gradient-to-br from-edf-blue via-edf-blue to-[#002855] text-white py-20 md:py-28 overflow-hidden">
+        {/* Éléments décoratifs */}
+        <div className="absolute inset-0 overflow-hidden">
+          {/* Cercles décoratifs */}
+          <div className="absolute -top-32 -right-32 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
+          <div className="absolute -bottom-48 -left-24 w-80 h-80 bg-edf-orange/10 rounded-full blur-3xl" />
+          
+          {/* Lignes géométriques */}
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-edf-orange to-transparent opacity-50" />
+          <div className="absolute bottom-0 right-0 w-1/2 h-px bg-gradient-to-l from-white/20 to-transparent" />
+          
+          {/* Grille subtile */}
+          <div 
+            className="absolute inset-0 opacity-[0.03]"
+            style={{
+              backgroundImage: `linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)`,
+              backgroundSize: '40px 40px'
+            }}
+          />
+        </div>
+
+        <div className="container-custom relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
+            className="max-w-4xl"
           >
             {/* Retour */}
             <Link
               href="/actualites"
-              className="inline-flex items-center gap-2 text-white/70 hover:text-white mb-8 transition-colors"
+              className="inline-flex items-center gap-2 text-white/60 hover:text-white mb-10 transition-colors text-sm font-medium group"
             >
-              <ArrowLeft className="w-4 h-4" />
+              <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
               Retour aux actualités
             </Link>
 
-            {/* Date */}
-            <div className="flex items-center gap-2 text-white/70 mb-4">
-              <Calendar className="w-5 h-5" />
-              <span>{formatDate(article.published_at)}</span>
+            {/* Badge + Date */}
+            <div className="flex flex-wrap items-center gap-4 mb-6">
+              <span className="px-3 py-1.5 bg-edf-orange text-white text-xs font-bold uppercase tracking-wider">
+                Actualité
+              </span>
+              <div className="flex items-center gap-2 text-white/70 text-sm">
+                <Calendar className="w-4 h-4" />
+                <span>{formatDate(article.published_at)}</span>
+              </div>
             </div>
 
             {/* Titre */}
-            <h1 className="heading-lg text-white mb-6">{article.title}</h1>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-8 leading-tight">
+              {article.title}
+            </h1>
 
-            {/* Extrait */}
+            {/* Extrait avec ligne décorative */}
             {article.excerpt && (
-              <p className="text-white/80 text-xl max-w-3xl">
-                {article.excerpt}
-              </p>
+              <div className="relative pl-6 border-l-4 border-edf-orange">
+                <p className="text-white/85 text-lg md:text-xl leading-relaxed">
+                  {article.excerpt}
+                </p>
+              </div>
             )}
           </motion.div>
         </div>
+
+        {/* Dégradé vers le contenu */}
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent" />
       </section>
 
       {/* Contenu de l'article */}
