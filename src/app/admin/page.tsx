@@ -261,12 +261,12 @@ export default function AdminPage() {
   };
 
   // Ouvrir la fenêtre de partage LinkedIn
-  const openLinkedInShare = (articleUrl: string, _title: string, content: string) => {
-    // Construire le texte du post avec hashtags et lien
+  const openLinkedInShare = (_articleUrl: string, _title: string, content: string) => {
+    // Construire le texte du post avec hashtags
     const hashtags = linkedInShare.hashtags.map(h => `#${h}`).join(" ");
     const postText = linkedInShare.customText || content;
-    // Inclure le lien et les hashtags dans le texte (pas de limite de caractères)
-    const fullText = `${postText}\n\n🔗 ${articleUrl}\n\n${hashtags}`;
+    // Texte complet avec hashtags (sans lien)
+    const fullText = `${postText}\n\n${hashtags}`;
     
     // Utiliser l'URL de création de post LinkedIn (permet de pré-remplir le texte)
     // Format: https://www.linkedin.com/feed/?shareActive=true&text=TEXTE_ENCODE
