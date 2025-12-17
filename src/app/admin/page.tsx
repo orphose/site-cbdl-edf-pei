@@ -1163,30 +1163,95 @@ export default function AdminPage() {
                           />
                         </div>
 
-                        {/* Couleur de l'étiquette */}
+                        {/* Couleur de l'étiquette - Palette EDF */}
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label className="block text-sm font-medium text-gray-700 mb-3">
                             Couleur de l&apos;étiquette
                           </label>
-                          <div className="flex items-center gap-3">
-                            <input
-                              type="color"
-                              value={partnershipForm.color}
-                              onChange={(e) => setPartnershipForm({ ...partnershipForm, color: e.target.value })}
-                              className="w-12 h-12 rounded-lg cursor-pointer border border-gray-200"
-                            />
-                            <div className="flex-1">
-                              <Input
-                                value={partnershipForm.color}
-                                onChange={(e) => setPartnershipForm({ ...partnershipForm, color: e.target.value })}
-                                classNames={{
-                                  inputWrapper: "bg-gray-50 border border-gray-200",
-                                }}
-                              />
+                          
+                          {/* Palette de couleurs EDF */}
+                          <div className="space-y-3">
+                            {/* Orange */}
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-gray-500 w-16">Orange</span>
+                              <div className="flex gap-2">
+                                {[
+                                  { hex: "#FE5716", name: "Foncé" },
+                                  { hex: "#FF861D", name: "Moyen" },
+                                  { hex: "#FFB210", name: "Clair" },
+                                ].map((color) => (
+                                  <button
+                                    key={color.hex}
+                                    type="button"
+                                    onClick={() => setPartnershipForm({ ...partnershipForm, color: color.hex })}
+                                    className={`w-10 h-10 rounded-lg transition-all ${
+                                      partnershipForm.color === color.hex 
+                                        ? "ring-2 ring-offset-2 ring-gray-900 scale-110" 
+                                        : "hover:scale-105"
+                                    }`}
+                                    style={{ backgroundColor: color.hex }}
+                                    title={color.name}
+                                  />
+                                ))}
+                              </div>
                             </div>
-                            {/* Aperçu de l'étiquette */}
+                            
+                            {/* Bleu */}
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-gray-500 w-16">Bleu</span>
+                              <div className="flex gap-2">
+                                {[
+                                  { hex: "#001A70", name: "Foncé" },
+                                  { hex: "#1057C8", name: "Moyen" },
+                                  { hex: "#1089FF", name: "Clair" },
+                                ].map((color) => (
+                                  <button
+                                    key={color.hex}
+                                    type="button"
+                                    onClick={() => setPartnershipForm({ ...partnershipForm, color: color.hex })}
+                                    className={`w-10 h-10 rounded-lg transition-all ${
+                                      partnershipForm.color === color.hex 
+                                        ? "ring-2 ring-offset-2 ring-gray-900 scale-110" 
+                                        : "hover:scale-105"
+                                    }`}
+                                    style={{ backgroundColor: color.hex }}
+                                    title={color.name}
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                            
+                            {/* Vert */}
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-gray-500 w-16">Vert</span>
+                              <div className="flex gap-2">
+                                {[
+                                  { hex: "#4F9E30", name: "Foncé" },
+                                  { hex: "#88D910", name: "Moyen" },
+                                  { hex: "#C0E410", name: "Clair" },
+                                ].map((color) => (
+                                  <button
+                                    key={color.hex}
+                                    type="button"
+                                    onClick={() => setPartnershipForm({ ...partnershipForm, color: color.hex })}
+                                    className={`w-10 h-10 rounded-lg transition-all ${
+                                      partnershipForm.color === color.hex 
+                                        ? "ring-2 ring-offset-2 ring-gray-900 scale-110" 
+                                        : "hover:scale-105"
+                                    }`}
+                                    style={{ backgroundColor: color.hex }}
+                                    title={color.name}
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Aperçu de l'étiquette */}
+                          <div className="mt-4 flex items-center gap-3">
+                            <span className="text-xs text-gray-500">Aperçu :</span>
                             <span
-                              className="px-3 py-1 text-xs font-medium text-white rounded"
+                              className="px-3 py-1.5 text-xs font-medium text-white"
                               style={{ backgroundColor: partnershipForm.color }}
                             >
                               PARTENARIAT LOCAL
