@@ -128,6 +128,9 @@ export default function AdminPage() {
   const [aiGenerating, setAiGenerating] = useState(false);
   const [aiError, setAiError] = useState("");
 
+  // État copie presse-papiers LinkedIn
+  const [linkedInCopied, setLinkedInCopied] = useState(false);
+
   // Fonction pour générer du contenu complet avec l'IA
   const generateWithAI = async (type: "news" | "partnership") => {
     if (!aiPrompt.trim()) {
@@ -261,22 +264,31 @@ export default function AdminPage() {
   };
 
   // Ouvrir la fenêtre de partage LinkedIn
-  const openLinkedInShare = (articleUrl: string, title: string, summary: string) => {
+  const openLinkedInShare = async (articleUrl: string, title: string, content: string) => {
     // Construire le texte du post avec hashtags
     const hashtags = linkedInShare.hashtags.map(h => `#${h}`).join(" ");
-    const postText = linkedInShare.customText || summary;
-    const fullText = `${postText}\n\n${hashtags}`;
+    const postText = linkedInShare.customText || content;
+    // Limiter le texte à 500 caractères pour LinkedIn
+    const truncatedText = postText.length > 500 ? postText.substring(0, 497) + "..." : postText;
+    const fullText = `${truncatedText}\n\n${articleUrl}\n\n${hashtags}`;
     
-    // Construire l'URL LinkedIn
-    const linkedInUrl = new URL("https://www.linkedin.com/shareArticle");
-    linkedInUrl.searchParams.set("mini", "true");
+    // Copier le texte dans le presse-papiers
+    try {
+      await navigator.clipboard.writeText(fullText);
+      setLinkedInCopied(true);
+      // Réinitialiser après 5 secondes
+      setTimeout(() => setLinkedInCopied(false), 5000);
+    } catch (err) {
+      console.error("Erreur copie presse-papiers:", err);
+    }
+    
+    // Construire l'URL LinkedIn (sans summary car déprécié)
+    const linkedInUrl = new URL("https://www.linkedin.com/sharing/share-offsite/");
     linkedInUrl.searchParams.set("url", articleUrl);
-    linkedInUrl.searchParams.set("title", title);
-    linkedInUrl.searchParams.set("summary", fullText);
     
     // Ouvrir dans une nouvelle fenêtre popup
     const width = 600;
-    const height = 600;
+    const height = 700;
     const left = (window.innerWidth - width) / 2;
     const top = (window.innerHeight - height) / 2;
     
@@ -1423,10 +1435,15 @@ export default function AdminPage() {
                               </div>
 
                               {/* Info */}
-                              <p className="text-xs text-gray-400 flex items-center gap-1">
-                                <ExternalLink className="w-3 h-3" />
-                                Ouvrira LinkedIn après la sauvegarde
-                              </p>
+                              <div className="space-y-1">
+                                <p className="text-xs text-gray-400 flex items-center gap-1">
+                                  <ExternalLink className="w-3 h-3" />
+                                  Ouvrira LinkedIn après la sauvegarde
+                                </p>
+                                <p className="text-xs text-[#0A66C2] font-medium">
+                                  💡 Le texte sera copié automatiquement → Collez-le dans LinkedIn (Ctrl+V / Cmd+V)
+                                </p>
+                              </div>
                             </div>
                           )}
                         </div>
