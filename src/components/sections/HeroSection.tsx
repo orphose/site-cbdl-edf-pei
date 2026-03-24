@@ -88,23 +88,12 @@ export default function HeroSection() {
         {/* Colonne gauche - Contenu texte */}
         <div className="relative z-10 w-full lg:w-1/2 flex-1 lg:min-h-screen flex items-start lg:items-center bg-white pt-[72px] md:pt-[100px]">
           <div className="px-8 lg:px-16 py-8 lg:py-12 max-w-2xl">
-            {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <span className="inline-block px-4 py-2 bg-edf-green/10 text-edf-green text-sm font-medium mb-8">
-                Guyane • Énergie Renouvelable
-              </span>
-            </motion.div>
-
             {/* Titre principal */}
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="heading-xl text-black mb-4 uppercase"
+              className="heading-xl text-edf-bleu-nuit mb-4 uppercase"
             >
               Centrale bioénergie
               <br />
@@ -116,10 +105,10 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-2xl md:text-3xl text-gray-700 font-light mb-6"
+              className="text-2xl md:text-3xl text-edf-bleu-nuit font-light mb-6"
             >
               UNE ÉNERGIE{" "}
-              <span className="text-edf-green font-semibold">VERTE</span> ET{" "}
+              <span className="text-edf-blue font-semibold">VERTE</span> ET{" "}
               <span className="text-edf-orange font-semibold">GARANTIE</span>
             </motion.p>
 
@@ -128,11 +117,11 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="text-gray-600 text-lg max-w-xl mb-10"
+              className="text-edf-gris-fonce text-lg max-w-xl mb-10"
             >
               Un projet clé qui permettra à la Guyane de franchir une étape
               significative vers le{" "}
-              <strong className="text-edf-blue-dark">
+              <strong className="text-edf-bleu-nuit">
                 100% énergie renouvelable
               </strong>
               .
@@ -149,7 +138,7 @@ export default function HeroSection() {
                 as={Link}
                 href="/centrale"
                 size="lg"
-                className="bg-edf-blue text-white font-semibold px-8 hover:bg-edf-blue-light transition-all"
+                className="bg-edf-bleu-action text-white font-semibold px-8 hover:bg-edf-blue transition-all"
                 radius="none"
               >
                 Découvrir le projet
@@ -157,7 +146,7 @@ export default function HeroSection() {
               <Button
                 size="lg"
                 variant="bordered"
-                className="border-edf-blue-dark text-edf-blue-dark hover:bg-edf-blue-dark hover:text-white transition-all"
+                className="border-edf-bleu-nuit text-edf-bleu-nuit hover:bg-edf-bleu-nuit hover:text-white transition-all"
                 radius="none"
                 startContent={<Play className="w-4 h-4" />}
                 onPress={() => setIsModalOpen(true)}

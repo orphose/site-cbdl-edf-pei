@@ -75,7 +75,7 @@ export default function AboutTransitionSection() {
   return (
     <section aria-labelledby="about-transition-heading" className="section-padding bg-white relative overflow-hidden">
       {/* Fond décoratif */}
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-gray-50 to-transparent pointer-events-none" />
+      <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-edf-blanc-bleute to-transparent pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-64 h-64 bg-edf-green/5 rounded-full blur-3xl" />
 
       <div className="container-custom relative z-10">
@@ -94,9 +94,9 @@ export default function AboutTransitionSection() {
           {...fadeInUpDelay(0.1)}
           className="mb-16"
         >
-          <Card className="border-l-4 border-l-edf-orange bg-gray-50 shadow-none">
+          <Card className="border-l-4 border-l-edf-orange bg-edf-blanc-bleute shadow-none">
             <CardBody className="p-8">
-              <p className="text-gray-700 text-lg leading-relaxed">
+              <p className="text-edf-bleu-nuit text-lg leading-relaxed">
                 Notre engagement se concrétise par la <strong className="text-edf-blue">conversion 
                 à la biomasse liquide</strong> de nos centrales moteurs : d&apos;abord à La Réunion, 
                 puis en Guadeloupe et en Martinique. En Guyane, nous construisons une centrale 
@@ -122,7 +122,7 @@ export default function AboutTransitionSection() {
                   <CardBody className="p-6 text-center">
                     {/* Icône */}
                     <div
-                      className="w-12 h-12 mx-auto mb-4 rounded-xl flex items-center justify-center"
+                      className="w-12 h-12 mx-auto mb-4 flex items-center justify-center"
                       style={{ backgroundColor: `${stat.color}15` }}
                     >
                       <IconComponent
@@ -140,14 +140,14 @@ export default function AboutTransitionSection() {
                         {stat.value}
                       </span>
                       {stat.unit && (
-                        <span className="text-lg font-medium text-gray-500">
+                        <span className="text-lg font-medium text-edf-gris-moyen">
                           {stat.unit}
                         </span>
                       )}
                     </div>
 
                     {/* Label */}
-                    <p className="text-gray-600 text-sm">{stat.label}</p>
+                    <p className="text-edf-gris-fonce text-sm">{stat.label}</p>
                   </CardBody>
                 </Card>
               </motion.div>

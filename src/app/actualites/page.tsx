@@ -164,7 +164,7 @@ export default function ActualitesPage() {
       </section>
 
       {/* Liste des actualités */}
-      <section className="section-padding bg-gray-50">
+      <section className="section-padding bg-edf-blanc-bleute">
         <div className="container-custom">
           {/* Barre de recherche */}
           {!loading && !error && news.length > 0 && (
@@ -173,7 +173,7 @@ export default function ActualitesPage() {
                 placeholder="Rechercher une actualité..."
                 value={searchQuery}
                 onValueChange={setSearchQuery}
-                startContent={<Search className="w-4 h-4 text-gray-400" />}
+                startContent={<Search className="w-4 h-4 text-edf-gris-moyen" />}
                 isClearable
                 onClear={() => setSearchQuery("")}
                 classNames={{
@@ -181,7 +181,7 @@ export default function ActualitesPage() {
                 }}
               />
               {searchQuery && (
-                <p className="text-sm text-gray-500 mt-2">
+                <p className="text-sm text-edf-gris-moyen mt-2">
                   {filteredNews.length} résultat{filteredNews.length !== 1 ? "s" : ""}
                 </p>
               )}
@@ -222,12 +222,12 @@ export default function ActualitesPage() {
               className="text-center py-20"
             >
               <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Calendar className="w-12 h-12 text-gray-400" />
+                <Calendar className="w-12 h-12 text-edf-gris-moyen" />
               </div>
-              <h2 className="text-2xl font-bold text-gray-700 mb-4">
+              <h2 className="text-2xl font-bold text-edf-bleu-nuit mb-4">
                 Aucune actualité pour le moment
               </h2>
-              <p className="text-gray-500 max-w-md mx-auto">
+              <p className="text-edf-gris-moyen max-w-md mx-auto">
                 Les prochaines actualités du projet seront publiées ici.
                 Revenez bientôt !
               </p>
@@ -274,19 +274,19 @@ export default function ActualitesPage() {
                         {/* Contenu */}
                         <div className="p-6">
                           {/* Date */}
-                          <div className="flex items-center gap-2 text-gray-500 text-sm mb-3">
+                          <div className="flex items-center gap-2 text-edf-gris-moyen text-sm mb-3">
                             <Calendar className="w-4 h-4" />
                             <span>{formatDate(item.published_at)}</span>
                           </div>
 
                           {/* Titre */}
-                          <h3 className="text-lg font-bold text-gray-800 mb-3 group-hover:text-edf-blue transition-colors line-clamp-2">
+                          <h3 className="text-lg font-bold text-edf-bleu-nuit mb-3 group-hover:text-edf-blue transition-colors line-clamp-2">
                             {item.title}
                           </h3>
 
                           {/* Extrait */}
                           {item.excerpt && (
-                            <p className="text-gray-600 text-sm line-clamp-3 mb-4">
+                            <p className="text-edf-gris-fonce text-sm line-clamp-3 mb-4">
                               {item.excerpt}
                             </p>
                           )}

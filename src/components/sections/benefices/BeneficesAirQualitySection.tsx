@@ -77,7 +77,7 @@ export default function BeneficesAirQualitySection() {
   console.assert(AIR_QUALITY_ITEMS.every(item => typeof item.icon === 'function' && item.title.length > 0), "Données complètes requises");
 
   return (
-    <section aria-labelledby="benefices-air-quality-heading" className="section-padding bg-gray-50 relative overflow-hidden">
+    <section aria-labelledby="benefices-air-quality-heading" className="section-padding bg-edf-blanc-bleute relative overflow-hidden">
       {/* Motif de fond */}
       <div className="absolute inset-0 opacity-[0.02]">
         <div
@@ -121,9 +121,9 @@ export default function BeneficesAirQualitySection() {
                     <div className="flex items-start justify-between mb-4">
                       {/* Icône */}
                       <div
-                        className="w-14 h-14 rounded-xl flex items-center justify-center shadow-md"
+                        className="w-14 h-14 flex items-center justify-center shadow-md"
                         style={{
-                          background: `linear-gradient(135deg, ${card.color} 0%, ${card.color}cc 100%)`,
+                          background: `linear-gradient(120deg, ${card.color} 0%, ${card.color}cc 100%)`,
                         }}
                       >
                         <IconComponent className="w-7 h-7 text-white" />
@@ -137,7 +137,7 @@ export default function BeneficesAirQualitySection() {
                         >
                           {card.highlight}
                         </div>
-                        <div className="text-[10px] text-gray-400 uppercase tracking-wide">
+                        <div className="text-[10px] text-edf-gris-moyen uppercase tracking-wide">
                           {card.highlightLabel}
                         </div>
                       </div>
@@ -152,7 +152,7 @@ export default function BeneficesAirQualitySection() {
                     </h3>
 
                     {/* Description */}
-                    <p className="text-gray-600 text-sm leading-relaxed">
+                    <p className="text-edf-gris-fonce text-sm leading-relaxed">
                       {card.description}
                     </p>
 

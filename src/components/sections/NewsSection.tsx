@@ -71,7 +71,7 @@ export default function NewsSection() {
           <Button
             as={Link}
             href="/actualites"
-            className="bg-edf-blue text-white font-medium hover:bg-edf-blue-light transition-all"
+            className="bg-edf-bleu-action text-white font-medium hover:bg-edf-blue transition-all"
             radius="none"
             endContent={<ArrowRight className="w-4 h-4" />}
           >
@@ -84,7 +84,7 @@ export default function NewsSection() {
           {loading ? (
             // Skeleton de chargement
             Array.from({ length: 3 }).map((_, index) => (
-              <Card key={index} className="h-full bg-white border border-gray-100">
+              <Card key={index} className="h-full bg-white border border-edf-gris-clair">
                 <Skeleton className="aspect-video rounded-none" />
                 <CardBody className="p-6">
                   <Skeleton className="w-32 h-4 mb-3 rounded" />
@@ -96,7 +96,7 @@ export default function NewsSection() {
           ) : news.length === 0 ? (
             // Message si pas d'actualités
             <div className="col-span-full text-center py-12">
-              <p className="text-gray-500">Aucune actualité pour le moment.</p>
+              <p className="text-edf-gris-moyen">Aucune actualité pour le moment.</p>
             </div>
           ) : (
             // Affichage des actualités
@@ -106,7 +106,7 @@ export default function NewsSection() {
               {...fadeInUpDelay(index * 0.05)}
             >
                 <Link href={`/actualites/${item.slug}`}>
-                  <Card className="h-full card-hover bg-white border border-gray-100 shadow-sm cursor-pointer">
+                  <Card className="h-full card-hover bg-white border border-edf-gris-clair shadow-sm cursor-pointer">
                     {/* Image */}
                 <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 relative overflow-hidden">
                       {item.image_url ? (
@@ -118,7 +118,7 @@ export default function NewsSection() {
                         />
                       ) : (
                   <div className="absolute inset-0 flex items-center justify-center">
-                          <p className="text-gray-400 text-sm">📷 Image actualité</p>
+                          <p className="text-edf-gris-moyen text-sm">📷 Image actualité</p>
                   </div>
                       )}
                   {/* Badge catégorie */}
@@ -129,18 +129,18 @@ export default function NewsSection() {
 
                 <CardBody className="p-6">
                   {/* Date */}
-                  <div className="flex items-center gap-2 text-gray-500 text-sm mb-3">
+                  <div className="flex items-center gap-2 text-edf-gris-moyen text-sm mb-3">
                     <Calendar className="w-4 h-4" />
                         <span>{formatDate(item.published_at)}</span>
                   </div>
 
                   {/* Titre */}
-                  <h3 className="text-lg font-bold text-black mb-3 line-clamp-2">
+                  <h3 className="text-lg font-bold text-edf-bleu-nuit mb-3 line-clamp-2">
                         {item.title}
                   </h3>
 
                   {/* Extrait */}
-                  <p className="text-gray-600 text-sm line-clamp-2">
+                  <p className="text-edf-gris-fonce text-sm line-clamp-2">
                         {item.excerpt || ""}
                   </p>
                 </CardBody>

@@ -47,13 +47,13 @@ export default function BeneficesWaterSection() {
               id="benefices-water-heading"
             />
             <motion.div {...fadeInUp} className="mb-12 -mt-6">
-              <p className="text-gray-600 text-lg leading-relaxed mb-4">
+              <p className="text-edf-gris-fonce text-lg leading-relaxed mb-4">
                 La consommation en eau de la future Centrale Bioénergie du
                 Larivot sera{" "}
                 <strong className="text-edf-blue">40 fois inférieure</strong>{" "}
                 à celle de l&apos;ancienne centrale de Dégrad-des-Cannes.
               </p>
-              <p className="text-gray-500 text-base leading-relaxed">
+              <p className="text-edf-gris-moyen text-base leading-relaxed">
                 Elle traduit un progrès significatif dans la préservation
                 des ressources en eau. Cette avancée a été rendue possible
                 grâce à l&apos;utilisation d&apos;aéroréfrigérants secs, une

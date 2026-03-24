@@ -76,7 +76,7 @@ const cardVariants = {
  */
 export default function CentraleDescriptionSection() {
   return (
-    <section aria-labelledby="centrale-description-heading" className="section-padding bg-gray-50 relative overflow-hidden">
+    <section aria-labelledby="centrale-description-heading" className="section-padding bg-edf-blanc-bleute relative overflow-hidden">
       {/* Motif de fond */}
       <div className="absolute inset-0 opacity-[0.02]">
         <div
@@ -122,9 +122,9 @@ export default function CentraleDescriptionSection() {
                       <div className="flex items-start justify-between mb-4">
                         {/* Icône */}
                         <div
-                          className="w-12 h-12 rounded-lg flex items-center justify-center shadow-md"
+                          className="w-12 h-12 flex items-center justify-center shadow-md"
                           style={{
-                            background: `linear-gradient(135deg, ${card.color} 0%, ${card.color}cc 100%)`,
+                            background: `linear-gradient(120deg, ${card.color} 0%, ${card.color}cc 100%)`,
                           }}
                         >
                           <IconComponent className="w-6 h-6 text-white" />
@@ -138,7 +138,7 @@ export default function CentraleDescriptionSection() {
                           >
                             {card.highlight}
                           </div>
-                          <div className="text-[10px] text-gray-400 uppercase tracking-wide">
+                          <div className="text-[10px] text-edf-gris-moyen uppercase tracking-wide">
                             {card.highlightLabel}
                           </div>
                         </div>
@@ -153,7 +153,7 @@ export default function CentraleDescriptionSection() {
                       </h3>
 
                       {/* Description */}
-                      <p className="text-gray-600 text-sm leading-relaxed">
+                      <p className="text-edf-gris-fonce text-sm leading-relaxed">
                         {card.description}
                       </p>
 
@@ -174,7 +174,7 @@ export default function CentraleDescriptionSection() {
             {...fadeInUp}
             className="h-full"
           >
-            <div className="bg-white shadow-lg border border-gray-100 overflow-hidden h-full flex flex-col">
+            <div className="bg-white shadow-lg border border-edf-gris-clair overflow-hidden h-full flex flex-col">
               {/* En-tête */}
               <div className="bg-edf-green px-5 py-3 flex items-center justify-between">
                 <div className="flex items-center gap-2 text-white">
@@ -185,7 +185,7 @@ export default function CentraleDescriptionSection() {
               </div>
 
               {/* Image */}
-              <div className="relative flex-1 min-h-[300px] bg-gradient-to-br from-gray-50 to-white">
+              <div className="relative flex-1 min-h-[300px] bg-gradient-to-br from-edf-blanc-bleute to-white">
                 <Image
                   src={IMAGES.centrale.visuelBiomasse}
                   alt="Cycle de la biomasse liquide - De la photosynthèse à la production d'énergie renouvelable"
@@ -196,10 +196,10 @@ export default function CentraleDescriptionSection() {
               </div>
 
               {/* Légende avec animation de flux */}
-              <div className="bg-gray-50 px-4 py-4 border-t border-gray-100 overflow-hidden">
+              <div className="bg-edf-blanc-bleute px-4 py-4 border-t border-edf-gris-clair overflow-hidden">
                 <div className="relative flex items-center justify-center">
                   {/* Ligne de connexion avec flux animé */}
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[2px] bg-gray-200 overflow-hidden">
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[2px] bg-edf-gris-clair overflow-hidden">
                     <motion.div
                       className="absolute top-0 left-0 h-full w-1/4 bg-gradient-to-r from-transparent via-edf-green to-transparent"
                       animate={{ x: ["-100%", "500%"] }}
@@ -221,7 +221,7 @@ export default function CentraleDescriptionSection() {
                     ].map((item, index) => (
                       <motion.div
                         key={index}
-                        className="flex flex-col items-center gap-1 z-10 bg-gray-50 px-2"
+                        className="flex flex-col items-center gap-1 z-10 bg-edf-blanc-bleute px-2"
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -265,7 +265,7 @@ export default function CentraleDescriptionSection() {
                         </motion.div>
 
                         {/* Label */}
-                        <span className="text-[11px] text-gray-600 font-medium whitespace-nowrap">
+                        <span className="text-[11px] text-edf-gris-fonce font-medium whitespace-nowrap">
                           {item.label}
                         </span>
                       </motion.div>

@@ -58,7 +58,7 @@ const itemVariants = {
  */
 export default function ChantierEconomicSection() {
   return (
-    <section aria-labelledby="chantier-economic-heading" className="section-padding bg-gray-50 relative overflow-hidden">
+    <section aria-labelledby="chantier-economic-heading" className="section-padding bg-edf-blanc-bleute relative overflow-hidden">
       {/* Fond décoratif */}
       <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-edf-green/5 to-transparent pointer-events-none" />
       
@@ -94,10 +94,10 @@ export default function ChantierEconomicSection() {
                 >
                   {stat.value}
                 </div>
-                <div className="text-gray-800 font-semibold">
+                <div className="text-edf-bleu-nuit font-semibold">
                   {stat.label}
                 </div>
-                <div className="text-gray-500 text-sm">
+                <div className="text-edf-gris-moyen text-sm">
                   {stat.sublabel}
                 </div>
               </motion.div>
@@ -118,12 +118,12 @@ export default function ChantierEconomicSection() {
                   Un impact humain et social positif
                 </h3>
               </div>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-edf-gris-fonce leading-relaxed">
                 Le chantier de construction mobilisera en moyenne{" "}
-                <strong className="text-gray-800">250 personnes</strong> et 
-                jusqu&apos;à <strong className="text-gray-800">500</strong> lors 
+                <strong className="text-edf-bleu-nuit">250 personnes</strong> et 
+                jusqu&apos;à <strong className="text-edf-bleu-nuit">500</strong> lors 
                 des pics d&apos;activité. Ce projet nécessitera au total{" "}
-                <strong className="text-gray-800">1 200 emplois</strong> directs 
+                <strong className="text-edf-bleu-nuit">1 200 emplois</strong> directs 
                 et indirects pour sa construction et son fonctionnement.
               </p>
             </div>
@@ -136,11 +136,11 @@ export default function ChantierEconomicSection() {
                   Un impact économique majeur
                 </h3>
               </div>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-edf-gris-fonce leading-relaxed">
                 Ce projet d&apos;envergure devrait générer plus de{" "}
-                <strong className="text-gray-800">130 millions d&apos;euros</strong>{" "}
+                <strong className="text-edf-bleu-nuit">130 millions d&apos;euros</strong>{" "}
                 de retombées directes pour le territoire guyanais,{" "}
-                <strong className="text-gray-800">sans aucun impact sur la facture 
+                <strong className="text-edf-bleu-nuit">sans aucun impact sur la facture 
                 d&apos;électricité des guyanais</strong>. Cet investissement massif 
                 d&apos;EDF PEI démontre un engagement fort pour un développement 
                 économique responsable et pérenne.

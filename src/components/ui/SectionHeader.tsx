@@ -36,7 +36,7 @@ export default function SectionHeader({
   className = "",
   id,
 }: SectionHeaderProps) {
-  const textColor = headingColor === "white" ? "text-white" : "text-black";
+  const textColor = headingColor === "white" ? "text-white" : "text-edf-bleu-nuit";
 
   return (
     <motion.div {...fadeInUp} className={className}>
@@ -49,7 +49,7 @@ export default function SectionHeader({
         {heading}
       </h2>
       {description && (
-        <p className="text-gray-600 text-lg leading-relaxed max-w-3xl">
+        <p className="text-edf-gris-fonce text-lg leading-relaxed max-w-3xl">
           {description}
         </p>
       )}

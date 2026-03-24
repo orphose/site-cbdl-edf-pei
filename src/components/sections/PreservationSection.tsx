@@ -106,14 +106,14 @@ export default function PreservationSection() {
           className="max-w-4xl mb-4"
         />
         <div className="max-w-4xl mb-16">
-          <h3 className="text-2xl text-gray-700 font-light mb-6">
+          <h3 className="text-2xl text-edf-bleu-nuit font-light mb-6">
             Préserver l&apos;environnement et la biodiversité
           </h3>
-          <p className="text-gray-600 text-lg max-w-3xl">
+          <p className="text-edf-gris-fonce text-lg max-w-3xl">
             Un espace <strong className="text-edf-green">10 fois plus vaste</strong> que la
             superficie de la centrale, dédié à la préservation de la
             biodiversité locale, cela représente un investissement de plus de{" "}
-            <strong className="text-edf-orange">400 000 €</strong>.
+            <strong className="text-edf-blue">400 000 €</strong>.
           </p>
         </div>
 
@@ -130,7 +130,7 @@ export default function PreservationSection() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.05 }}
-                className={`p-6 bg-gradient-to-br from-gray-50 to-white border border-gray-100 shadow-sm ${
+                className={`p-6 bg-gradient-to-br from-gray-50 to-white border border-edf-gris-clair shadow-sm ${
                   index === 4 ? "col-span-2" : ""
                 }`}
               >
@@ -142,7 +142,7 @@ export default function PreservationSection() {
                     </span>
                   )}
                 </div>
-                <p className="text-gray-600 text-sm">{stat.label}</p>
+                <p className="text-edf-gris-fonce text-sm">{stat.label}</p>
               </motion.div>
             ))}
           </motion.div>

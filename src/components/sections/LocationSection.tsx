@@ -11,7 +11,7 @@ import { fadeInUpDelay } from "@/lib/motion-variants";
  */
 export default function LocationSection() {
   return (
-    <section className="section-padding bg-gray-50 relative overflow-hidden" aria-labelledby="section-location-heading">
+    <section className="section-padding bg-edf-blanc-bleute relative overflow-hidden" aria-labelledby="section-location-heading">
       <div className="container-custom relative z-10">
         {/* En-tête */}
         <SectionHeader
@@ -50,12 +50,12 @@ export default function LocationSection() {
             className="mt-4 md:mt-0 md:absolute md:right-8 md:top-8 bg-white shadow-lg p-4 md:p-6 md:max-w-xs"
           >
             <div className="flex items-center gap-3 mb-2 md:mb-3">
-              <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-edf-green/10 flex items-center justify-center flex-shrink-0">
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-edf-green/10 flex items-center justify-center flex-shrink-0">
                 <Navigation className="w-4 h-4 md:w-5 md:h-5 text-edf-green" />
               </div>
-              <h4 className="font-bold text-black text-sm md:text-base">Accès</h4>
+              <h4 className="font-bold text-edf-bleu-nuit text-sm md:text-base">Accès</h4>
             </div>
-            <p className="text-gray-600 text-sm">
+            <p className="text-edf-gris-fonce text-sm">
               À 15 minutes de Cayenne, accessible par la RN1 en direction de Kourou.
             </p>
           </motion.div>

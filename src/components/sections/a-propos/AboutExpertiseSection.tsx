@@ -23,7 +23,7 @@ const EXPERTISE_ITEMS = [
       { name: "Bellefontaine", location: "Martinique" },
     ],
     color: "#001A70",
-    gradient: "linear-gradient(135deg, #001A70 0%, #1a3a8c 100%)",
+    gradient: "linear-gradient(120deg, #001A70 0%, #1a3a8c 100%)",
   },
   {
     title: "Projets en construction",
@@ -33,7 +33,7 @@ const EXPERTISE_ITEMS = [
       { name: "Centrale Bioénergie du Larivot", location: "Guyane" },
     ],
     color: "#FFB210",
-    gradient: "linear-gradient(135deg, #FFB210 0%, #ff9500 100%)",
+    gradient: "linear-gradient(120deg, #FFB210 0%, #ff9500 100%)",
   },
   {
     title: "Installations EnR",
@@ -43,7 +43,7 @@ const EXPERTISE_ITEMS = [
       { name: "Gress", location: "Martinique", type: "Éolien" },
     ],
     color: "#88D910",
-    gradient: "linear-gradient(135deg, #88D910 0%, #6bc700 100%)",
+    gradient: "linear-gradient(120deg, #88D910 0%, #6bc700 100%)",
   },
 ];
 
@@ -73,7 +73,7 @@ const cardVariants = {
  */
 export default function AboutExpertiseSection() {
   return (
-    <section aria-labelledby="about-expertise-heading" className="section-padding bg-gray-50 relative overflow-hidden">
+    <section aria-labelledby="about-expertise-heading" className="section-padding bg-edf-blanc-bleute relative overflow-hidden">
       {/* Fond décoratif */}
       <div className="absolute top-0 left-0 w-full h-full">
         <div className="absolute top-20 right-10 w-80 h-80 bg-edf-blue/5 rounded-full blur-3xl" />
@@ -92,13 +92,13 @@ export default function AboutExpertiseSection() {
               heading={<>Un <span className="text-edf-orange">atout</span> pour les territoires</>}
               id="about-expertise-heading"
             />
-            <p className="text-gray-600 text-lg leading-relaxed mb-6">
+            <p className="text-edf-gris-fonce text-lg leading-relaxed mb-6">
               Nos équipes maîtrisent l&apos;ensemble de la chaîne de valeur énergétique : 
               de la <strong className="text-edf-blue">gestion de projets</strong> à la 
               <strong className="text-edf-blue"> maîtrise d&apos;ouvrage</strong>, jusqu&apos;à 
               l&apos;<strong className="text-edf-blue">exploitation</strong> des centrales.
             </p>
-            <p className="text-gray-600 text-lg leading-relaxed mb-8">
+            <p className="text-edf-gris-fonce text-lg leading-relaxed mb-8">
               Ce savoir-faire unique est spécifiquement adapté aux systèmes électriques 
               non interconnectés, garantissant une expertise de pointe au service de la 
               sécurité énergétique de chaque territoire.
@@ -108,14 +108,14 @@ export default function AboutExpertiseSection() {
             <Card className="border-l-4 border-l-edf-green bg-white shadow-sm">
               <CardBody className="p-6">
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-edf-green/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 bg-edf-green/10 flex items-center justify-center flex-shrink-0">
                     <WindIcon className="w-5 h-5 text-edf-green" />
                   </div>
                   <div>
-                    <h4 className="text-gray-900 font-semibold mb-2">
+                    <h4 className="text-edf-bleu-nuit font-semibold mb-2">
                       Portefeuille EnR en développement
                     </h4>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-edf-gris-fonce text-sm">
                       En collaboration avec <strong>EDF Renouvelables</strong>, autre filiale 
                       du Groupe, nous développons un portefeuille de projets d&apos;énergies 
                       renouvelables pour accélérer la transition énergétique.
@@ -161,26 +161,26 @@ export default function AboutExpertiseSection() {
                             {item.items.length} sites
                           </span>
                         </div>
-                        <p className="text-gray-500 text-sm">
+                        <p className="text-edf-gris-moyen text-sm">
                           {item.subtitle}
                         </p>
                       </div>
 
                       {/* Liste des sites */}
                       <div className="px-6 pb-6">
-                        <div className="bg-gray-50 rounded-xl p-4 space-y-3">
+                        <div className="bg-edf-blanc-bleute p-4 space-y-3">
                           {item.items.map((subItem, idx) => (
                             <div
                               key={idx}
                               className="flex items-center gap-2"
                             >
-                              <span className="font-semibold text-gray-800">
+                              <span className="font-semibold text-edf-bleu-nuit">
                                 {subItem.name}
                               </span>
                               <ChevronRight 
-                                className="w-4 h-4 text-gray-300 flex-shrink-0" 
+                                className="w-4 h-4 text-edf-gris-moyen flex-shrink-0" 
                               />
-                              <span className="text-gray-500 text-sm">
+                              <span className="text-edf-gris-moyen text-sm">
                                 {subItem.location}
                               </span>
                               {/* Type pour EnR */}

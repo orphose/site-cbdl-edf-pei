@@ -86,7 +86,7 @@ export default function ChantierEnvironmentSection() {
                 variants={itemVariants}
                 className="group"
               >
-                <div className="relative bg-white border border-gray-100 p-8 transition-all duration-500 hover:shadow-xl h-full">
+                <div className="relative bg-white border border-edf-gris-clair p-8 transition-all duration-500 hover:shadow-xl h-full">
                   {/* Barre de couleur en haut */}
                   <div
                     className="absolute top-0 left-0 right-0 h-1"
@@ -104,9 +104,9 @@ export default function ChantierEnvironmentSection() {
                   <div className="relative">
                     {/* Icône */}
                     <div
-                      className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 shadow-md"
+                      className="w-16 h-16 flex items-center justify-center mb-6 shadow-md"
                       style={{
-                        background: `linear-gradient(135deg, ${item.color} 0%, ${item.color}cc 100%)`,
+                        background: `linear-gradient(120deg, ${item.color} 0%, ${item.color}cc 100%)`,
                       }}
                     >
                       <IconComponent className="w-8 h-8 text-white" />
@@ -119,10 +119,10 @@ export default function ChantierEnvironmentSection() {
                     >
                       {item.title}
                     </h3>
-                    <h4 className="text-gray-500 font-medium mb-4">
+                    <h4 className="text-edf-gris-moyen font-medium mb-4">
                       {item.subtitle}
                     </h4>
-                    <p className="text-gray-600 leading-relaxed">
+                    <p className="text-edf-gris-fonce leading-relaxed">
                       {item.description}
                     </p>
 
@@ -151,11 +151,11 @@ export default function ChantierEnvironmentSection() {
           {...fadeInUpDelay(0.2)}
           className="mt-12 text-center"
         >
-          <div className="inline-flex items-center gap-3 bg-gray-50 px-6 py-4 rounded-xl">
+          <div className="inline-flex items-center gap-3 bg-edf-blanc-bleute px-6 py-4">
             <div className="w-10 h-10 rounded-full bg-edf-blue/10 flex items-center justify-center">
               <ShieldCheck className="w-5 h-5 text-edf-blue" />
             </div>
-            <p className="text-gray-600 text-sm">
+            <p className="text-edf-gris-fonce text-sm">
               Une démarche guidée par la{" "}
               <strong className="text-edf-blue">transparence</strong>, la{" "}
               <strong className="text-edf-blue">responsabilité</strong> et l&apos;

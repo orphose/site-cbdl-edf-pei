@@ -72,10 +72,10 @@ export default function ChantierSecuritySection() {
               id="chantier-security-heading"
             />
 
-            <p className="text-gray-600 text-lg leading-relaxed mb-8">
+            <p className="text-edf-gris-fonce text-lg leading-relaxed mb-8">
               La sécurité des salariés et des prestataires est un objectif
               majeur pour EDF PEI qui promeut la politique du{" "}
-              <strong className="text-gray-800">zéro accident</strong>.
+              <strong className="text-edf-bleu-nuit">zéro accident</strong>.
               Nous nous engageons à garantir la sécurité et protéger
               la santé de toutes les parties prenantes du projet.
             </p>
@@ -94,12 +94,12 @@ export default function ChantierSecuritySection() {
                   <motion.div
                     key={index}
                     variants={itemVariants}
-                    className="flex items-center gap-3 bg-gray-50 px-4 py-3 border border-gray-100"
+                    className="flex items-center gap-3 bg-edf-blanc-bleute px-4 py-3 border border-edf-gris-clair"
                   >
                     <div className="w-8 h-8 bg-edf-orange/10 flex items-center justify-center shrink-0">
                       <IconComponent className="w-4 h-4 text-edf-orange" />
                     </div>
-                    <span className="text-gray-800 text-sm font-medium">
+                    <span className="text-edf-bleu-nuit text-sm font-medium">
                       {point.text}
                     </span>
                   </motion.div>
@@ -114,7 +114,7 @@ export default function ChantierSecuritySection() {
             className="relative"
           >
             {/* Carte principale */}
-            <div className="bg-white border border-gray-200 shadow-lg p-10 h-full flex flex-col justify-center relative overflow-hidden">
+            <div className="bg-white border border-edf-gris-clair shadow-lg p-10 h-full flex flex-col justify-center relative overflow-hidden">
               {/* Contenu */}
               <div className="relative z-10">
                 {/* Badge */}
@@ -125,11 +125,11 @@ export default function ChantierSecuritySection() {
                 </div>
 
                 {/* Titre */}
-                <h3 className="text-3xl font-bold text-black text-center mb-4 uppercase tracking-wide">
+                <h3 className="text-3xl font-bold text-edf-bleu-nuit text-center mb-4 uppercase tracking-wide">
                   Objectif Zéro Accident
                 </h3>
 
-                <p className="text-black text-center mb-10 max-w-md mx-auto">
+                <p className="text-edf-bleu-nuit text-center mb-10 max-w-md mx-auto">
                   Une commission dédiée coordonne les activités, accompagne 
                   la prévention et analyse les risques en permanence.
                 </p>

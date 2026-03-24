@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Work_Sans } from "next/font/google";
 import "./globals.css";
 import { NextUIProvider } from "@/providers/NextUIProvider";
 import Header from "@/components/Header";
@@ -7,16 +7,13 @@ import Footer from "@/components/Footer";
 
 /**
  * Polices de caractères
- * Geist: police moderne et épurée inspirée de Vercel
+ * Work Sans: police complémentaire EDF pour le B2C (Google Font libre)
+ * Conforme charte EDF 2021 — alternative à EDF 2020 (propriétaire)
  */
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const workSans = Work_Sans({
+  variable: "--font-work-sans",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 /**
@@ -58,7 +55,7 @@ export default function RootLayout({
   return (
     <html lang="fr" className="scroll-smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${workSans.variable} antialiased`}
       >
         <NextUIProvider>
           <div className="flex flex-col min-h-screen">

@@ -61,7 +61,7 @@ export default function PresentationSection() {
   return (
     <section className="section-padding bg-white relative overflow-hidden" aria-labelledby="section-presentation-heading">
       {/* Fond décoratif */}
-      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-gray-50 to-transparent pointer-events-none" aria-hidden="true" />
+      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-edf-blanc-bleute to-transparent pointer-events-none" aria-hidden="true" />
 
       <div className="container-custom relative z-10">
         {/* En-tête de section */}
@@ -89,13 +89,13 @@ export default function PresentationSection() {
                 <Card
                   className="h-full card-hover border-none shadow-lg"
                   style={{
-                    background: `linear-gradient(135deg, var(--background) 0%, var(--background) 100%)`,
+                    background: `linear-gradient(120deg, var(--background) 0%, var(--background) 100%)`,
                   }}
                 >
                   <CardBody className="p-8">
                     {/* Icône */}
                     <div
-                      className={`w-16 h-16 rounded-xl bg-gradient-to-br ${card.gradient} flex items-center justify-center mb-6`}
+                      className={`w-16 h-16 bg-gradient-to-br ${card.gradient} flex items-center justify-center mb-6`}
                     >
                       <IconComponent
                         className="w-8 h-8"
@@ -112,7 +112,7 @@ export default function PresentationSection() {
                     </h3>
 
                     {/* Description */}
-                    <p className="text-gray-600 leading-relaxed">
+                    <p className="text-edf-gris-fonce leading-relaxed">
                       {card.description}
                     </p>
                   </CardBody>
@@ -140,7 +140,7 @@ export default function PresentationSection() {
                   {stat.unit}
                 </span>
               </div>
-              <p className="text-gray-500 text-sm mt-2">{stat.label}</p>
+              <p className="text-edf-gris-moyen text-sm mt-2">{stat.label}</p>
             </div>
           ))}
         </motion.div>

@@ -53,7 +53,7 @@ const BENEFITS = [
  */
 export default function BenefitsSection() {
   return (
-    <section className="section-padding bg-gray-50 relative overflow-hidden" aria-labelledby="section-benefits-heading">
+    <section className="section-padding bg-edf-blanc-bleute relative overflow-hidden" aria-labelledby="section-benefits-heading">
       {/* Fond avec motif subtil */}
       <div className="absolute inset-0 opacity-[0.02]" aria-hidden="true">
         <div className="absolute inset-0" style={{
@@ -84,7 +84,7 @@ export default function BenefitsSection() {
                 className="group"
               >
                 <div 
-                  className="relative h-full bg-white border border-gray-100 overflow-hidden transition-all duration-500 hover:shadow-xl hover:-translate-y-1"
+                  className="relative h-full bg-white border border-edf-gris-clair overflow-hidden transition-all duration-500 hover:shadow-xl hover:-translate-y-1"
                   style={{ 
                     borderLeft: `4px solid ${benefit.color}`,
                   }}
@@ -93,7 +93,7 @@ export default function BenefitsSection() {
                   <div 
                     className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                     style={{ 
-                      background: `linear-gradient(135deg, ${benefit.color}05 0%, transparent 50%)` 
+                      background: `linear-gradient(120deg, ${benefit.color}05 0%, transparent 50%)` 
                     }}
                   />
 
@@ -103,9 +103,9 @@ export default function BenefitsSection() {
                       {/* Icône */}
                       <motion.div
                         whileHover={{ scale: 1.05, rotate: 5 }}
-                        className="w-14 h-14 rounded-xl flex items-center justify-center shadow-lg"
+                        className="w-14 h-14 flex items-center justify-center shadow-lg"
                         style={{ 
-                          background: `linear-gradient(135deg, ${benefit.color} 0%, ${benefit.color}cc 100%)`,
+                          background: `linear-gradient(120deg, ${benefit.color} 0%, ${benefit.color}cc 100%)`,
                         }}
                       >
                         <IconComponent className="w-7 h-7 text-white" />
@@ -119,19 +119,19 @@ export default function BenefitsSection() {
                         >
                           {benefit.stat}
                         </div>
-                        <div className="text-[10px] text-gray-400 uppercase tracking-wide">
+                        <div className="text-[10px] text-edf-gris-moyen uppercase tracking-wide">
                           {benefit.statLabel}
                         </div>
                       </div>
                     </div>
 
                     {/* Titre */}
-                    <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-gray-800 transition-colors">
+                    <h3 className="text-lg font-bold text-edf-bleu-nuit mb-2 group-hover:text-edf-bleu-nuit transition-colors">
                       {benefit.title}
                     </h3>
 
                     {/* Description */}
-                    <p className="text-gray-500 leading-relaxed text-sm">
+                    <p className="text-edf-gris-moyen leading-relaxed text-sm">
                       {benefit.description}
                     </p>
                   </div>

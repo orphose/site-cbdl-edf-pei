@@ -62,7 +62,7 @@ export default function CentraleWhySection() {
   return (
     <section aria-labelledby="centrale-why-heading" className="section-padding bg-white relative overflow-hidden">
       {/* Fond décoratif */}
-      <div className="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-gray-50 to-transparent pointer-events-none" />
+      <div className="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-edf-blanc-bleute to-transparent pointer-events-none" />
 
       <div className="container-custom relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
@@ -77,13 +77,13 @@ export default function CentraleWhySection() {
               id="centrale-why-heading"
             />
             <motion.div {...fadeInUp} className="mb-12 -mt-6">
-              <p className="text-gray-600 text-lg leading-relaxed">
+              <p className="text-edf-gris-fonce text-lg leading-relaxed">
                 Avec sa puissance garantie de <strong className="text-edf-blue">120 MW</strong>,
                 la Centrale Bioénergie du Larivot se situe sur l&apos;Île de Cayenne
                 dans une zone industrielle hautement stratégique et bénéficie
                 d&apos;une proximité immédiate des consommateurs les plus importants.
               </p>
-              <p className="text-gray-500 text-base mt-4">
+              <p className="text-edf-gris-moyen text-base mt-4">
                 Cette infrastructure permettra de :
               </p>
             </motion.div>
@@ -105,7 +105,7 @@ export default function CentraleWhySection() {
                     className="group"
                   >
                     <div
-                      className="relative bg-white border border-gray-100 p-6 transition-all duration-500 hover:shadow-xl hover:-translate-x-1"
+                      className="relative bg-white border border-edf-gris-clair p-6 transition-all duration-500 hover:shadow-xl hover:-translate-x-1"
                       style={{
                         borderLeft: `4px solid ${item.color}`,
                       }}
@@ -114,16 +114,16 @@ export default function CentraleWhySection() {
                       <div
                         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                         style={{
-                          background: `linear-gradient(135deg, ${item.color}05 0%, transparent 50%)`,
+                          background: `linear-gradient(120deg, ${item.color}05 0%, transparent 50%)`,
                         }}
                       />
 
                       <div className="relative flex gap-4">
                         {/* Icône */}
                         <div
-                          className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 shadow-md"
+                          className="w-12 h-12 flex items-center justify-center shrink-0 shadow-md"
                           style={{
-                            background: `linear-gradient(135deg, ${item.color} 0%, ${item.color}cc 100%)`,
+                            background: `linear-gradient(120deg, ${item.color} 0%, ${item.color}cc 100%)`,
                           }}
                         >
                           <IconComponent className="w-6 h-6 text-white" />
@@ -137,7 +137,7 @@ export default function CentraleWhySection() {
                           >
                             {item.title}
                           </h3>
-                          <p className="text-gray-600 text-sm leading-relaxed">
+                          <p className="text-edf-gris-fonce text-sm leading-relaxed">
                             {item.description}
                           </p>
                         </div>
@@ -163,7 +163,7 @@ export default function CentraleWhySection() {
             className="relative lg:sticky lg:top-32"
           >
             {/* Image d'illustration */}
-            <div className="relative aspect-[4/3] overflow-hidden border border-gray-100">
+            <div className="relative aspect-[4/3] overflow-hidden border border-edf-gris-clair">
               <Image
                 src={IMAGES.centrale.pourquoiLocalisation}
                 alt="Localisation stratégique de la Centrale Bioénergie du Larivot en Guyane"
@@ -178,10 +178,10 @@ export default function CentraleWhySection() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="mt-4 lg:mt-0 lg:absolute lg:-bottom-6 lg:-left-6 bg-white shadow-xl p-4 lg:p-6 border border-gray-100 inline-block"
+              className="mt-4 lg:mt-0 lg:absolute lg:-bottom-6 lg:-left-6 bg-white shadow-xl p-4 lg:p-6 border border-edf-gris-clair inline-block"
             >
               <div className="text-3xl lg:text-4xl font-bold text-edf-blue">50%</div>
-              <div className="text-xs lg:text-sm text-gray-500 mt-1">
+              <div className="text-xs lg:text-sm text-edf-gris-moyen mt-1">
                 de la population<br />guyanaise alimentée
               </div>
             </motion.div>

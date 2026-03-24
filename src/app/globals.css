@@ -1,51 +1,76 @@
 @import "tailwindcss";
 
-/* === PALETTE EDF OFFICIELLE === */
+/* === PALETTE EDF OFFICIELLE — Charte 2021 === */
 :root {
-  /* Couleurs principales EDF */
-  --edf-blue: #001A70;
-  --edf-blue-dark: #00103d;
-  --edf-blue-light: #1a3a8c;
-  --edf-orange: #FFB210;
-  --edf-orange-light: #ffc340;
-  --edf-green: #88D910;
-  --edf-green-light: #9fe035;
+  /* Camaïeu Orange */
+  --edf-orange: #FE5716;        /* Orange Foncé — couleur principale */
+  --edf-orange-mid: #FF861D;    /* Orange Moyen */
+  --edf-orange-light: #FFB210;  /* Orange Clair */
 
-  /* Variantes texte accessibles (WCAG AA >= 4.5:1 sur blanc) */
-  --edf-orange-text: #9A7000;
-  --edf-green-text: #4D7A00;
+  /* Camaïeu Bleu */
+  --edf-blue: #001A70;          /* Bleu Foncé — dominant */
+  --edf-blue-mid: #1057C8;      /* Bleu Moyen */
+  --edf-blue-light: #1089FF;    /* Bleu Clair */
+  --edf-blue-logo: #10367A;     /* Bleu Logo (texte "edf") */
+
+  /* Camaïeu Vert */
+  --edf-green: #88D910;         /* Vert Moyen */
+  --edf-green-dark: #4F9E30;    /* Vert Foncé */
+  --edf-green-light: #C0E410;   /* Vert Clair */
+
+  /* Couleurs Web spécifiques (accessibilité WCAG) */
+  --edf-bleu-nuit: #00155A;     /* Textes et titres — remplace noir */
+  --edf-bleu-action: #005BFF;   /* Boutons CTA et liens */
+  --edf-blanc-bleute: #E9F1F9;  /* Fonds de sections — remplace gris */
+
+  /* Gris EDF */
+  --edf-gris-fonce: #333333;
+  --edf-gris-moyen: #666666;
+  --edf-gris-clair: #E0E0E0;
 
   /* Couleurs de fond */
   --background: #ffffff;
   --background-dark: #001A70;
-  --foreground: #171717;
-  --foreground-light: #f5f5f5;
+  --foreground: #00155A;
+  --foreground-light: #E9F1F9;
 
   /* Couleurs secondaires */
-  --text-muted: #6b7280;
-  --border-color: #e5e7eb;
+  --text-muted: #666666;
+  --border-color: #E0E0E0;
 
-  /* Gradients */
-  --gradient-hero: linear-gradient(135deg, #001A70 0%, #1a3a8c 50%, #001A70 100%);
-  --gradient-accent: linear-gradient(135deg, #FFB210 0%, #ffc340 100%);
-  --gradient-green: linear-gradient(135deg, #88D910 0%, #9fe035 100%);
-  --gradient-blue: linear-gradient(135deg, #001A70 0%, #1a3a8c 100%);
+  /* Dégradés EDF — angle 120deg (clair haut-gauche → foncé bas-droite) */
+  --gradient-hero: linear-gradient(120deg, #1089FF 0%, #001A70 100%);
+  --gradient-accent: linear-gradient(120deg, #FFB210 0%, #FE5716 100%);
+  --gradient-green: linear-gradient(120deg, #C0E410 0%, #4F9E30 100%);
+  --gradient-blue: linear-gradient(120deg, #1089FF 0%, #001A70 100%);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  /* Camaïeu Bleu */
   --color-edf-blue: var(--edf-blue);
-  --color-edf-blue-dark: var(--edf-blue-dark);
+  --color-edf-blue-mid: var(--edf-blue-mid);
   --color-edf-blue-light: var(--edf-blue-light);
+  --color-edf-blue-logo: var(--edf-blue-logo);
+  /* Camaïeu Orange */
   --color-edf-orange: var(--edf-orange);
+  --color-edf-orange-mid: var(--edf-orange-mid);
   --color-edf-orange-light: var(--edf-orange-light);
-  --color-edf-orange-text: var(--edf-orange-text);
+  /* Camaïeu Vert */
   --color-edf-green: var(--edf-green);
+  --color-edf-green-dark: var(--edf-green-dark);
   --color-edf-green-light: var(--edf-green-light);
-  --color-edf-green-text: var(--edf-green-text);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Couleurs Web */
+  --color-edf-bleu-nuit: var(--edf-bleu-nuit);
+  --color-edf-bleu-action: var(--edf-bleu-action);
+  --color-edf-blanc-bleute: var(--edf-blanc-bleute);
+  /* Gris EDF */
+  --color-edf-gris-fonce: var(--edf-gris-fonce);
+  --color-edf-gris-moyen: var(--edf-gris-moyen);
+  --color-edf-gris-clair: var(--edf-gris-clair);
+  /* Typographie */
+  --font-sans: var(--font-work-sans);
 }
 
 /* === BASE STYLES === */
@@ -59,8 +84,8 @@ html {
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  color: var(--edf-bleu-nuit);
+  font-family: var(--font-work-sans), system-ui, sans-serif;
   line-height: 1.6;
 }
 
@@ -108,17 +133,21 @@ nav[data-slot="base"] header {
   background-color: var(--edf-green);
 }
 
-/* Texte accessible sur fond clair (WCAG AA) */
+/* Texte sur fond clair — utilise Bleu Nuit pour le texte courant */
 .text-edf-orange {
-  color: var(--edf-orange-text);
+  color: var(--edf-orange);
 }
 
 .text-edf-green {
-  color: var(--edf-green-text);
+  color: var(--edf-green-dark);
 }
 
 .text-edf-blue {
   color: var(--edf-blue);
+}
+
+.text-edf-bleu-nuit {
+  color: var(--edf-bleu-nuit);
 }
 
 /* Texte lumineux pour fonds sombres */
@@ -128,6 +157,11 @@ nav[data-slot="base"] header {
 
 .text-edf-green-bright {
   color: var(--edf-green);
+}
+
+/* Fond Blanc Bleuté — remplace bg-gray-50 */
+.bg-edf-blanc-bleute {
+  background-color: var(--edf-blanc-bleute);
 }
 
 .gradient-hero {
@@ -140,6 +174,10 @@ nav[data-slot="base"] header {
 
 .gradient-green {
   background: var(--gradient-green);
+}
+
+.gradient-blue {
+  background: var(--gradient-blue);
 }
 
 /* === ANIMATIONS === */
@@ -283,7 +321,7 @@ nav[data-slot="base"] header {
 
 /* === VIDEO PLACEHOLDER === */
 .video-placeholder {
-  background: linear-gradient(135deg, #1a3a5c 0%, #0d2240 100%);
+  background: linear-gradient(120deg, #1089FF 0%, #001A70 100%);
   border-radius: 0;
   position: relative;
   overflow: hidden;

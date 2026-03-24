@@ -33,7 +33,7 @@ export default function CentraleBirthSection() {
   const [selectedPhoto, setSelectedPhoto] = useState<number | null>(null);
 
   return (
-    <section aria-labelledby="centrale-birth-heading" className="section-padding bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+    <section aria-labelledby="centrale-birth-heading" className="section-padding bg-gradient-to-b from-edf-blanc-bleute to-white relative overflow-hidden">
       {/* Motif de fond */}
       <div className="absolute inset-0 opacity-[0.02]">
         <div
@@ -92,13 +92,13 @@ export default function CentraleBirthSection() {
               <motion.div
                 key={index}
                 {...fadeInUpDelay(0.3 + index * 0.15)}
-                className="relative bg-white border border-gray-100 p-6 shadow-lg hover:shadow-xl transition-shadow"
+                className="relative bg-white border border-edf-gris-clair p-6 shadow-lg hover:shadow-xl transition-shadow"
               >
                 {/* Icône */}
                 <div
-                  className="w-14 h-14 rounded-xl flex items-center justify-center mb-4 shadow-md"
+                  className="w-14 h-14 flex items-center justify-center mb-4 shadow-md"
                   style={{
-                    background: `linear-gradient(135deg, ${item.color} 0%, ${item.color}cc 100%)`,
+                    background: `linear-gradient(120deg, ${item.color} 0%, ${item.color}cc 100%)`,
                   }}
                 >
                   <IconComponent className="w-7 h-7 text-white" />
@@ -113,12 +113,12 @@ export default function CentraleBirthSection() {
                 </div>
 
                 {/* Titre */}
-                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                <h3 className="text-lg font-bold text-edf-bleu-nuit mb-2">
                   {item.title}
                 </h3>
 
                 {/* Description */}
-                <p className="text-gray-600 text-sm leading-relaxed">
+                <p className="text-edf-gris-fonce text-sm leading-relaxed">
                   {item.description}
                 </p>
 
@@ -143,10 +143,10 @@ export default function CentraleBirthSection() {
             <div className="w-10 h-10 bg-edf-green flex items-center justify-center">
               <ImageIcon className="w-5 h-5 text-white" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900">
+            <h3 className="text-xl font-bold text-edf-bleu-nuit">
               Galerie Photos
             </h3>
-            <span className="text-sm text-gray-400">
+            <span className="text-sm text-edf-gris-moyen">
               ({GALLERY_PHOTOS.length} photos)
             </span>
           </div>

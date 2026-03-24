@@ -59,7 +59,7 @@ export default function ChantierConsortiumSection() {
   return (
     <section aria-labelledby="chantier-consortium-heading" className="section-padding bg-white relative overflow-hidden">
       {/* Fond décoratif */}
-      <div className="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-gray-50 to-transparent pointer-events-none" />
+      <div className="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-edf-blanc-bleute to-transparent pointer-events-none" />
 
       <div className="container-custom relative z-10">
         {/* En-tête de section */}
@@ -122,7 +122,7 @@ export default function ChantierConsortiumSection() {
                     className="group"
                   >
                     <div
-                      className="relative bg-white border border-gray-100 p-6 transition-all duration-500 hover:shadow-xl hover:translate-x-1"
+                      className="relative bg-white border border-edf-gris-clair p-6 transition-all duration-500 hover:shadow-xl hover:translate-x-1"
                       style={{
                         borderLeft: `4px solid ${item.color}`,
                       }}
@@ -131,16 +131,16 @@ export default function ChantierConsortiumSection() {
                       <div
                         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                         style={{
-                          background: `linear-gradient(135deg, ${item.color}05 0%, transparent 50%)`,
+                          background: `linear-gradient(120deg, ${item.color}05 0%, transparent 50%)`,
                         }}
                       />
 
                       <div className="relative flex gap-4">
                         {/* Icône */}
                         <div
-                          className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 shadow-md"
+                          className="w-12 h-12 flex items-center justify-center shrink-0 shadow-md"
                           style={{
-                            background: `linear-gradient(135deg, ${item.color} 0%, ${item.color}cc 100%)`,
+                            background: `linear-gradient(120deg, ${item.color} 0%, ${item.color}cc 100%)`,
                           }}
                         >
                           <IconComponent className="w-6 h-6 text-white" />
@@ -154,7 +154,7 @@ export default function ChantierConsortiumSection() {
                           >
                             {item.title}
                           </h3>
-                          <p className="text-gray-600 text-sm leading-relaxed">
+                          <p className="text-edf-gris-fonce text-sm leading-relaxed">
                             {item.description}
                           </p>
                         </div>

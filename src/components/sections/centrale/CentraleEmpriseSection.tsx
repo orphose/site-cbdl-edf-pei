@@ -14,7 +14,7 @@ import { fadeInUp, fadeInUpDelay } from "@/lib/motion-variants";
  */
 export default function CentraleEmpriseSection() {
   return (
-    <section aria-labelledby="centrale-emprise-heading" className="section-padding bg-gray-50 relative overflow-hidden">
+    <section aria-labelledby="centrale-emprise-heading" className="section-padding bg-edf-blanc-bleute relative overflow-hidden">
       {/* Motif de fond subtil */}
       <div className="absolute inset-0 opacity-[0.02]">
         <div
@@ -43,7 +43,7 @@ export default function CentraleEmpriseSection() {
           <motion.div
             {...fadeInUp}
           >
-            <div className="relative bg-white shadow-lg overflow-hidden border border-gray-100 h-full flex flex-col">
+            <div className="relative bg-white shadow-lg overflow-hidden border border-edf-gris-clair h-full flex flex-col">
               {/* Image */}
               <div className="relative flex-1 min-h-[300px]">
                 <Image
@@ -117,12 +117,12 @@ export default function CentraleEmpriseSection() {
                   className="group"
                 >
                   <div
-                    className="bg-white p-5 shadow-md border border-gray-100 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+                    className="bg-white p-5 shadow-md border border-edf-gris-clair transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
                     style={{ borderLeft: `4px solid ${item.color}` }}
                   >
                     <div className="flex gap-4">
                       <div
-                        className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                        className="w-12 h-12 flex items-center justify-center shrink-0"
                         style={{ backgroundColor: `${item.color}15` }}
                       >
                         <IconComponent
@@ -137,7 +137,7 @@ export default function CentraleEmpriseSection() {
                         >
                           {item.title}
                         </h4>
-                        <p className="text-gray-600 text-sm leading-relaxed">
+                        <p className="text-edf-gris-fonce text-sm leading-relaxed">
                           {item.description}
                         </p>
                       </div>
@@ -152,7 +152,7 @@ export default function CentraleEmpriseSection() {
         {/* Bandeau localisation */}
         <motion.div
           {...fadeInUp}
-          className="bg-white shadow-lg border border-gray-100 overflow-hidden"
+          className="bg-white shadow-lg border border-edf-gris-clair overflow-hidden"
         >
           <div className="grid md:grid-cols-4">
             {/* Info principale */}
@@ -160,7 +160,7 @@ export default function CentraleEmpriseSection() {
               <h3 className="text-xl font-bold text-edf-blue mb-1">
                 Localisation stratégique
               </h3>
-              <p className="text-gray-600">
+              <p className="text-edf-gris-fonce">
                 Zone industrielle de Matoury, agglomération de Cayenne
               </p>
             </div>
@@ -172,7 +172,7 @@ export default function CentraleEmpriseSection() {
             ].map((stat, index) => (
               <div
                 key={index}
-                className="p-8 border-l border-gray-100 flex flex-col justify-center"
+                className="p-8 border-l border-edf-gris-clair flex flex-col justify-center"
               >
                 <div
                   className="text-2xl font-bold mb-1"
@@ -180,7 +180,7 @@ export default function CentraleEmpriseSection() {
                 >
                   {stat.value}
                 </div>
-                <div className="text-sm text-gray-500">{stat.label}</div>
+                <div className="text-sm text-edf-gris-moyen">{stat.label}</div>
               </div>
             ))}
           </div>

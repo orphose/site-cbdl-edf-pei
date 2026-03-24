@@ -37,7 +37,7 @@ export default function AboutIndustrySection() {
   return (
     <section aria-labelledby="about-industry-heading" className="section-padding bg-white relative overflow-hidden">
       {/* Fond décoratif */}
-      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-gray-50 to-transparent pointer-events-none" />
+      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-edf-blanc-bleute to-transparent pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-64 h-64 bg-edf-blue/5 rounded-full blur-3xl" />
 
       <div className="container-custom relative z-10">
@@ -53,13 +53,13 @@ export default function AboutIndustrySection() {
               id="about-industry-heading"
             />
             <motion.div {...fadeInUp} className="mb-12 -mt-6">
-              <p className="text-gray-600 text-lg leading-relaxed mb-4">
+              <p className="text-edf-gris-fonce text-lg leading-relaxed mb-4">
                 Forts de notre expertise technique et de notre connaissance
                 approfondie des enjeux insulaires, nous poursuivons notre
                 croissance en portant des projets innovants au service de
                 la transition énergétique.
               </p>
-              <p className="text-gray-500 text-base leading-relaxed">
+              <p className="text-edf-gris-moyen text-base leading-relaxed">
                 Notre volonté de convertir à la biomasse liquide nos centrales
                 électriques d&apos;outre-mer illustre parfaitement cet engagement
                 vers un avenir décarboné.
@@ -102,14 +102,14 @@ export default function AboutIndustrySection() {
                 className="group"
               >
                 <div
-                  className="relative bg-white border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+                  className="relative bg-white border border-edf-gris-clair overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
                   style={{ borderLeft: `4px solid ${pillar.color}` }}
                 >
                   {/* Fond au hover */}
                   <div
                     className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     style={{
-                      background: `linear-gradient(135deg, ${pillar.color}08 0%, transparent 60%)`,
+                      background: `linear-gradient(120deg, ${pillar.color}08 0%, transparent 60%)`,
                     }}
                   />
 
@@ -130,7 +130,7 @@ export default function AboutIndustrySection() {
                       >
                         {pillar.title}
                       </h3>
-                      <p className="text-gray-600 text-sm leading-relaxed">
+                      <p className="text-edf-gris-fonce text-sm leading-relaxed">
                         {pillar.description}
                       </p>
                     </div>

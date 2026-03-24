@@ -133,7 +133,7 @@ export default function Header() {
                 className={`text-sm font-medium transition-colors pb-1 ${
                   isActive(link.href)
                     ? "text-edf-blue border-b-2 border-edf-orange"
-                    : "text-gray-700 hover:text-edf-blue"
+                    : "text-edf-bleu-nuit hover:text-edf-blue"
                 }`}
                 aria-current={isActive(link.href) ? "page" : undefined}
               >
@@ -170,17 +170,17 @@ export default function Header() {
         >
           <div className="w-6 h-5 relative flex flex-col justify-between">
             <span
-              className={`w-full h-0.5 bg-gray-700 transition-all ${
+              className={`w-full h-0.5 bg-edf-bleu-nuit transition-all ${
                 isMenuOpen ? "rotate-45 translate-y-2" : ""
               }`}
             />
             <span
-              className={`w-full h-0.5 bg-gray-700 transition-all ${
+              className={`w-full h-0.5 bg-edf-bleu-nuit transition-all ${
                 isMenuOpen ? "opacity-0" : ""
               }`}
             />
             <span
-              className={`w-full h-0.5 bg-gray-700 transition-all ${
+              className={`w-full h-0.5 bg-edf-bleu-nuit transition-all ${
                 isMenuOpen ? "-rotate-45 -translate-y-2" : ""
               }`}
             />

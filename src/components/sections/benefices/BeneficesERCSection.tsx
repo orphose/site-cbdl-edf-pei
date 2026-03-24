@@ -97,13 +97,13 @@ export default function BeneficesERCSection() {
             <h3 className="text-2xl font-bold text-edf-blue">
               Une approche responsable
             </h3>
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-edf-gris-fonce leading-relaxed">
               Construite sur l&apos;Île de Cayenne, une zone où la pression 
               anthropique et urbanistique est très forte, la future centrale 
               bioénergie du Larivot incarne notre engagement à respecter et 
               protéger l&apos;environnement.
             </p>
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-edf-gris-fonce leading-relaxed">
               Pour cela, nous adoptons l&apos;approche{" "}
               <strong className="text-edf-green">ERC</strong> pour{" "}
               <strong className="text-edf-blue">« Éviter, Réduire, Compenser »</strong>{" "}
@@ -123,7 +123,7 @@ export default function BeneficesERCSection() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: 0.2 + index * 0.1 }}
-                  className="flex items-center gap-2 px-4 py-2 bg-white shadow-md border border-gray-100"
+                  className="flex items-center gap-2 px-4 py-2 bg-white shadow-md border border-edf-gris-clair"
                 >
                   <span
                     className="w-8 h-8 rounded flex items-center justify-center text-white font-bold"
@@ -131,7 +131,7 @@ export default function BeneficesERCSection() {
                   >
                     {item.letter}
                   </span>
-                  <span className="font-medium text-gray-700">{item.word}</span>
+                  <span className="font-medium text-edf-bleu-nuit">{item.word}</span>
                 </motion.div>
               ))}
             </div>
@@ -164,7 +164,7 @@ export default function BeneficesERCSection() {
                   {/* Contenu texte */}
                   <div className={`${!isEven ? "lg:col-start-2" : ""}`}>
                     <div
-                      className="relative bg-white border border-gray-100 p-8 shadow-lg transition-all duration-500 hover:shadow-xl"
+                      className="relative bg-white border border-edf-gris-clair p-8 shadow-lg transition-all duration-500 hover:shadow-xl"
                       style={{
                         borderLeft: `4px solid ${measure.color}`,
                       }}
@@ -173,7 +173,7 @@ export default function BeneficesERCSection() {
                       <div
                         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                         style={{
-                          background: `linear-gradient(135deg, ${measure.color}05 0%, transparent 50%)`,
+                          background: `linear-gradient(120deg, ${measure.color}05 0%, transparent 50%)`,
                         }}
                       />
 
@@ -181,9 +181,9 @@ export default function BeneficesERCSection() {
                         {/* Header */}
                         <div className="flex items-start justify-between mb-6">
                           <div
-                            className="w-14 h-14 rounded-xl flex items-center justify-center shadow-md"
+                            className="w-14 h-14 flex items-center justify-center shadow-md"
                             style={{
-                              background: `linear-gradient(135deg, ${measure.color} 0%, ${measure.color}cc 100%)`,
+                              background: `linear-gradient(120deg, ${measure.color} 0%, ${measure.color}cc 100%)`,
                             }}
                           >
                             <IconComponent className="w-7 h-7 text-white" />
@@ -196,7 +196,7 @@ export default function BeneficesERCSection() {
                             >
                               {measure.highlight}
                             </div>
-                            <div className="text-[10px] text-gray-400 uppercase tracking-wide">
+                            <div className="text-[10px] text-edf-gris-moyen uppercase tracking-wide">
                               {measure.highlightLabel}
                             </div>
                           </div>
@@ -211,7 +211,7 @@ export default function BeneficesERCSection() {
                         </h3>
 
                         {/* Description */}
-                        <p className="text-gray-600 leading-relaxed">
+                        <p className="text-edf-gris-fonce leading-relaxed">
                           {measure.description}
                         </p>
 
@@ -267,14 +267,14 @@ export default function BeneficesERCSection() {
         {/* Bandeau partenariat */}
         <motion.div
           {...fadeInUp}
-          className="mt-20 bg-white border border-gray-100 shadow-lg p-8 md:p-12"
+          className="mt-20 bg-white border border-edf-gris-clair shadow-lg p-8 md:p-12"
         >
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <h3 className="text-2xl font-bold text-edf-blue mb-4">
                 Un engagement partagé pour l&apos;environnement
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-edf-gris-fonce leading-relaxed">
                 En partenariat avec le Parc Naturel Régional de Guyane et avec 
                 le soutien de la Collectivité Territoriale de Guyane (CTG), 
                 EDF PEI s&apos;engage concrètement pour la préservation de 
@@ -297,7 +297,7 @@ export default function BeneficesERCSection() {
                   >
                     {item.value}
                   </div>
-                  <div className="text-gray-500 text-sm">{item.label}</div>
+                  <div className="text-edf-gris-moyen text-sm">{item.label}</div>
                 </div>
               ))}
             </div>

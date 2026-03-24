@@ -19,7 +19,7 @@ export default function InfoSection() {
   };
 
   return (
-    <section className="section-padding bg-gray-50" aria-labelledby="section-info-heading">
+    <section className="section-padding bg-edf-blanc-bleute" aria-labelledby="section-info-heading">
       <div className="container-custom">
         {/* En-tête */}
         <SectionHeader
@@ -37,7 +37,7 @@ export default function InfoSection() {
             {...fadeInUpDelay(0.1)}
             className="lg:col-span-3"
           >
-            <div className="divide-y divide-gray-200">
+            <div className="divide-y divide-edf-gris-clair">
               {FAQ_ITEMS.map((item, index) => {
                 const isOpen = openIndex === index;
                 const headingId = `faq-heading-${index}`;
@@ -52,7 +52,7 @@ export default function InfoSection() {
                         aria-controls={panelId}
                         className="flex justify-between items-center w-full py-5 text-left"
                       >
-                        <span className="text-gray-900 font-medium text-lg pr-4">
+                        <span className="text-edf-bleu-nuit font-medium text-lg pr-4">
                           {item.question}
                         </span>
                         <motion.div
@@ -60,7 +60,7 @@ export default function InfoSection() {
                           transition={{ duration: 0.3 }}
                           className="flex-shrink-0"
                         >
-                          <ChevronDown className="w-5 h-5 text-gray-500" aria-hidden="true" />
+                          <ChevronDown className="w-5 h-5 text-edf-gris-moyen" aria-hidden="true" />
                         </motion.div>
                       </button>
                     </h3>
@@ -77,7 +77,7 @@ export default function InfoSection() {
                           transition={{ duration: 0.3 }}
                           className="overflow-hidden"
                         >
-                          <p className="text-gray-600 pb-5 leading-relaxed">
+                          <p className="text-edf-gris-fonce pb-5 leading-relaxed">
                             {item.answer}
                           </p>
                         </motion.div>

@@ -141,10 +141,10 @@ export default function ActualiteDetailPage() {
     return (
       <div className="pt-[72px] md:pt-[100px]">
         <div className="container-custom py-20 text-center">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">
+          <h1 className="text-3xl font-bold text-edf-bleu-nuit mb-4">
             {error || "Actualité non trouvée"}
           </h1>
-          <p className="text-gray-600 mb-8">
+          <p className="text-edf-gris-fonce mb-8">
             Cette actualité n&apos;existe pas ou a été supprimée.
           </p>
           <Link
@@ -260,11 +260,11 @@ export default function ActualiteDetailPage() {
               className="prose prose-lg max-w-none"
             >
               {article.content ? (
-                <div className="text-gray-700 leading-relaxed">
+                <div className="text-edf-bleu-nuit leading-relaxed">
                   <ReactMarkdown>{article.content}</ReactMarkdown>
                 </div>
               ) : (
-                <p className="text-gray-500 italic">
+                <p className="text-edf-gris-moyen italic">
                   Contenu non disponible.
                 </p>
               )}
@@ -278,7 +278,7 @@ export default function ActualiteDetailPage() {
                 transition={{ duration: 0.8, delay: 0.5 }}
                 className="mt-12"
               >
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Galerie photos</h2>
+                <h2 className="text-2xl font-bold text-edf-bleu-nuit mb-6">Galerie photos</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {article.gallery.map((url, index) => (
                     <motion.div
@@ -387,7 +387,7 @@ export default function ActualiteDetailPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="mt-12 pt-8 border-t border-gray-200 flex items-center justify-between"
+              className="mt-12 pt-8 border-t border-edf-gris-clair flex items-center justify-between"
             >
               <Link
                 href="/actualites"
@@ -399,7 +399,7 @@ export default function ActualiteDetailPage() {
 
               <button
                 onClick={shareArticle}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-edf-blanc-bleute hover:bg-edf-gris-clair rounded-lg transition-colors"
               >
                 <Share2 className="w-4 h-4" />
                 Partager

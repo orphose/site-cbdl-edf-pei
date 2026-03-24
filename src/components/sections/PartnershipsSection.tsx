@@ -74,7 +74,7 @@ export default function PartnershipsSection() {
   // Écran de chargement
   if (loading) {
     return (
-      <section className="section-padding bg-gray-50 relative overflow-hidden">
+      <section className="section-padding bg-edf-blanc-bleute relative overflow-hidden">
         <div className="container-custom">
           <Skeleton className="h-8 w-32 mb-6 rounded-lg" />
           <Skeleton className="h-12 w-96 mb-12 rounded-lg" />
@@ -92,7 +92,7 @@ export default function PartnershipsSection() {
   }
 
   return (
-    <section className="section-padding bg-gray-50 relative overflow-hidden" aria-labelledby="section-partnerships-heading">
+    <section className="section-padding bg-edf-blanc-bleute relative overflow-hidden" aria-labelledby="section-partnerships-heading">
       {/* Fond décoratif */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-edf-green/5 to-transparent" />
@@ -225,7 +225,7 @@ export default function PartnershipsSection() {
                   className={`block h-3 rounded-full transition-all duration-300 ${
                     index === currentIndex
                       ? "bg-edf-orange w-8"
-                      : "bg-gray-300 hover:bg-gray-400 w-3"
+                      : "bg-edf-gris-clair hover:bg-edf-gris-moyen w-3"
                   }`}
                 />
               </button>
@@ -288,7 +288,7 @@ function PartnershipCard({ partnership, isActive }: PartnershipCardProps) {
                 >
                   <Icon className="w-10 h-10 md:w-12 md:h-12 text-white" />
                 </div>
-                <p className="text-gray-500 text-xs md:text-sm text-center">
+                <p className="text-edf-gris-moyen text-xs md:text-sm text-center">
                   Photo à venir
                 </p>
               </div>
@@ -303,10 +303,10 @@ function PartnershipCard({ partnership, isActive }: PartnershipCardProps) {
             >
               PARTENARIAT LOCAL
             </span>
-            <h3 className="text-lg md:text-xl font-bold text-black mb-3 line-clamp-2">
+            <h3 className="text-lg md:text-xl font-bold text-edf-bleu-nuit mb-3 line-clamp-2">
               {partnership.name}
             </h3>
-            <p className="text-gray-600 leading-relaxed text-sm line-clamp-4 md:line-clamp-5">
+            <p className="text-edf-gris-fonce leading-relaxed text-sm line-clamp-4 md:line-clamp-5">
               {partnership.description}
             </p>
           </div>
