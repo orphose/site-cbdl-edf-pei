@@ -79,7 +79,7 @@ export default function TimelineSection() {
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
 
   return (
-    <section className="section-padding bg-gradient-to-b from-edf-blanc-bleute to-white relative overflow-hidden" aria-labelledby="section-timeline-heading">
+    <section className="section-padding bg-gradient-to-b from-gray-50 to-white relative overflow-hidden" aria-labelledby="section-timeline-heading">
       {/* Motif de fond subtil */}
       <div className="absolute inset-0 opacity-[0.02]" aria-hidden="true">
         <div className="absolute inset-0" style={{
@@ -101,10 +101,20 @@ export default function TimelineSection() {
 
         {/* Timeline Desktop */}
         <div className="hidden lg:block relative">
-          {/* Ligne de progression animée */}
-          <div className="absolute top-[45px] left-0 right-0 h-0.5 bg-gray-200 rounded-full">
+          {/* Ligne de progression illuminée */}
+          <div className="absolute top-[44px] left-0 right-0 h-[2px]">
+            {/* Rail gris — base discrète */}
+            <div className="absolute inset-0 bg-gray-200 rounded-full" />
+
+            {/* Ligne active — cœur fin avec glow deux couches */}
             <motion.div
-              className="h-full bg-gradient-to-r from-edf-orange via-edf-green to-edf-blue rounded-full"
+              className="absolute inset-y-0 left-0 rounded-full"
+              style={{
+                background: "linear-gradient(to right, #FFB210, #88D910, #001A70)",
+                boxShadow:
+                  "0 0 6px rgba(136, 217, 16, 0.20), " + /* ambient — large, subtil */
+                  "0 0 2px rgba(136, 217, 16, 0.35)",    /* core — serré, défini */
+              }}
               initial={{ width: "0%" }}
               animate={isInView ? { width: "100%" } : { width: "0%" }}
               transition={{ duration: 2, ease: "easeOut", delay: 0.25 }}
@@ -151,7 +161,7 @@ export default function TimelineSection() {
                     <div
                       className="w-[90px] h-[90px] rounded-full flex items-center justify-center shadow-lg relative z-10 border-4 border-white"
                       style={{
-                        background: `linear-gradient(120deg, ${step.color} 0%, ${step.color}dd 100%)`,
+                        background: `linear-gradient(135deg, ${step.color} 0%, ${step.color}dd 100%)`,
                         boxShadow: `0 6px 25px ${step.color}25`
                       }}
                     >
@@ -187,7 +197,7 @@ export default function TimelineSection() {
                     >
                       {step.phase}
                     </h3>
-                    <p className="text-xs text-edf-gris-moyen leading-relaxed max-w-[130px] mx-auto">
+                    <p className="text-xs text-gray-500 leading-relaxed max-w-[130px] mx-auto">
                       {step.description}
                     </p>
                   </motion.div>
@@ -242,7 +252,7 @@ export default function TimelineSection() {
                     transition={{ duration: 0.3, delay: index * 0.05 + 0.1 }}
                     className="w-14 h-14 rounded-full flex items-center justify-center shrink-0 shadow-lg relative z-10 border-2 border-white"
                     style={{
-                      background: `linear-gradient(120deg, ${step.color}, ${step.color}dd)`,
+                      background: `linear-gradient(135deg, ${step.color}, ${step.color}dd)`,
                     }}
                   >
                     <IconComponent className="w-6 h-6 text-white" />
@@ -251,10 +261,10 @@ export default function TimelineSection() {
                   {/* Contenu */}
                   <div className="flex-1 pb-4">
                     <div className="flex items-center gap-3 mb-2">
-                      <span className="text-sm font-bold text-edf-bleu-nuit">
+                      <span className="text-sm font-bold text-gray-900">
                         {step.year}
                       </span>
-                      <span className="text-xs text-edf-gris-moyen bg-edf-blanc-bleute px-2 py-0.5 rounded">
+                      <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded">
                         {step.quarter}
                       </span>
                     </div>
@@ -264,7 +274,7 @@ export default function TimelineSection() {
                     >
                       {step.phase}
                     </h3>
-                    <p className="text-sm text-edf-gris-moyen">
+                    <p className="text-sm text-gray-500">
                       {step.description}
                     </p>
                   </div>
@@ -291,7 +301,7 @@ export default function TimelineSection() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.05 * index }}
-              className="bg-white p-6 shadow-lg border border-edf-gris-clair text-center"
+              className="bg-white p-6 shadow-lg border border-gray-100 text-center"
             >
               <motion.span
                 initial={{ opacity: 0 }}
@@ -301,9 +311,9 @@ export default function TimelineSection() {
                 className="text-3xl md:text-4xl font-bold text-edf-blue"
               >
                 {stat.value}
-                {stat.suffix && <span className="text-lg text-edf-gris-moyen">{stat.suffix}</span>}
+                {stat.suffix && <span className="text-lg text-gray-400">{stat.suffix}</span>}
               </motion.span>
-              <p className="text-sm text-edf-gris-moyen mt-2">{stat.label}</p>
+              <p className="text-sm text-gray-500 mt-2">{stat.label}</p>
             </motion.div>
           ))}
         </motion.div>
