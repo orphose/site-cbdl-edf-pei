@@ -1,112 +1,117 @@
-"use client";
-
-import { motion } from "framer-motion";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { heroAnimation } from "@/lib/motion-variants";
 
-type ColorName = "orange" | "green" | "blue";
+type AccentColor = "orange" | "green";
 
-const COLOR_MAP: Record<ColorName, string> = {
+const ACCENT_MAP: Record<AccentColor, string> = {
   orange: "bg-edf-orange",
   green: "bg-edf-green",
-  blue: "bg-edf-blue",
-};
-
-const CIRCLE_COLOR_MAP: Record<"orange" | "green", string> = {
-  orange: "bg-edf-orange/10",
-  green: "bg-edf-green/10",
 };
 
 interface PageHeroProps {
   breadcrumbLabel: string;
   badge: string;
-  title: React.ReactNode;
-  subtitle: React.ReactNode;
-  description: React.ReactNode;
-  circleTopColor?: "orange" | "green";
-  accentColor?: "orange" | "green";
+  title: string;
+  subtitle: string;
+  /** Mot(s) accentué(s) dans le sous-titre — un seul camaïeu par page */
+  accentWord?: string;
+  description: string;
+  accentColor?: AccentColor;
 }
 
+/**
+ * Hero unifié pour les pages secondaires.
+ *
+ * Principes appliqués (charte EDF 2021 + Refactoring UI + Krug) :
+ * — Un seul camaïeu accent par composition (pas de mélange orange+vert)
+ * — Hauteur contenue (pas de min-h excessif pour une page intérieure)
+ * — Hiérarchie typographique claire : badge → titre → sous-titre → description
+ * — Espacement généreux et prévisible quel que soit le contenu
+ * — Fond dégradé EDF sans ornements parasites (pas de cercles/motifs)
+ * — Animations CSS pures (pas de dépendance JS pour le contenu above-the-fold)
+ */
 export default function PageHero({
   breadcrumbLabel,
   badge,
   title,
   subtitle,
+  accentWord,
   description,
-  circleTopColor = "orange",
   accentColor = "orange",
 }: PageHeroProps) {
-  const reduced = useReducedMotion();
-  const circleBottomColor = circleTopColor === "orange" ? "green" : "orange";
+  // Highlight l'accentWord dans le sous-titre avec la couleur accent unique
+  const renderSubtitle = () => {
+    if (!accentWord) return subtitle;
+
+    const index = subtitle.toLowerCase().indexOf(accentWord.toLowerCase());
+    if (index === -1) return subtitle;
+
+    const before = subtitle.slice(0, index);
+    const match = subtitle.slice(index, index + accentWord.length);
+    const after = subtitle.slice(index + accentWord.length);
+
+    const colorClass =
+      accentColor === "orange"
+        ? "text-edf-orange-bright"
+        : "text-edf-green-bright";
+
+    return (
+      <>
+        {before}
+        <span className={`${colorClass} font-semibold`}>{match}</span>
+        {after}
+      </>
+    );
+  };
 
   return (
-    <section className="relative min-h-[60vh] flex items-center bg-edf-blue overflow-hidden pt-[72px] md:pt-[80px]">
-      {/* Fond avec motif geometrique */}
-      <div className="absolute inset-0 opacity-10" aria-hidden="true">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `
-              linear-gradient(30deg, transparent 40%, rgba(255,255,255,0.05) 40%, rgba(255,255,255,0.05) 60%, transparent 60%),
-              linear-gradient(-30deg, transparent 40%, rgba(255,255,255,0.05) 40%, rgba(255,255,255,0.05) 60%, transparent 60%)
-            `,
-            backgroundSize: "60px 100px",
-          }}
-        />
-      </div>
-
-      {/* Cercles decoratifs */}
-      <div
-        className={`absolute top-20 right-20 w-96 h-96 ${CIRCLE_COLOR_MAP[circleTopColor]} rounded-full blur-3xl`}
-        aria-hidden="true"
-      />
-      <div
-        className={`absolute bottom-10 left-10 w-64 h-64 ${CIRCLE_COLOR_MAP[circleBottomColor]} rounded-full blur-3xl`}
-        aria-hidden="true"
-      />
-
-      <div className="container-custom relative z-10 py-20">
-        <div className="max-w-4xl">
+    <section
+      className="relative overflow-hidden pt-[72px] md:pt-[80px]"
+      style={{ background: "var(--gradient-hero)" }}
+    >
+      <div className="container-custom relative z-10 py-12 md:py-16 lg:py-20">
+        <div className="max-w-3xl">
           <Breadcrumbs items={[{ label: breadcrumbLabel }]} />
 
           {/* Badge */}
-          <motion.div {...heroAnimation(reduced, 0)}>
-            <span className="inline-block px-4 py-2 bg-white/10 text-white text-sm font-medium mb-8 border border-white/20 uppercase tracking-wide">
+          <div className="hero-fade-in" style={{ animationDelay: "0s" }}>
+            <span className="inline-block px-4 py-1.5 bg-white/10 text-white/90 text-xs font-medium mb-6 border border-white/20 uppercase tracking-widest">
               {badge}
             </span>
-          </motion.div>
+          </div>
 
           {/* Titre principal */}
-          <motion.h1
-            {...heroAnimation(reduced, 0.08)}
-            className="heading-xl font-bold text-white mb-6 tracking-tight"
+          <h1
+            className="heading-lg font-bold text-white mb-4 tracking-tight hero-fade-in"
+            style={{ animationDelay: "0.08s" }}
           >
             {title}
-          </motion.h1>
+          </h1>
 
-          {/* Sous-titre */}
-          <motion.h2
-            {...heroAnimation(reduced, 0.16)}
-            className="text-2xl md:text-3xl text-white/90 font-light mb-8"
+          {/* Sous-titre avec accent unique */}
+          <p
+            className="text-xl md:text-2xl text-white/90 font-light mb-6 hero-fade-in"
+            style={{ animationDelay: "0.16s" }}
           >
-            {subtitle}
-          </motion.h2>
+            {renderSubtitle()}
+          </p>
 
           {/* Description */}
-          <motion.p
-            {...heroAnimation(reduced, 0.24)}
-            className="text-white/90 text-lg md:text-xl max-w-3xl leading-relaxed"
+          <p
+            className="text-white/80 text-base md:text-lg max-w-2xl leading-relaxed hero-fade-in"
+            style={{ animationDelay: "0.24s" }}
           >
             {description}
-          </motion.p>
+          </p>
         </div>
       </div>
 
-      {/* Barre decorative en bas — camaïeu bleu + accent unique */}
-      <div className="absolute bottom-0 left-0 right-0 h-1 flex" aria-hidden="true">
-        <div className={`flex-[2] ${COLOR_MAP.blue}`} />
-        <div className={`flex-1 ${COLOR_MAP[accentColor]}`} />
+      {/* Barre accent EDF — camaïeu bleu + accent unique */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-1 flex"
+        aria-hidden="true"
+      >
+        <div className="flex-[3] bg-edf-blue-mid" />
+        <div className={`flex-1 ${ACCENT_MAP[accentColor]}`} />
       </div>
     </section>
   );

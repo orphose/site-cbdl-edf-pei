@@ -15,7 +15,6 @@ export default function ConfidentialitePage() {
         title="Politique de confidentialité"
         subtitle="Protection de vos données personnelles"
         description="EDF PEI s'engage à protéger la vie privée des utilisateurs de ce site conformément au RGPD."
-        accentColor="orange"
       />
 
       <section className="section-padding bg-white">

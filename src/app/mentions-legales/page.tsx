@@ -15,7 +15,6 @@ export default function MentionsLegalesPage() {
         title="Mentions légales"
         subtitle="Informations réglementaires"
         description="Conformément aux dispositions de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique."
-        accentColor="orange"
       />
 
       <section className="section-padding bg-white">

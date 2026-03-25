@@ -40,19 +40,9 @@ export default async function ActualitesPage() {
         breadcrumbLabel="Actualités"
         badge="Actualités & Événements"
         title="Actualités"
-        subtitle={
-          <>
-            Toute l&apos;actualité du{" "}
-            <span className="text-edf-orange-bright font-semibold">projet CBDL</span>
-          </>
-        }
-        description={
-          <>
-            Suivez les{" "}
-            <span className="text-white font-semibold">dernières avancées</span>{" "}
-            de la Centrale Bioénergie du Larivot et restez informé des événements importants.
-          </>
-        }
+        subtitle="Toute l'actualité du projet CBDL"
+        accentWord="CBDL"
+        description="Suivez les dernières avancées de la Centrale Bioénergie du Larivot et restez informé des événements importants."
       />
 
       <section className="section-padding bg-edf-blanc-bleute">

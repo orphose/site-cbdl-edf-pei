@@ -16,7 +16,6 @@ export default function PressePage() {
         title="Espace Presse"
         subtitle="Ressources et contacts médias"
         description="Retrouvez les informations et contacts dédiés aux journalistes et professionnels des médias."
-        accentColor="orange"
       />
 
       <section className="section-padding bg-white">

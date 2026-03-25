@@ -5,22 +5,11 @@ export default function ActualitesHeroSection() {
     <PageHero
       breadcrumbLabel="Actualités"
       badge="Actualités & Événements"
-      title="ACTUALITÉS"
+      title="Actualités"
+      subtitle="Toute l'actualité du projet CBDL"
+      accentWord="CBDL"
+      description="Suivez les dernières avancées de la Centrale Bioénergie du Larivot et restez informé des événements importants."
       accentColor="orange"
-      subtitle={
-        <>
-          Toute l&apos;actualité du{" "}
-          <span className="text-edf-orange-bright font-semibold">projet</span>{" "}
-          <span className="text-edf-green-bright font-semibold">CBDL</span>
-        </>
-      }
-      description={
-        <>
-          Suivez les{" "}
-          <span className="text-white font-semibold">dernières avancées</span>{" "}
-          de la Centrale Bioénergie du Larivot et restez informé des événements importants.
-        </>
-      }
     />
   );
 }
