@@ -17,11 +17,11 @@ const GRADIENT_MAP: Record<Camaieu, string> = {
   vert:   "linear-gradient(120deg, #88D910 0%, #4F9E30 100%)",
 };
 
-/** Barre accent en bas — tonalité claire + tonalité foncée du même camaïeu */
-const ACCENT_BAR_MAP: Record<Camaieu, [string, string]> = {
-  bleu:   ["bg-edf-blue-light", "bg-edf-blue"],
-  orange: ["bg-edf-orange-light", "bg-edf-orange"],
-  vert:   ["bg-edf-green-light", "bg-edf-green-dark"],
+/** Barre accent en bas — couleur la plus foncée du camaïeu, unie */
+const ACCENT_BAR_MAP: Record<Camaieu, string> = {
+  bleu:   "bg-edf-blue",
+  orange: "bg-edf-orange",
+  vert:   "bg-edf-green-dark",
 };
 
 interface PageHeroProps {
@@ -81,7 +81,7 @@ export default function PageHero({
     );
   };
 
-  const [barLight, barDark] = ACCENT_BAR_MAP[camaieu];
+  const barColor = ACCENT_BAR_MAP[camaieu];
 
   return (
     <section
@@ -125,14 +125,11 @@ export default function PageHero({
         </div>
       </div>
 
-      {/* Barre accent — clair + foncé du même camaïeu */}
+      {/* Barre accent unie — couleur foncée du camaïeu */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-1 flex"
+        className={`absolute bottom-0 left-0 right-0 h-1 ${barColor}`}
         aria-hidden="true"
-      >
-        <div className={`flex-[3] ${barLight}`} />
-        <div className={`flex-1 ${barDark}`} />
-      </div>
+      />
     </section>
   );
 }
