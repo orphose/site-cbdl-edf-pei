@@ -9,7 +9,7 @@ export default function CentraleHeroSection() {
       subtitle="Une infrastructure moderne et fiable"
       accentWord="moderne"
       description="Pour assurer la continuité de l'approvisionnement en électricité sur le territoire et soutenir la croissance démographique et économique en Guyane."
-      accentColor="green"
+      camaieu="vert"
     />
   );
 }

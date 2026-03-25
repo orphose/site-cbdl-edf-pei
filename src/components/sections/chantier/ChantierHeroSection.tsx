@@ -9,7 +9,7 @@ export default function ChantierHeroSection() {
       subtitle="Un projet à la hauteur du territoire"
       accentWord="territoire"
       description="Plus qu'une infrastructure énergétique, la future centrale bioénergie du Larivot est un projet d'avenir pour un territoire en pleine croissance économique."
-      accentColor="orange"
+      camaieu="orange"
     />
   );
 }

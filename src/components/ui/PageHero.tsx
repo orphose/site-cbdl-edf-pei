@@ -1,10 +1,30 @@
 import Breadcrumbs from "@/components/Breadcrumbs";
 
-type AccentColor = "orange" | "green";
+/**
+ * Camaïeu EDF — chaque page utilise un seul camaïeu.
+ * Les dégradés vont du foncé vers le clair au sein du même camaïeu (charte EDF 2021).
+ */
+type Camaieu = "bleu" | "orange" | "vert";
 
-const ACCENT_MAP: Record<AccentColor, string> = {
-  orange: "bg-edf-orange",
-  green: "bg-edf-green",
+/** Dégradé foncé → clair au sein du même camaïeu (120deg) */
+const GRADIENT_MAP: Record<Camaieu, string> = {
+  bleu:   "linear-gradient(120deg, #001A70 0%, #1089FF 100%)",
+  orange: "linear-gradient(120deg, #FE5716 0%, #FFB210 100%)",
+  vert:   "linear-gradient(120deg, #4F9E30 0%, #88D910 100%)",
+};
+
+/** Barre accent en bas — tonalité foncée + tonalité claire du même camaïeu */
+const ACCENT_BAR_MAP: Record<Camaieu, [string, string]> = {
+  bleu:   ["bg-edf-blue", "bg-edf-blue-light"],
+  orange: ["bg-edf-orange", "bg-edf-orange-light"],
+  vert:   ["bg-edf-green-dark", "bg-edf-green-light"],
+};
+
+/** Couleur du mot accentué dans le sous-titre */
+const ACCENT_TEXT_MAP: Record<Camaieu, string> = {
+  bleu:   "text-edf-orange-bright",   // contraste sur fond bleu
+  orange: "text-white",               // contraste sur fond orange
+  vert:   "text-white",               // contraste sur fond vert
 };
 
 interface PageHeroProps {
@@ -12,21 +32,20 @@ interface PageHeroProps {
   badge: string;
   title: string;
   subtitle: string;
-  /** Mot(s) accentué(s) dans le sous-titre — un seul camaïeu par page */
+  /** Mot(s) accentué(s) dans le sous-titre */
   accentWord?: string;
   description: string;
-  accentColor?: AccentColor;
+  /** Camaïeu EDF de la page (défaut: bleu) */
+  camaieu?: Camaieu;
 }
 
 /**
  * Hero unifié pour les pages secondaires.
  *
  * Principes appliqués (charte EDF 2021 + Refactoring UI + Krug) :
- * — Un seul camaïeu accent par composition (pas de mélange orange+vert)
- * — Hauteur contenue (pas de min-h excessif pour une page intérieure)
+ * — Dégradé mono-camaïeu foncé → clair (jamais de mélange entre camaïeux)
  * — Hiérarchie typographique claire : badge → titre → sous-titre → description
  * — Espacement généreux et prévisible quel que soit le contenu
- * — Fond dégradé EDF sans ornements parasites (pas de cercles/motifs)
  * — Animations CSS pures (pas de dépendance JS pour le contenu above-the-fold)
  */
 export default function PageHero({
@@ -36,9 +55,8 @@ export default function PageHero({
   subtitle,
   accentWord,
   description,
-  accentColor = "orange",
+  camaieu = "bleu",
 }: PageHeroProps) {
-  // Highlight l'accentWord dans le sous-titre avec la couleur accent unique
   const renderSubtitle = () => {
     if (!accentWord) return subtitle;
 
@@ -49,24 +67,21 @@ export default function PageHero({
     const match = subtitle.slice(index, index + accentWord.length);
     const after = subtitle.slice(index + accentWord.length);
 
-    const colorClass =
-      accentColor === "orange"
-        ? "text-edf-orange-bright"
-        : "text-edf-green-bright";
-
     return (
       <>
         {before}
-        <span className={`${colorClass} font-semibold`}>{match}</span>
+        <span className={`${ACCENT_TEXT_MAP[camaieu]} font-semibold`}>{match}</span>
         {after}
       </>
     );
   };
 
+  const [barDark, barLight] = ACCENT_BAR_MAP[camaieu];
+
   return (
     <section
       className="relative overflow-hidden pt-[72px] md:pt-[80px]"
-      style={{ background: "var(--gradient-hero)" }}
+      style={{ background: GRADIENT_MAP[camaieu] }}
     >
       <div className="container-custom relative z-10 py-12 md:py-16 lg:py-20">
         <div className="max-w-3xl">
@@ -87,7 +102,7 @@ export default function PageHero({
             {title}
           </h1>
 
-          {/* Sous-titre avec accent unique */}
+          {/* Sous-titre avec accent */}
           <p
             className="text-xl md:text-2xl text-white/90 font-light mb-6 hero-fade-in"
             style={{ animationDelay: "0.16s" }}
@@ -105,13 +120,13 @@ export default function PageHero({
         </div>
       </div>
 
-      {/* Barre accent EDF — camaïeu bleu + accent unique */}
+      {/* Barre accent — foncé + clair du même camaïeu */}
       <div
         className="absolute bottom-0 left-0 right-0 h-1 flex"
         aria-hidden="true"
       >
-        <div className="flex-[3] bg-edf-blue-mid" />
-        <div className={`flex-1 ${ACCENT_MAP[accentColor]}`} />
+        <div className={`flex-[3] ${barDark}`} />
+        <div className={`flex-1 ${barLight}`} />
       </div>
     </section>
   );

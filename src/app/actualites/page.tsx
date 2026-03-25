@@ -43,6 +43,7 @@ export default async function ActualitesPage() {
         subtitle="Toute l'actualité du projet CBDL"
         accentWord="CBDL"
         description="Suivez les dernières avancées de la Centrale Bioénergie du Larivot et restez informé des événements importants."
+        camaieu="orange"
       />
 
       <section className="section-padding bg-edf-blanc-bleute">

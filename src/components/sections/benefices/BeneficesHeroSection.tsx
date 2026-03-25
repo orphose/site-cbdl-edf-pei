@@ -9,7 +9,7 @@ export default function BeneficesHeroSection() {
       subtitle="Au cœur des défis du péyi Guyane"
       accentWord="péyi"
       description="Une démarche écoresponsable : réduction de la consommation d'eau et amélioration de la qualité de l'air."
-      accentColor="green"
+      camaieu="vert"
     />
   );
 }

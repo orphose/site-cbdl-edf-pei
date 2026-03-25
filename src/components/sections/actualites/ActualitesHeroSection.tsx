@@ -9,7 +9,7 @@ export default function ActualitesHeroSection() {
       subtitle="Toute l'actualité du projet CBDL"
       accentWord="CBDL"
       description="Suivez les dernières avancées de la Centrale Bioénergie du Larivot et restez informé des événements importants."
-      accentColor="orange"
+      camaieu="orange"
     />
   );
 }

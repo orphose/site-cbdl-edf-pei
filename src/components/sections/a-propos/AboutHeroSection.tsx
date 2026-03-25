@@ -9,7 +9,7 @@ export default function AboutHeroSection() {
       subtitle="Producteur d'électricité insulaire responsable"
       accentWord="responsable"
       description="EDF PEI, filiale à 100% du groupe EDF, conçoit, construit et exploite des centrales électriques de dernière génération dans les régions d'outre-mer et en Corse."
-      accentColor="orange"
+      camaieu="bleu"
     />
   );
 }
