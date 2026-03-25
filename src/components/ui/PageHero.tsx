@@ -32,13 +32,6 @@ const FLECHE_MAP: Record<Camaieu, string> = {
   vert:   "/images/charte/symboles/fleche-vert.png",
 };
 
-/** Barre accent en bas — couleur la plus foncée du camaïeu, unie */
-const ACCENT_BAR_MAP: Record<Camaieu, string> = {
-  bleu:   "bg-edf-blue",
-  orange: "bg-edf-orange",
-  vert:   "bg-edf-green-dark",
-};
-
 interface PageHeroProps {
   breadcrumbLabel: string;
   badge: string;
@@ -93,8 +86,6 @@ export default function PageHero({
       </>
     );
   };
-
-  const barColor = ACCENT_BAR_MAP[camaieu];
 
   return (
     <section
@@ -167,11 +158,6 @@ export default function PageHero({
         </div>
       </div>
 
-      {/* Barre accent unie — couleur foncée du camaïeu */}
-      <div
-        className={`absolute bottom-0 left-0 right-0 h-1 ${barColor}`}
-        aria-hidden="true"
-      />
     </section>
   );
 }
