@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
 /**
@@ -15,6 +16,20 @@ const GRADIENT_MAP: Record<Camaieu, string> = {
   bleu:   "linear-gradient(120deg, #1089FF 0%, #001A70 100%)",
   orange: "linear-gradient(120deg, #FFB210 0%, #FE5716 100%)",
   vert:   "linear-gradient(120deg, #88D910 0%, #4F9E30 100%)",
+};
+
+/** Motif EDF officiel (charte p.44-46) — un par camaïeu */
+const MOTIF_MAP: Record<Camaieu, string> = {
+  bleu:   "/images/charte/motifs/motif-bleu.png",
+  orange: "/images/charte/motifs/motif-orange.png",
+  vert:   "/images/charte/motifs/motif-vert.png",
+};
+
+/** Symbole flèche EDF (charte p.47) — un par camaïeu */
+const FLECHE_MAP: Record<Camaieu, string> = {
+  bleu:   "/images/charte/symboles/fleche-bleu.png",
+  orange: "/images/charte/symboles/fleche-orange.png",
+  vert:   "/images/charte/symboles/fleche-vert.png",
 };
 
 /** Barre accent en bas — couleur la plus foncée du camaïeu, unie */
@@ -45,8 +60,10 @@ interface PageHeroProps {
  *
  * Conformité charte EDF 2021 :
  * — Dégradé mono-camaïeu clair→foncé, angle 120deg (p.19)
+ * — Motif officiel en arrière-plan subtil (p.44-46)
+ * — Symbole flèche décoratif (p.47)
  * — Texte blanc uniquement sur fond coloré (p.18, p.26)
- * — Mise en exergue par graisse sur fond coloré, pas par couleur (p.26)
+ * — Mise en exergue par graisse, pas par couleur (p.26)
  * — Un seul camaïeu par composition (p.17)
  */
 export default function PageHero({
@@ -58,10 +75,6 @@ export default function PageHero({
   description,
   camaieu = "bleu",
 }: PageHeroProps) {
-  /**
-   * Mise en exergue par la GRAISSE uniquement (charte p.26).
-   * Sur fond coloré/dégradé, pas de texte en couleur — seulement du bold blanc.
-   */
   const renderSubtitle = () => {
     if (!accentWord) return subtitle;
 
@@ -88,6 +101,35 @@ export default function PageHero({
       className="relative overflow-hidden pt-[72px] md:pt-[80px]"
       style={{ background: GRADIENT_MAP[camaieu] }}
     >
+      {/* Motif EDF officiel — subtil, côté droit (charte p.44-46) */}
+      <div
+        className="absolute inset-0 opacity-[0.07] pointer-events-none"
+        aria-hidden="true"
+      >
+        <Image
+          src={MOTIF_MAP[camaieu]}
+          alt=""
+          fill
+          className="object-cover object-right"
+          sizes="100vw"
+          priority
+        />
+      </div>
+
+      {/* Symbole flèche EDF — décoratif, bas-droite (charte p.47) */}
+      <div
+        className="absolute bottom-4 right-8 md:bottom-8 md:right-16 w-16 h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 opacity-20 pointer-events-none"
+        aria-hidden="true"
+      >
+        <Image
+          src={FLECHE_MAP[camaieu]}
+          alt=""
+          fill
+          className="object-contain"
+          sizes="128px"
+        />
+      </div>
+
       <div className="container-custom relative z-10 py-12 md:py-16 lg:py-20">
         <div className="max-w-3xl">
           <Breadcrumbs items={[{ label: breadcrumbLabel }]} />
