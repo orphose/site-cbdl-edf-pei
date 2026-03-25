@@ -4,7 +4,6 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Truck, Building2, Droplets, Zap, Cog, Handshake, CheckCircle2 } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { fadeInUpDelay } from "@/lib/motion-variants";
 
 /**
  * Données de la timeline de construction
@@ -161,7 +160,7 @@ export default function TimelineSection() {
                     <div
                       className="w-[90px] h-[90px] rounded-full flex items-center justify-center shadow-lg relative z-10 border-4 border-white"
                       style={{
-                        background: `linear-gradient(135deg, ${step.color} 0%, ${step.color}dd 100%)`,
+                        background: `linear-gradient(120deg, ${step.color} 0%, ${step.color}dd 100%)`,
                         boxShadow: `0 6px 25px ${step.color}25`
                       }}
                     >
@@ -175,8 +174,8 @@ export default function TimelineSection() {
                       transition={{ duration: 0.4, delay: 0.35 + index * 0.075 }}
                       className="absolute -bottom-1 -right-1 z-20"
                     >
-                      <div 
-                        className="bg-white px-2 py-0.5 rounded-full shadow-md text-[10px] font-semibold tracking-wide"
+                      <div
+                        className="bg-white px-2 py-0.5 rounded-full shadow-md text-xs font-semibold tracking-wide"
                         style={{ color: step.color }}
                       >
                         {step.year} {step.quarter}
@@ -252,7 +251,7 @@ export default function TimelineSection() {
                     transition={{ duration: 0.3, delay: index * 0.05 + 0.1 }}
                     className="w-14 h-14 rounded-full flex items-center justify-center shrink-0 shadow-lg relative z-10 border-2 border-white"
                     style={{
-                      background: `linear-gradient(135deg, ${step.color}, ${step.color}dd)`,
+                      background: `linear-gradient(120deg, ${step.color}, ${step.color}dd)`,
                     }}
                   >
                     <IconComponent className="w-6 h-6 text-white" />
@@ -284,39 +283,6 @@ export default function TimelineSection() {
           </div>
         </div>
 
-        {/* Statistiques animées */}
-        <motion.div
-          {...fadeInUpDelay(0.25)}
-          className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6"
-        >
-          {[
-            { value: "3", label: "ans de construction", suffix: "" },
-            { value: "600", label: "millions d'euros", suffix: "M€" },
-            { value: "120", label: "MW de puissance", suffix: "MW" },
-            { value: "2026", label: "mise en service", suffix: "" },
-          ].map((stat, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.05 * index }}
-              className="bg-white p-6 shadow-lg border border-gray-100 text-center"
-            >
-              <motion.span
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: 0.15 + index * 0.05 }}
-                className="text-3xl md:text-4xl font-bold text-edf-blue"
-              >
-                {stat.value}
-                {stat.suffix && <span className="text-lg text-gray-400">{stat.suffix}</span>}
-              </motion.span>
-              <p className="text-sm text-gray-500 mt-2">{stat.label}</p>
-            </motion.div>
-          ))}
-        </motion.div>
       </div>
     </section>
   );

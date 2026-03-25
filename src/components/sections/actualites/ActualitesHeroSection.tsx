@@ -6,7 +6,7 @@ export default function ActualitesHeroSection() {
       breadcrumbLabel="Actualités"
       badge="Actualités & Événements"
       title="ACTUALITÉS"
-      barOrder={["blue", "green", "orange"]}
+      accentColor="orange"
       subtitle={
         <>
           Toute l&apos;actualité du{" "}

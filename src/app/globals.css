@@ -38,6 +38,13 @@
   --text-muted: #666666;
   --border-color: #E0E0E0;
 
+  /* Elevation system — 5 niveaux */
+  --shadow-1: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-2: 0 4px 12px rgba(0,0,0,0.10);
+  --shadow-3: 0 8px 24px rgba(0,0,0,0.12);
+  --shadow-4: 0 16px 40px rgba(0,0,0,0.14);
+  --shadow-5: 0 24px 60px rgba(0,0,0,0.16);
+
   /* Dégradés EDF — angle 120deg (clair haut-gauche → foncé bas-droite) */
   --gradient-hero: linear-gradient(120deg, #1089FF 0%, #001A70 100%);
   --gradient-accent: linear-gradient(120deg, #FFB210 0%, #FE5716 100%);
@@ -180,6 +187,13 @@ nav[data-slot="base"] header {
   background: var(--gradient-blue);
 }
 
+/* === ELEVATION SYSTEM === */
+.elevation-1 { box-shadow: var(--shadow-1); }
+.elevation-2 { box-shadow: var(--shadow-2); }
+.elevation-3 { box-shadow: var(--shadow-3); }
+.elevation-4 { box-shadow: var(--shadow-4); }
+.elevation-5 { box-shadow: var(--shadow-5); }
+
 /* === ANIMATIONS === */
 @keyframes fadeInUp {
   from {
@@ -273,12 +287,12 @@ nav[data-slot="base"] header {
 
 /* === SECTIONS === */
 .section-padding {
-  padding: 6rem 1.5rem;
+  padding: 5rem 1rem;
 }
 
 @media (min-width: 768px) {
   .section-padding {
-    padding: 8rem 2rem;
+    padding: 6rem 2rem;
   }
 }
 
@@ -382,9 +396,3 @@ nav[data-slot="base"] header {
   max-width: 65ch;
 }
 
-/* === RESPONSIVE === */
-@media (max-width: 768px) {
-  .section-padding {
-    padding: 4rem 1rem;
-  }
-}

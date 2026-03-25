@@ -23,7 +23,7 @@ export default function BeneficesHeroSection() {
         </>
       }
       circleTopColor="green"
-      barOrder={["green", "orange", "blue"]}
+      accentColor="green"
     />
   );
 }

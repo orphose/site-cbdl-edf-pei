@@ -2,7 +2,6 @@
 
 import { useRef, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@nextui-org/react";
 import { Play, X } from "lucide-react";
 import { VIDEOS } from "@/lib/media";
 import Link from "next/link";
@@ -14,26 +13,27 @@ import Link from "next/link";
  */
 export default function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const mobileVideoRef = useRef<HTMLVideoElement>(null);
   const modalVideoRef = useRef<HTMLVideoElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  // Detect desktop vs mobile to load only one video
+  useEffect(() => {
+    const mql = window.matchMedia("(min-width: 1024px)");
+    setIsDesktop(mql.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
 
   // Force la lecture de la vidéo au montage
   useEffect(() => {
-    const playVideo = async (video: HTMLVideoElement | null) => {
-      if (video) {
-        try {
-          video.muted = true;
-          await video.play();
-        } catch (error) {
-          console.log("Autoplay bloqué par le navigateur");
-        }
-      }
-    };
-
-    playVideo(videoRef.current);
-    playVideo(mobileVideoRef.current);
-  }, []);
+    const video = videoRef.current;
+    if (video) {
+      video.muted = true;
+      video.play().catch(() => {});
+    }
+  }, [isDesktop]);
 
   // Gérer la lecture de la vidéo dans la modal
   useEffect(() => {
@@ -66,24 +66,23 @@ export default function HeroSection() {
     <>
       <section className="relative flex flex-col lg:block lg:h-screen">
         {/* Colonne droite - Vidéo fixée en haut à droite (desktop uniquement) */}
-        <div className="hidden lg:block fixed top-[72px] md:top-[100px] right-0 w-1/2 h-[calc(100vh-72px)] md:h-[calc(100vh-100px)] bg-edf-blue z-0 overflow-hidden">
-          {/* Vidéo de modélisation */}
-          <video
-            ref={videoRef}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            className="absolute inset-0 w-full h-full object-cover"
-          >
-            <source src={VIDEOS.modelisation2} type="video/mp4" />
-          </video>
-          <p className="sr-only">Modélisation 3D de la future Centrale Bioénergie du Larivot</p>
-
-          {/* Overlay léger pour améliorer la lisibilité si besoin */}
-          <div className="absolute inset-0 bg-edf-blue/10" aria-hidden="true" />
-        </div>
+        {isDesktop && (
+          <div className="hidden lg:block fixed top-[100px] right-0 w-1/2 h-[calc(100vh-100px)] bg-edf-blue z-0 overflow-hidden">
+            <video
+              ref={videoRef}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              className="absolute inset-0 w-full h-full object-cover"
+            >
+              <source src={VIDEOS.modelisation2} type="video/mp4" />
+            </video>
+            <p className="sr-only">Modélisation 3D de la future Centrale Bioénergie du Larivot</p>
+            <div className="absolute inset-0 bg-edf-blue/10" aria-hidden="true" />
+          </div>
+        )}
 
         {/* Colonne gauche - Contenu texte */}
         <div className="relative z-10 w-full lg:w-1/2 flex-1 lg:min-h-screen flex items-start lg:items-center bg-white pt-[72px] md:pt-[100px]">
@@ -134,44 +133,40 @@ export default function HeroSection() {
               transition={{ duration: 0.8, delay: 0.8 }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <Button
-                as={Link}
+              <Link
                 href="/centrale"
-                size="lg"
-                className="bg-edf-bleu-action text-white font-semibold px-8 hover:bg-edf-blue transition-all"
-                radius="none"
+                className="inline-flex items-center justify-center px-8 py-3 bg-edf-bleu-action text-white font-semibold hover:bg-edf-blue transition-all text-base"
               >
                 Découvrir le projet
-              </Button>
-              <Button
-                size="lg"
-                variant="bordered"
-                className="border-edf-bleu-nuit text-edf-bleu-nuit hover:bg-edf-bleu-nuit hover:text-white transition-all"
-                radius="none"
-                startContent={<Play className="w-4 h-4" />}
-                onPress={() => setIsModalOpen(true)}
+              </Link>
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="inline-flex items-center justify-center gap-2 px-8 py-3 border-2 border-edf-bleu-nuit text-edf-bleu-nuit font-semibold hover:bg-edf-bleu-nuit hover:text-white transition-all text-base"
               >
+                <Play className="w-4 h-4" />
                 Voir la vidéo
-              </Button>
+              </button>
             </motion.div>
           </div>
         </div>
 
         {/* Version mobile de la vidéo - Dans le flux normal */}
-        <div className="lg:hidden relative w-full h-64 bg-edf-blue overflow-hidden flex-shrink-0">
-          <video
-            ref={mobileVideoRef}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            className="absolute inset-0 w-full h-full object-cover"
-          >
-            <source src={VIDEOS.modelisation2} type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-edf-blue/20" aria-hidden="true" />
-        </div>
+        {!isDesktop && (
+          <div className="lg:hidden relative w-full h-64 bg-edf-blue overflow-hidden flex-shrink-0">
+            <video
+              ref={videoRef}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              className="absolute inset-0 w-full h-full object-cover"
+            >
+              <source src={VIDEOS.modelisation2} type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-edf-blue/20" aria-hidden="true" />
+          </div>
+        )}
       </section>
 
       {/* Modal vidéo */}

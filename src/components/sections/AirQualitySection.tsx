@@ -38,7 +38,7 @@ export default function AirQualitySection() {
               id="section-air-quality-heading"
             />
 
-            <p className="text-white/80 text-lg mb-8 leading-relaxed">
+            <p className="text-white/90 text-lg mb-8 leading-relaxed">
               Avec l&apos;utilisation de biocombustibles, un bilan carbone neutre et
               l&apos;absence d&apos;émissions de dioxyde de soufre, la centrale du Larivot
               incarne l&apos;avenir d&apos;une énergie propre et durable contribuant ainsi
@@ -62,7 +62,7 @@ export default function AirQualitySection() {
                     <div className="w-12 h-12 bg-white/10 flex items-center justify-center">
                       <IconComponent className="w-6 h-6 text-edf-green" />
                     </div>
-                    <span className="text-white/80 text-sm">{item.label}</span>
+                    <span className="text-white/90 text-sm">{item.label}</span>
                   </motion.div>
                 );
               })}

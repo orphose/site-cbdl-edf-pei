@@ -65,6 +65,18 @@ Règles de rédaction IMPÉRATIVES :
 
 export async function POST(request: NextRequest) {
   try {
+    // Vérifier l'authentification de l'appelant
+    const { createClient } = await import("@/utils/supabase/server");
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Non autorisé — authentification requise" },
+        { status: 401 }
+      );
+    }
+
     // Vérifier la clé API
     const apiKey = process.env.ANTHROPIC_API_KEY;
     assertEnvVar(apiKey, "ANTHROPIC_API_KEY");

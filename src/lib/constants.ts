@@ -18,6 +18,17 @@ export const FOOTER_LEGAL_LINKS = [
   { name: "Politique de confidentialité", href: "/confidentialite" },
 ] as const;
 
+export const PROJECT_STATS = {
+  power: { value: "120", unit: "MW", label: "Puissance générée" },
+  engines: { value: "7", unit: "", label: "Moteurs nouvelle génération" },
+  co2: { value: "500K", unit: "t", label: "CO₂ évitées par an" },
+  renewable: { value: "100%", unit: "", label: "Énergie renouvelable" },
+  investment: { value: "600", unit: "M€", label: "Investissement total" },
+  jobs: { value: "500+", unit: "", label: "Emplois créés" },
+  construction: { value: "3", unit: "ans", label: "De construction" },
+  commissioning: { value: "2026", unit: "", label: "Mise en service" },
+} as const;
+
 export const FAQ_ITEMS = [
   {
     question: "Qu'est-ce que la biomasse ?",

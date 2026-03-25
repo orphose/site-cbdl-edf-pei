@@ -5,6 +5,7 @@ import { Card, CardBody } from "@nextui-org/react";
 import { Zap, Leaf, Settings } from "lucide-react";
 import { useCountUp } from "@/hooks/useCountUp";
 import SectionHeader from "@/components/ui/SectionHeader";
+import { PROJECT_STATS } from "@/lib/constants";
 import { fadeInUpDelay, staggerContainer, staggerItem } from "@/lib/motion-variants";
 
 /**
@@ -127,12 +128,7 @@ export default function PresentationSection() {
           {...fadeInUpDelay(0.2)}
           className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8"
         >
-          {[
-            { value: "120", unit: "MW", label: "Puissance générée" },
-            { value: "7", unit: "", label: "Moteurs nouvelle génération" },
-            { value: "500K", unit: "t", label: "CO2 évitées/an" },
-            { value: "100%", unit: "", label: "Énergie renouvelable" },
-          ].map((stat, index) => (
+          {[PROJECT_STATS.power, PROJECT_STATS.engines, PROJECT_STATS.co2, PROJECT_STATS.renewable].map((stat, index) => (
             <div key={index} className="text-left">
               <div className="flex items-baseline gap-1">
                 <CountUpValue value={stat.value} />

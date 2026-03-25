@@ -25,7 +25,7 @@ interface PageHeroProps {
   subtitle: React.ReactNode;
   description: React.ReactNode;
   circleTopColor?: "orange" | "green";
-  barOrder?: [ColorName, ColorName, ColorName];
+  accentColor?: "orange" | "green";
 }
 
 export default function PageHero({
@@ -35,7 +35,7 @@ export default function PageHero({
   subtitle,
   description,
   circleTopColor = "orange",
-  barOrder = ["orange", "green", "blue"],
+  accentColor = "orange",
 }: PageHeroProps) {
   const reduced = useReducedMotion();
   const circleBottomColor = circleTopColor === "orange" ? "green" : "orange";
@@ -96,18 +96,17 @@ export default function PageHero({
           {/* Description */}
           <motion.p
             {...heroAnimation(reduced, 0.24)}
-            className="text-white/70 text-lg md:text-xl max-w-3xl leading-relaxed"
+            className="text-white/90 text-lg md:text-xl max-w-3xl leading-relaxed"
           >
             {description}
           </motion.p>
         </div>
       </div>
 
-      {/* Barre decorative en bas */}
+      {/* Barre decorative en bas — camaïeu bleu + accent unique */}
       <div className="absolute bottom-0 left-0 right-0 h-1 flex" aria-hidden="true">
-        {barOrder.map((color, i) => (
-          <div key={i} className={`flex-1 ${COLOR_MAP[color]}`} />
-        ))}
+        <div className={`flex-[2] ${COLOR_MAP.blue}`} />
+        <div className={`flex-1 ${COLOR_MAP[accentColor]}`} />
       </div>
     </section>
   );

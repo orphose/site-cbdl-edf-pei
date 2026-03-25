@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { GraduationCap, Battery, TrendingUp, Cpu } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { fadeInUpDelay } from "@/lib/motion-variants";
+import { PROJECT_STATS } from "@/lib/constants";
 
 /**
  * Données des bénéfices
@@ -15,7 +16,7 @@ const BENEFITS = [
     description:
       "Favorise le développement de formations et de carrières locales dans le secteur des énergies renouvelables.",
     color: "#001A70",
-    stat: "500+",
+    stat: PROJECT_STATS.jobs.value,
     statLabel: "emplois créés",
   },
   {
@@ -24,7 +25,7 @@ const BENEFITS = [
     description:
       "Elle peut moduler sa capacité de production de façon quasi instantanée en démarrant ou en arrêtant ses moteurs très rapidement.",
     color: "#88D910",
-    stat: "120",
+    stat: PROJECT_STATS.power.value,
     statLabel: "MW de puissance",
   },
   {
@@ -33,7 +34,7 @@ const BENEFITS = [
     description:
       "Représente le plus gros chantier jamais attribué aux entreprises guyanaises avec un investissement de plus de 600 millions d'euros.",
     color: "#FFB210",
-    stat: "600M€",
+    stat: PROJECT_STATS.investment.value + PROJECT_STATS.investment.unit,
     statLabel: "d'investissement",
   },
   {
@@ -42,7 +43,7 @@ const BENEFITS = [
     description:
       "La centrale bioénergie du Larivot bénéficiera d'équipements de pointe, qui se démarqueront par leur haut niveau de performance technique et environnementale.",
     color: "#001A70",
-    stat: "7",
+    stat: PROJECT_STATS.engines.value,
     statLabel: "moteurs nouvelle génération",
   },
 ];
@@ -119,7 +120,7 @@ export default function BenefitsSection() {
                         >
                           {benefit.stat}
                         </div>
-                        <div className="text-[10px] text-edf-gris-moyen uppercase tracking-wide">
+                        <div className="text-xs text-edf-gris-moyen uppercase tracking-wide">
                           {benefit.statLabel}
                         </div>
                       </div>

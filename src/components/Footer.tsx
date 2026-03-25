@@ -50,10 +50,10 @@ export default function Footer() {
                   height={70}
                   className="h-14 w-auto object-contain mb-4"
                 />
-                <p className="text-white/70 text-lg font-light">
+                <p className="text-white/90 text-lg font-light">
                   Centrale Bioénergie du Larivot
                 </p>
-                <p className="text-white/70 text-sm mt-2 max-w-sm">
+                <p className="text-white/80 text-sm mt-2 max-w-sm">
                   Un projet clé pour la transition énergétique de la Guyane vers le 100% renouvelable.
                 </p>
               </div>
@@ -66,7 +66,7 @@ export default function Footer() {
                   </div>
                   <div>
                     <p className="text-white/90 text-sm font-medium">Adresse</p>
-                    <p className="text-white/80 text-sm">
+                    <p className="text-white/90 text-sm">
                       20 PL de La Défense<br />
                       92050 Paris, Cedex 42
                     </p>
@@ -81,7 +81,7 @@ export default function Footer() {
                     <p className="text-white/90 text-sm font-medium">Email</p>
                     <Link
                       href="mailto:centraledularivot@edf.fr"
-                      className="text-white/80 text-sm hover:text-edf-orange-bright transition-colors"
+                      className="text-white/90 text-sm hover:text-edf-orange-bright transition-colors"
                     >
                       centraledularivot@edf.fr
                     </Link>
@@ -93,13 +93,10 @@ export default function Footer() {
                     <Phone className="w-5 h-5 text-edf-orange-bright" />
                   </div>
                   <div>
-                    <p className="text-white/90 text-sm font-medium">Téléphone</p>
-                    <Link
-                      href="tel:+33123456789"
-                      className="text-white/80 text-sm hover:text-edf-orange-bright transition-colors"
-                    >
-                      +33 1 23 45 67 89
-                    </Link>
+                    <p className="text-white/90 text-sm font-medium">Contact</p>
+                    <p className="text-white/80 text-sm">
+                      Via le formulaire de contact EDF
+                    </p>
                   </div>
                 </div>
               </div>
@@ -123,7 +120,7 @@ export default function Footer() {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-white/80 text-sm hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2 group"
+                    className="text-white/90 text-sm hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2 group"
                   >
                     <span className="w-0 h-px bg-edf-orange group-hover:w-3 transition-all" />
                     {link.name}
@@ -150,7 +147,7 @@ export default function Footer() {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-white/80 text-sm hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2 group"
+                    className="text-white/90 text-sm hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2 group"
                   >
                     <span className="w-0 h-px bg-edf-orange group-hover:w-3 transition-all" />
                     {link.name}
@@ -204,7 +201,7 @@ export default function Footer() {
 
         {/* Copyright et crédits */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-white/70 text-sm">
+          <p className="text-white/80 text-sm">
             © {currentYear} EDF PEI. Tous droits réservés.
           </p>
           <div className="flex items-center gap-6 text-white/70 text-xs">

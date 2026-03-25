@@ -124,12 +124,8 @@ export default function PreservationSection() {
             className="grid grid-cols-2 gap-6"
           >
             {PRESERVATION_STATS.map((stat, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.05 }}
                 className={`p-6 bg-gradient-to-br from-gray-50 to-white border border-edf-gris-clair shadow-sm ${
                   index === 4 ? "col-span-2" : ""
                 }`}
@@ -143,7 +139,7 @@ export default function PreservationSection() {
                   )}
                 </div>
                 <p className="text-edf-gris-fonce text-sm">{stat.label}</p>
-              </motion.div>
+              </div>
             ))}
           </motion.div>
 
