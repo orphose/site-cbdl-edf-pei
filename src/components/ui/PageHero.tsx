@@ -2,29 +2,26 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 
 /**
  * Camaïeu EDF — chaque page utilise un seul camaïeu.
- * Les dégradés vont du foncé vers le clair au sein du même camaïeu (charte EDF 2021).
+ * Charte EDF 2021, p.19 : dégradés clair (haut-gauche) → foncé (bas-droite), angle 120deg.
  */
 type Camaieu = "bleu" | "orange" | "vert";
 
-/** Dégradé foncé → clair au sein du même camaïeu (120deg) */
+/**
+ * Dégradé CLAIR → FONCÉ au sein du même camaïeu (120deg).
+ * Charte p.19 : "la couleur la plus claire en haut à gauche
+ * vers la couleur la plus sombre en bas à droite"
+ */
 const GRADIENT_MAP: Record<Camaieu, string> = {
-  bleu:   "linear-gradient(120deg, #001A70 0%, #1089FF 100%)",
-  orange: "linear-gradient(120deg, #FE5716 0%, #FFB210 100%)",
-  vert:   "linear-gradient(120deg, #4F9E30 0%, #88D910 100%)",
+  bleu:   "linear-gradient(120deg, #1089FF 0%, #001A70 100%)",
+  orange: "linear-gradient(120deg, #FFB210 0%, #FE5716 100%)",
+  vert:   "linear-gradient(120deg, #88D910 0%, #4F9E30 100%)",
 };
 
-/** Barre accent en bas — tonalité foncée + tonalité claire du même camaïeu */
+/** Barre accent en bas — tonalité claire + tonalité foncée du même camaïeu */
 const ACCENT_BAR_MAP: Record<Camaieu, [string, string]> = {
-  bleu:   ["bg-edf-blue", "bg-edf-blue-light"],
-  orange: ["bg-edf-orange", "bg-edf-orange-light"],
-  vert:   ["bg-edf-green-dark", "bg-edf-green-light"],
-};
-
-/** Couleur du mot accentué dans le sous-titre */
-const ACCENT_TEXT_MAP: Record<Camaieu, string> = {
-  bleu:   "text-edf-orange-bright",   // contraste sur fond bleu
-  orange: "text-white",               // contraste sur fond orange
-  vert:   "text-white",               // contraste sur fond vert
+  bleu:   ["bg-edf-blue-light", "bg-edf-blue"],
+  orange: ["bg-edf-orange-light", "bg-edf-orange"],
+  vert:   ["bg-edf-green-light", "bg-edf-green-dark"],
 };
 
 interface PageHeroProps {
@@ -32,7 +29,11 @@ interface PageHeroProps {
   badge: string;
   title: string;
   subtitle: string;
-  /** Mot(s) accentué(s) dans le sous-titre */
+  /**
+   * Mot(s) mis en exergue dans le sous-titre par la GRAISSE (bold).
+   * Charte p.26 : sur fond coloré, la mise en exergue se fait
+   * uniquement par la graisse, jamais par la couleur.
+   */
   accentWord?: string;
   description: string;
   /** Camaïeu EDF de la page (défaut: bleu) */
@@ -42,11 +43,11 @@ interface PageHeroProps {
 /**
  * Hero unifié pour les pages secondaires.
  *
- * Principes appliqués (charte EDF 2021 + Refactoring UI + Krug) :
- * — Dégradé mono-camaïeu foncé → clair (jamais de mélange entre camaïeux)
- * — Hiérarchie typographique claire : badge → titre → sous-titre → description
- * — Espacement généreux et prévisible quel que soit le contenu
- * — Animations CSS pures (pas de dépendance JS pour le contenu above-the-fold)
+ * Conformité charte EDF 2021 :
+ * — Dégradé mono-camaïeu clair→foncé, angle 120deg (p.19)
+ * — Texte blanc uniquement sur fond coloré (p.18, p.26)
+ * — Mise en exergue par graisse sur fond coloré, pas par couleur (p.26)
+ * — Un seul camaïeu par composition (p.17)
  */
 export default function PageHero({
   breadcrumbLabel,
@@ -57,6 +58,10 @@ export default function PageHero({
   description,
   camaieu = "bleu",
 }: PageHeroProps) {
+  /**
+   * Mise en exergue par la GRAISSE uniquement (charte p.26).
+   * Sur fond coloré/dégradé, pas de texte en couleur — seulement du bold blanc.
+   */
   const renderSubtitle = () => {
     if (!accentWord) return subtitle;
 
@@ -70,13 +75,13 @@ export default function PageHero({
     return (
       <>
         {before}
-        <span className={`${ACCENT_TEXT_MAP[camaieu]} font-semibold`}>{match}</span>
+        <strong className="text-white font-bold">{match}</strong>
         {after}
       </>
     );
   };
 
-  const [barDark, barLight] = ACCENT_BAR_MAP[camaieu];
+  const [barLight, barDark] = ACCENT_BAR_MAP[camaieu];
 
   return (
     <section
@@ -94,7 +99,7 @@ export default function PageHero({
             </span>
           </div>
 
-          {/* Titre principal */}
+          {/* Titre principal — blanc pur */}
           <h1
             className="heading-lg font-bold text-white mb-4 tracking-tight hero-fade-in"
             style={{ animationDelay: "0.08s" }}
@@ -102,7 +107,7 @@ export default function PageHero({
             {title}
           </h1>
 
-          {/* Sous-titre avec accent */}
+          {/* Sous-titre — blanc, exergue par graisse uniquement */}
           <p
             className="text-xl md:text-2xl text-white/90 font-light mb-6 hero-fade-in"
             style={{ animationDelay: "0.16s" }}
@@ -110,7 +115,7 @@ export default function PageHero({
             {renderSubtitle()}
           </p>
 
-          {/* Description */}
+          {/* Description — blanc atténué */}
           <p
             className="text-white/80 text-base md:text-lg max-w-2xl leading-relaxed hero-fade-in"
             style={{ animationDelay: "0.24s" }}
@@ -120,13 +125,13 @@ export default function PageHero({
         </div>
       </div>
 
-      {/* Barre accent — foncé + clair du même camaïeu */}
+      {/* Barre accent — clair + foncé du même camaïeu */}
       <div
         className="absolute bottom-0 left-0 right-0 h-1 flex"
         aria-hidden="true"
       >
-        <div className={`flex-[3] ${barDark}`} />
-        <div className={`flex-1 ${barLight}`} />
+        <div className={`flex-[3] ${barLight}`} />
+        <div className={`flex-1 ${barDark}`} />
       </div>
     </section>
   );
