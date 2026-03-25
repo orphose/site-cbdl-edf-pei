@@ -56,3 +56,7 @@ public/*.png
 public/*.gif
 public/*.mov
 public/*.mp4
+
+# Exception : assets charte EDF (légers, nécessaires au build)
+!public/images/charte/**/*.png
+!public/images/charte/**/*.jpg
