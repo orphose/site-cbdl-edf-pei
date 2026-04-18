@@ -110,9 +110,9 @@ export async function POST(request: NextRequest) {
       ? `Génère le titre et la description pour ce partenariat : ${prompt}`
       : `Génère le titre, le résumé et le contenu pour cette actualité : ${prompt}`;
 
-    // Appeler Claude Opus 4.5
+    // Appeler Claude (Sonnet 4.6 — bon compromis qualité/coût pour la rédaction)
     const message = await anthropic.messages.create({
-      model: "claude-opus-4-5-20251101",
+      model: "claude-sonnet-4-6",
       max_tokens: 2000,
       temperature: 0.7,
       system: SYSTEM_PROMPTS[type],
