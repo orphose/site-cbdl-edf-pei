@@ -4,6 +4,11 @@
  */
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimit } from "@/lib/rateLimit";
+
+// 10 générations par utilisateur toutes les 60 secondes
+const RATE_LIMIT_MAX = 10;
+const RATE_LIMIT_WINDOW_MS = 60_000;
 
 // Validation des paramètres requis
 function assertEnvVar(value: string | undefined, name: string): asserts value is string {
@@ -74,6 +79,23 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: "Non autorisé — authentification requise" },
         { status: 401 }
+      );
+    }
+
+    // Rate-limiting par utilisateur authentifié
+    const limit = rateLimit(`ai:${user.id}`, RATE_LIMIT_MAX, RATE_LIMIT_WINDOW_MS);
+    if (!limit.allowed) {
+      const retryAfter = Math.max(1, Math.ceil((limit.resetAt - Date.now()) / 1000));
+      return NextResponse.json(
+        { error: "Trop de requêtes — réessayez dans quelques instants" },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": String(retryAfter),
+            "X-RateLimit-Limit": String(RATE_LIMIT_MAX),
+            "X-RateLimit-Remaining": "0",
+          },
+        }
       );
     }
 
