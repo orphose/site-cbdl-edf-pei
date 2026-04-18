@@ -2,7 +2,13 @@ import { Skeleton } from "@nextui-org/react";
 
 export default function ArticleSkeleton() {
   return (
-    <div className="pt-[72px] md:pt-[100px]">
+    <div
+      role="status"
+      aria-busy="true"
+      aria-live="polite"
+      className="pt-[72px] md:pt-[100px]"
+    >
+      <span className="sr-only">Chargement de l&apos;article…</span>
       <div className="container-custom py-12">
         <Skeleton className="h-8 w-32 mb-8" />
         <Skeleton className="h-12 w-3/4 mb-4" />

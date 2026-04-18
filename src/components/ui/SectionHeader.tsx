@@ -5,15 +5,20 @@ import { fadeInUp } from "@/lib/motion-variants";
 
 type BadgeColor = "orange" | "green" | "blue";
 
+/**
+ * Couleurs des badges — toutes les combinaisons respectent WCAG AA (≥ 4.5:1).
+ * Les teintes foncées (`orange-dark`, `green-text`) remplacent les versions
+ * vives qui ne passaient pas sur un fond clair 10%.
+ */
 const BADGE_BG: Record<BadgeColor, string> = {
-  orange: "bg-edf-orange/10",
-  green: "bg-edf-green/10",
+  orange: "bg-edf-orange/15",
+  green: "bg-edf-green/20",
   blue: "bg-edf-blue/10",
 };
 
 const BADGE_TEXT: Record<BadgeColor, string> = {
-  orange: "text-edf-orange",
-  green: "text-edf-green",
+  orange: "text-edf-orange-dark",
+  green: "text-edf-green-text",
   blue: "text-edf-blue",
 };
 
@@ -41,7 +46,7 @@ export default function SectionHeader({
   return (
     <motion.div {...fadeInUp} className={className}>
       <span
-        className={`inline-block px-4 py-2 ${BADGE_BG[badgeColor]} ${BADGE_TEXT[badgeColor]} text-sm font-medium uppercase tracking-wide mb-6`}
+        className={`inline-block px-4 py-2 ${BADGE_BG[badgeColor]} ${BADGE_TEXT[badgeColor]} text-sm font-semibold uppercase tracking-wide mb-6`}
       >
         {badge}
       </span>

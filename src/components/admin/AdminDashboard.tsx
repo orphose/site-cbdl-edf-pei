@@ -280,32 +280,34 @@ export default function AdminDashboard({
             if (e.key === "Escape") setDeleteConfirm(null);
           }}
         >
-          <div className="bg-white rounded-lg shadow-xl p-6 max-w-md mx-4">
+          <div className="bg-white shadow-xl p-6 max-w-md mx-4">
             <h3
               id="delete-dialog-title"
-              className="text-lg font-bold text-gray-900 mb-2"
+              className="text-lg font-bold text-edf-bleu-nuit mb-2"
             >
               Supprimer &laquo; {deleteConfirm.name} &raquo; ?
             </h3>
             <p
               id="delete-dialog-desc"
-              className="text-gray-600 text-sm mb-6"
+              className="text-edf-gris-fonce text-sm mb-6"
             >
-              Cette action est irréversible.
+              L&apos;élément sera retiré immédiatement. Vous pourrez annuler
+              la suppression pendant 5 secondes.
             </p>
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setDeleteConfirm(null)}
-                className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded transition-colors"
+                className="px-4 py-2 min-h-[44px] text-edf-bleu-nuit bg-edf-gris-clair hover:bg-gray-300 transition-colors font-medium"
                 autoFocus
               >
-                Annuler
+                Garder
               </button>
               <button
                 onClick={onConfirmDelete}
-                className="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded transition-colors"
+                className="px-4 py-2 min-h-[44px] text-white bg-red-600 hover:bg-red-700 transition-colors font-semibold"
               >
-                Supprimer
+                Supprimer{" "}
+                {deleteConfirm.type === "news" ? "l'actualité" : "le partenariat"}
               </button>
             </div>
           </div>

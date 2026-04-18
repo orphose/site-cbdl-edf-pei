@@ -65,7 +65,7 @@ export default function ArticleGallery({ images }: ArticleGalleryProps) {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
-              className="relative aspect-square cursor-pointer group overflow-hidden rounded-lg shadow-md"
+              className="relative aspect-square cursor-pointer group overflow-hidden shadow-md"
               onClick={() => {
                 setLightboxIndex(index);
                 setLightboxOpen(true);
@@ -102,7 +102,7 @@ export default function ArticleGallery({ images }: ArticleGalleryProps) {
               isIconOnly
               variant="light"
               aria-label="Fermer la galerie"
-              className="absolute top-4 right-4 text-white z-10"
+              className="absolute top-4 right-4 text-white z-10 min-w-[48px] min-h-[48px]"
               onPress={() => setLightboxOpen(false)}
             >
               <X className="w-8 h-8" />
@@ -113,7 +113,7 @@ export default function ArticleGallery({ images }: ArticleGalleryProps) {
                 isIconOnly
                 variant="light"
                 aria-label="Image précédente"
-                className="absolute left-4 text-white z-10"
+                className="absolute left-4 text-white z-10 min-w-[56px] min-h-[56px]"
                 onPress={() => setLightboxIndex(lightboxIndex - 1)}
               >
                 <ChevronLeft className="w-10 h-10" />
@@ -141,7 +141,7 @@ export default function ArticleGallery({ images }: ArticleGalleryProps) {
                 isIconOnly
                 variant="light"
                 aria-label="Image suivante"
-                className="absolute right-4 text-white z-10"
+                className="absolute right-4 text-white z-10 min-w-[56px] min-h-[56px]"
                 onPress={() => setLightboxIndex(lightboxIndex + 1)}
               >
                 <ChevronRight className="w-10 h-10" />

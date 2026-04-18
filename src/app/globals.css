@@ -23,10 +23,10 @@
   --edf-bleu-action: #005BFF;   /* Boutons CTA et liens */
   --edf-blanc-bleute: #E9F1F9;  /* Fonds de sections — remplace gris */
 
-  /* Gris EDF */
-  --edf-gris-fonce: #333333;
-  --edf-gris-moyen: #666666;
-  --edf-gris-clair: #E0E0E0;
+  /* Gris EDF — échelle conforme WCAG AA sur blanc (≥ 4.5:1) */
+  --edf-gris-fonce: #333333;     /* 12.6:1 sur blanc — corps de texte principal */
+  --edf-gris-moyen: #595959;     /* 7.0:1 sur blanc — remplace #666 pour le texte */
+  --edf-gris-clair: #E0E0E0;     /* bordures uniquement — jamais en texte */
 
   /* Couleurs de fond */
   --background: #ffffff;
@@ -35,8 +35,33 @@
   --foreground-light: #E9F1F9;
 
   /* Couleurs secondaires */
-  --text-muted: #666666;
+  --text-muted: #595959;
   --border-color: #E0E0E0;
+
+  /* Teintes accentuées pour badges accessibles (≥ 4.5:1 sur blanc) */
+  --edf-orange-dark: #C13A00;    /* 4.6:1 — texte orange lisible */
+  --edf-green-text: #3C7A24;     /* 5.0:1 — texte vert lisible */
+
+  /* Spacing scale — base 4px, progression non-linéaire (Refactoring UI) */
+  --space-xs: 0.25rem;   /* 4px */
+  --space-sm: 0.5rem;    /* 8px */
+  --space-md: 1rem;      /* 16px */
+  --space-lg: 1.5rem;    /* 24px */
+  --space-xl: 2.5rem;    /* 40px */
+  --space-2xl: 4rem;     /* 64px */
+  --space-3xl: 6rem;     /* 96px */
+
+  /* Type scale body — Work Sans */
+  --text-xs: 0.75rem;    /* 12px — labels */
+  --text-sm: 0.875rem;   /* 14px — meta, captions */
+  --text-base: 1rem;     /* 16px — corps */
+  --text-lg: 1.125rem;   /* 18px — lead */
+  --text-xl: 1.25rem;    /* 20px */
+  --text-2xl: 1.5rem;    /* 24px */
+
+  /* Radius — charte EDF 2021 = 0 (carré) par défaut */
+  --radius-0: 0;
+  --radius-sm: 2px;      /* exceptions: skeletons, scrollbar */
 
   /* Elevation system — 5 niveaux */
   --shadow-1: 0 1px 3px rgba(0,0,0,0.08);
@@ -76,6 +101,9 @@
   --color-edf-gris-fonce: var(--edf-gris-fonce);
   --color-edf-gris-moyen: var(--edf-gris-moyen);
   --color-edf-gris-clair: var(--edf-gris-clair);
+  /* Teintes accessibles */
+  --color-edf-orange-dark: var(--edf-orange-dark);
+  --color-edf-green-text: var(--edf-green-text);
   /* Typographie */
   --font-sans: var(--font-work-sans);
 }
@@ -194,52 +222,17 @@ nav[data-slot="base"] header {
 .elevation-4 { box-shadow: var(--shadow-4); }
 .elevation-5 { box-shadow: var(--shadow-5); }
 
-/* === ANIMATIONS === */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(255, 107, 53, 0.6);
-  }
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
+/* === ANIMATIONS ===
+ * Règle : Framer Motion orchestre les sections dynamiques (whileInView),
+ * CSS ne fournit que deux animations utilitaires :
+ *   - hero-fade-in : animation initiale sans dépendance JS (LCP friendly)
+ *   - shimmer       : loading skeletons
+ * Les keyframes `fadeInUp`, `pulse-glow`, `float` ont été retirés : soit
+ * inutilisés, soit remplacés par Framer Motion dans les composants.
+ */
 @keyframes shimmer {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.8s ease-out forwards;
 }
 
 /* Hero page secondaire — animation CSS pure (pas de dépendance JS pour le LCP) */
@@ -264,24 +257,29 @@ nav[data-slot="base"] header {
   }
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.6s ease-out forwards;
+/* Toast slide-in (top-right) */
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
+.toast-enter {
+  animation: toastSlideIn 0.2s ease-out forwards;
 }
 
-.animate-float {
-  animation: float 3s ease-in-out infinite;
+@media (prefers-reduced-motion: reduce) {
+  .toast-enter {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
 }
-
-/* Delais d'animation */
-.delay-100 { animation-delay: 0.1s; }
-.delay-200 { animation-delay: 0.2s; }
-.delay-300 { animation-delay: 0.3s; }
-.delay-400 { animation-delay: 0.4s; }
-.delay-500 { animation-delay: 0.5s; }
 
 /* === COMPOSANTS PERSONNALISES === */
 .glass-card {
@@ -406,7 +404,7 @@ nav[data-slot="base"] header {
 
 ::-webkit-scrollbar-thumb {
   background: var(--edf-blue);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
 
 ::-webkit-scrollbar-thumb:hover {

@@ -212,7 +212,7 @@ export default function HeroSection() {
             </motion.div>
 
             {/* Texte indicatif */}
-            <p className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/60 text-sm">
+            <p className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/85 text-sm">
               Appuyez sur Échap ou cliquez à l&apos;extérieur pour fermer
             </p>
           </motion.div>

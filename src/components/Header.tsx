@@ -141,7 +141,22 @@ export default function Header() {
               </Link>
             </motion.div>
           ))}
-          
+
+          {/* CTA Presse — utilitaire (Krug § navigation utilities) */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: NAV_LINKS.length * 0.1 }}
+          >
+            <Link
+              href="/presse"
+              className="inline-flex items-center px-4 py-2 border border-edf-bleu-nuit text-edf-bleu-nuit text-sm font-semibold hover:bg-edf-bleu-nuit hover:text-white transition-colors"
+              aria-current={isActive("/presse") ? "page" : undefined}
+            >
+              Presse
+            </Link>
+          </motion.div>
+
           {/* Bouton Admin - visible uniquement si connecté */}
           {isAdmin && (
             <motion.div
@@ -159,10 +174,10 @@ export default function Header() {
           )}
         </nav>
 
-        {/* Bouton menu mobile */}
+        {/* Bouton menu mobile — cible tactile 48x48 min (Fitts) */}
         <button
           ref={hamburgerRef}
-          className="md:hidden p-2"
+          className="md:hidden inline-flex items-center justify-center min-w-[48px] min-h-[48px] p-3"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label={isMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
           aria-expanded={isMenuOpen}
@@ -209,7 +224,7 @@ export default function Header() {
               >
                 <Link
                   href={link.href}
-                  className={`block px-6 py-3 text-white transition-colors ${
+                  className={`block px-6 py-3 min-h-[48px] text-white transition-colors ${
                     isActive(link.href) ? "bg-white/20 font-semibold" : "hover:bg-white/10"
                   }`}
                   onClick={() => setIsMenuOpen(false)}
@@ -219,7 +234,25 @@ export default function Header() {
                 </Link>
               </motion.div>
             ))}
-            
+
+            {/* Lien Presse mobile */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: NAV_LINKS.length * 0.05 }}
+            >
+              <Link
+                href="/presse"
+                className={`block px-6 py-3 min-h-[48px] text-white transition-colors ${
+                  isActive("/presse") ? "bg-white/20 font-semibold" : "hover:bg-white/10"
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+                aria-current={isActive("/presse") ? "page" : undefined}
+              >
+                Presse
+              </Link>
+            </motion.div>
+
             {/* Bouton Admin mobile - visible uniquement si connecté */}
             {isAdmin && (
               <motion.div
