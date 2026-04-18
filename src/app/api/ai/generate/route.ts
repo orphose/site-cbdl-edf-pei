@@ -4,6 +4,11 @@
  */
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimit } from "@/lib/rateLimit";
+
+// 10 générations par utilisateur toutes les 60 secondes
+const RATE_LIMIT_MAX = 10;
+const RATE_LIMIT_WINDOW_MS = 60_000;
 
 // Validation des paramètres requis
 function assertEnvVar(value: string | undefined, name: string): asserts value is string {
@@ -77,6 +82,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Rate-limiting par utilisateur authentifié
+    const limit = rateLimit(`ai:${user.id}`, RATE_LIMIT_MAX, RATE_LIMIT_WINDOW_MS);
+    if (!limit.allowed) {
+      const retryAfter = Math.max(1, Math.ceil((limit.resetAt - Date.now()) / 1000));
+      return NextResponse.json(
+        { error: "Trop de requêtes — réessayez dans quelques instants" },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": String(retryAfter),
+            "X-RateLimit-Limit": String(RATE_LIMIT_MAX),
+            "X-RateLimit-Remaining": "0",
+          },
+        }
+      );
+    }
+
     // Vérifier la clé API
     const apiKey = process.env.ANTHROPIC_API_KEY;
     assertEnvVar(apiKey, "ANTHROPIC_API_KEY");
@@ -110,9 +132,9 @@ export async function POST(request: NextRequest) {
       ? `Génère le titre et la description pour ce partenariat : ${prompt}`
       : `Génère le titre, le résumé et le contenu pour cette actualité : ${prompt}`;
 
-    // Appeler Claude Opus 4.5
+    // Appeler Claude (Sonnet 4.6 — bon compromis qualité/coût pour la rédaction)
     const message = await anthropic.messages.create({
-      model: "claude-opus-4-5-20251101",
+      model: "claude-sonnet-4-6",
       max_tokens: 2000,
       temperature: 0.7,
       system: SYSTEM_PROMPTS[type],
