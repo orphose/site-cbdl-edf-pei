@@ -74,7 +74,13 @@ export default function PartnershipsSection() {
   // Écran de chargement
   if (loading) {
     return (
-      <section className="section-padding bg-edf-blanc-bleute relative overflow-hidden">
+      <section
+        role="status"
+        aria-busy="true"
+        aria-live="polite"
+        className="section-padding bg-edf-blanc-bleute relative overflow-hidden"
+      >
+        <span className="sr-only">Chargement des partenariats…</span>
         <div className="container-custom">
           <Skeleton className="h-8 w-32 mb-6 rounded-lg" />
           <Skeleton className="h-12 w-96 mb-12 rounded-lg" />
@@ -86,9 +92,22 @@ export default function PartnershipsSection() {
     );
   }
 
-  // Si pas de partenariats
+  // Si pas de partenariats : section sobre annonçant les partenariats à venir
   if (partnerships.length === 0) {
-    return null;
+    return (
+      <section className="section-padding bg-edf-blanc-bleute" aria-labelledby="section-partnerships-heading">
+        <div className="container-custom">
+          <SectionHeader
+            badge="Partenariats"
+            badgeColor="orange"
+            heading={<>Ancrage local et{" "}<span className="text-edf-orange">partenariats</span></>}
+            id="section-partnerships-heading"
+            description="Les premiers partenaires locaux du projet seront présentés ici très prochainement."
+            className="max-w-3xl"
+          />
+        </div>
+      </section>
+    );
   }
 
   return (

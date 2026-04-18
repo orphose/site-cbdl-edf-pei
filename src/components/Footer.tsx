@@ -115,12 +115,12 @@ export default function Footer() {
               Pages
               <span className="absolute -bottom-2 left-0 w-8 h-0.5 bg-edf-orange" />
             </h4>
-            <ul className="space-y-3">
+            <ul className="space-y-1">
               {NAV_LINKS.map((link, index) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-white/90 text-sm hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2 group"
+                    className="text-white/90 text-sm hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2 group py-2 min-h-[44px]"
                   >
                     <span className="w-0 h-px bg-edf-orange group-hover:w-3 transition-all" />
                     {link.name}
@@ -142,12 +142,12 @@ export default function Footer() {
               Informations
               <span className="absolute -bottom-2 left-0 w-8 h-0.5 bg-edf-orange" />
             </h4>
-            <ul className="space-y-3 mb-8">
+            <ul className="space-y-1 mb-8">
               {FOOTER_LEGAL_LINKS.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-white/90 text-sm hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2 group"
+                    className="text-white/90 text-sm hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2 group py-2 min-h-[44px]"
                   >
                     <span className="w-0 h-px bg-edf-orange group-hover:w-3 transition-all" />
                     {link.name}

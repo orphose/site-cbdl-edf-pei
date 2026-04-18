@@ -1,95 +1,61 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import { motion } from "framer-motion";
-import { ArrowLeft, Share2 } from "lucide-react";
-import Image from "next/image";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
+import { ArrowLeft } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/server";
 import type { News } from "@/lib/database.types";
 import ArticleHero from "./_components/ArticleHero";
 import ArticleGallery from "./_components/ArticleGallery";
-import ArticleSkeleton from "./_components/ArticleSkeleton";
+import ShareButton from "./ShareButton";
+
+interface PageProps {
+  params: Promise<{ slug: string }>;
+}
 
 /**
- * Page de détail d'une actualité — compose hero, contenu markdown et galerie.
+ * Charge une actualité publiée à partir de son slug.
+ * Retourne `null` si l'article n'existe pas ou n'est pas publié.
  */
-export default function ActualiteDetailPage() {
-  const params = useParams();
-  const slug = params.slug as string;
+async function fetchArticle(slug: string): Promise<News | null> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("news")
+    .select("*")
+    .eq("slug", slug)
+    .eq("is_published", true)
+    .single();
 
-  const [article, setArticle] = useState<News | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  return (data as News | null) ?? null;
+}
 
-  useEffect(() => {
-    async function loadArticle() {
-      if (!slug) return;
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const article = await fetchArticle(slug);
 
-      try {
-        const supabase = createClient();
-        const { data, error: fetchError } = await supabase
-          .from("news")
-          .select("*")
-          .eq("slug", slug)
-          .eq("is_published", true)
-          .single();
-
-        if (fetchError || !data) {
-          setError("Actualité non trouvée");
-        } else {
-          setArticle(data as News);
-        }
-      } catch (err) {
-        console.error("Erreur chargement actualité:", err);
-        setError("Impossible de charger l'actualité");
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadArticle();
-  }, [slug]);
-
-  const shareArticle = async () => {
-    if (navigator.share && article) {
-      try {
-        await navigator.share({
-          title: article.title,
-          text: article.excerpt || "",
-          url: window.location.href,
-        });
-      } catch {
-        // Partage annulé par l'utilisateur
-      }
-    }
-  };
-
-  if (loading) {
-    return <ArticleSkeleton />;
+  if (!article) {
+    return { title: "Actualité introuvable | CBDL" };
   }
 
-  if (error || !article) {
-    return (
-      <div className="pt-[72px] md:pt-[100px]">
-        <div className="container-custom py-20 text-center">
-          <h1 className="text-3xl font-bold text-edf-bleu-nuit mb-4">
-            {error || "Actualité non trouvée"}
-          </h1>
-          <p className="text-edf-gris-fonce mb-8">
-            Cette actualité n&apos;existe pas ou a été supprimée.
-          </p>
-          <Link
-            href="/actualites"
-            className="inline-flex items-center gap-2 text-edf-blue hover:underline"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Retour aux actualités
-          </Link>
-        </div>
-      </div>
-    );
+  return {
+    title: `${article.title} | Actualités CBDL`,
+    description: article.excerpt ?? undefined,
+    openGraph: {
+      title: article.title,
+      description: article.excerpt ?? undefined,
+      type: "article",
+      images: article.image_url ? [{ url: article.image_url }] : undefined,
+    },
+  };
+}
+
+export default async function ActualiteDetailPage({ params }: PageProps) {
+  const { slug } = await params;
+  const article = await fetchArticle(slug);
+
+  if (!article) {
+    notFound();
   }
 
   return (
@@ -104,63 +70,48 @@ export default function ActualiteDetailPage() {
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
             {article.image_url && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="relative aspect-video mb-12 overflow-hidden shadow-xl"
-              >
+              <div className="relative aspect-video mb-12 overflow-hidden shadow-xl">
                 <Image
                   src={article.image_url}
                   alt={article.title}
                   fill
                   className="object-cover"
                   priority
+                  sizes="(min-width: 1024px) 896px, 100vw"
                 />
-              </motion.div>
+              </div>
             )}
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="prose prose-lg max-w-none"
-            >
+            <div className="prose prose-lg max-w-none">
               {article.content ? (
                 <div className="text-edf-bleu-nuit leading-relaxed">
                   <ReactMarkdown>{article.content}</ReactMarkdown>
                 </div>
               ) : (
-                <p className="text-edf-gris-moyen italic">Contenu non disponible.</p>
+                <p className="text-edf-gris-fonce italic">
+                  Contenu non disponible.
+                </p>
               )}
-            </motion.div>
+            </div>
 
             {article.gallery && article.gallery.length > 0 && (
               <ArticleGallery images={article.gallery} />
             )}
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="mt-12 pt-8 border-t border-edf-gris-clair flex items-center justify-between"
-            >
+            <div className="mt-12 pt-8 border-t border-edf-gris-clair flex items-center justify-between">
               <Link
                 href="/actualites"
-                className="inline-flex items-center gap-2 text-edf-blue hover:underline"
+                className="inline-flex items-center gap-2 text-edf-blue hover:underline min-h-[44px]"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Toutes les actualités
               </Link>
 
-              <button
-                onClick={shareArticle}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-edf-blanc-bleute hover:bg-edf-gris-clair rounded-lg transition-colors"
-              >
-                <Share2 className="w-4 h-4" />
-                Partager
-              </button>
-            </motion.div>
+              <ShareButton
+                title={article.title}
+                excerpt={article.excerpt ?? ""}
+              />
+            </div>
           </div>
         </div>
       </section>

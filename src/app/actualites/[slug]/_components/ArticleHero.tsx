@@ -52,7 +52,7 @@ export default function ArticleHero({ title, excerpt, publishedAt }: ArticleHero
 
           <Link
             href="/actualites"
-            className="inline-flex items-center gap-2 text-white/60 hover:text-white mb-10 transition-colors text-sm font-medium group"
+            className="inline-flex items-center gap-2 text-white/85 hover:text-white mb-10 transition-colors text-sm font-medium group"
           >
             <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
             Retour aux actualités
@@ -62,7 +62,7 @@ export default function ArticleHero({ title, excerpt, publishedAt }: ArticleHero
             <span className="px-3 py-1.5 bg-edf-orange text-white text-xs font-bold uppercase tracking-wider">
               Actualité
             </span>
-            <div className="flex items-center gap-2 text-white/70 text-sm">
+            <div className="flex items-center gap-2 text-white/85 text-sm">
               <Calendar className="w-4 h-4" />
               <span>{formatDate(publishedAt)}</span>
             </div>

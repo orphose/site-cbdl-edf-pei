@@ -49,24 +49,46 @@ export default async function ActualitesPage() {
       <section className="section-padding bg-edf-blanc-bleute">
         <div className="container-custom">
           {error && (
-            <div className="text-center py-20">
-              <p className="text-red-500 text-lg">
+            <div role="alert" className="text-center py-20">
+              <h2 className="text-2xl font-bold text-edf-bleu-nuit mb-3">
                 Impossible de charger les actualités
+              </h2>
+              <p className="text-edf-gris-fonce mb-8 max-w-md mx-auto">
+                Un problème est survenu lors du chargement. Veuillez réessayer
+                dans quelques instants.
               </p>
             </div>
           )}
 
           {!error && news.length === 0 && (
             <div className="text-center py-20">
-              <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Calendar className="w-12 h-12 text-edf-gris-moyen" />
+              <div
+                className="w-24 h-24 bg-edf-blanc-bleute flex items-center justify-center mx-auto mb-6"
+                aria-hidden="true"
+              >
+                <Calendar className="w-12 h-12 text-edf-blue" />
               </div>
               <h2 className="text-2xl font-bold text-edf-bleu-nuit mb-4">
                 Aucune actualité pour le moment
               </h2>
-              <p className="text-edf-gris-moyen max-w-md mx-auto">
+              <p className="text-edf-gris-fonce max-w-md mx-auto mb-8">
                 Les prochaines actualités du projet seront publiées ici.
+                En attendant, découvrez la centrale et son chantier.
               </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Link
+                  href="/centrale"
+                  className="inline-flex items-center justify-center px-6 py-3 min-h-[44px] bg-edf-bleu-action text-white font-semibold hover:bg-edf-blue transition-colors"
+                >
+                  Découvrir la centrale
+                </Link>
+                <Link
+                  href="/chantier"
+                  className="inline-flex items-center justify-center px-6 py-3 min-h-[44px] border-2 border-edf-bleu-nuit text-edf-bleu-nuit font-semibold hover:bg-edf-bleu-nuit hover:text-white transition-colors"
+                >
+                  Suivre le chantier
+                </Link>
+              </div>
             </div>
           )}
 
@@ -97,24 +119,27 @@ export default async function ActualitesPage() {
                       </div>
 
                       <div className="p-6">
-                        <div className="flex items-center gap-2 text-edf-gris-moyen text-sm mb-3">
-                          <Calendar className="w-4 h-4" />
+                        {/* Label date — hiérarchie tertiaire (Wathan § Hierarchy) */}
+                        <p className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-edf-gris-fonce mb-3">
+                          <Calendar className="w-3.5 h-3.5" aria-hidden="true" />
                           <span>{formatDate(item.published_at)}</span>
-                        </div>
+                        </p>
 
+                        {/* Titre — hiérarchie primaire */}
                         <h3 className="text-lg font-bold text-edf-bleu-nuit mb-3 group-hover:text-edf-blue transition-colors line-clamp-2">
                           {item.title}
                         </h3>
 
+                        {/* Extrait — hiérarchie secondaire */}
                         {item.excerpt && (
                           <p className="text-edf-gris-fonce text-sm line-clamp-3 mb-4">
                             {item.excerpt}
                           </p>
                         )}
 
-                        <div className="flex items-center gap-2 text-edf-orange font-medium text-sm group-hover:gap-3 transition-all">
+                        <div className="flex items-center gap-2 text-edf-orange-dark font-semibold text-sm group-hover:gap-3 transition-all">
                           <span>Lire la suite</span>
-                          <ArrowRight className="w-4 h-4" />
+                          <ArrowRight className="w-4 h-4" aria-hidden="true" />
                         </div>
                       </div>
                     </article>

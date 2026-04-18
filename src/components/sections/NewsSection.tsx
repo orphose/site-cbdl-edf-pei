@@ -80,23 +80,30 @@ export default function NewsSection() {
         </motion.div>
 
         {/* Grille d'actualités */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+          role={loading ? "status" : undefined}
+          aria-busy={loading || undefined}
+          aria-live={loading ? "polite" : undefined}
+        >
           {loading ? (
-            // Skeleton de chargement
-            Array.from({ length: 3 }).map((_, index) => (
-              <Card key={index} className="h-full bg-white border border-edf-gris-clair">
-                <Skeleton className="aspect-video rounded-none" />
-                <CardBody className="p-6">
-                  <Skeleton className="w-32 h-4 mb-3 rounded" />
-                  <Skeleton className="w-full h-6 mb-3 rounded" />
-                  <Skeleton className="w-3/4 h-4 rounded" />
-                </CardBody>
-              </Card>
-            ))
+            <>
+              <span className="sr-only">Chargement des actualités…</span>
+              {Array.from({ length: 3 }).map((_, index) => (
+                <Card key={index} className="h-full bg-white border border-edf-gris-clair">
+                  <Skeleton className="aspect-video rounded-none" />
+                  <CardBody className="p-6">
+                    <Skeleton className="w-32 h-4 mb-3 rounded" />
+                    <Skeleton className="w-full h-6 mb-3 rounded" />
+                    <Skeleton className="w-3/4 h-4 rounded" />
+                  </CardBody>
+                </Card>
+              ))}
+            </>
           ) : news.length === 0 ? (
             // Message si pas d'actualités
             <div className="col-span-full text-center py-12">
-              <p className="text-edf-gris-moyen">Aucune actualité pour le moment.</p>
+              <p className="text-edf-gris-fonce">Aucune actualité pour le moment.</p>
             </div>
           ) : (
             // Affichage des actualités
