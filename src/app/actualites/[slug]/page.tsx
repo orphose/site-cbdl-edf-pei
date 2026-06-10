@@ -25,6 +25,7 @@ async function fetchArticle(slug: string): Promise<News | null> {
     .select("*")
     .eq("slug", slug)
     .eq("is_published", true)
+    .or(`published_at.is.null,published_at.lte.${new Date().toISOString()}`)
     .single();
 
   return (data as News | null) ?? null;
@@ -38,14 +39,27 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: "Actualité introuvable | CBDL" };
   }
 
+  // Repli : les champs SEO dédiés priment, sinon titre/extrait/image de couverture.
+  const seoTitle = article.seo_title || article.title;
+  const seoDescription = article.seo_description || article.excerpt || undefined;
+  const ogImage = article.og_image || article.image_url;
+
   return {
-    title: `${article.title} | Actualités CBDL`,
-    description: article.excerpt ?? undefined,
+    title: `${seoTitle} | Actualités CBDL`,
+    description: seoDescription,
+    keywords: article.tags?.length ? article.tags : undefined,
     openGraph: {
-      title: article.title,
-      description: article.excerpt ?? undefined,
+      title: seoTitle,
+      description: seoDescription,
       type: "article",
-      images: article.image_url ? [{ url: article.image_url }] : undefined,
+      publishedTime: article.published_at ?? undefined,
+      images: ogImage ? [{ url: ogImage }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: seoTitle,
+      description: seoDescription,
+      images: ogImage ? [ogImage] : undefined,
     },
   };
 }
@@ -137,6 +151,19 @@ export default async function ActualiteDetailPage({ params }: PageProps) {
 
             {article.gallery && article.gallery.length > 0 && (
               <ArticleGallery images={article.gallery} />
+            )}
+
+            {article.tags && article.tags.length > 0 && (
+              <ul className="mt-10 flex flex-wrap gap-2 list-none" aria-label="Étiquettes">
+                {article.tags.map((tag) => (
+                  <li
+                    key={tag}
+                    className="px-3 py-1 bg-edf-blanc-bleute text-edf-bleu-nuit text-sm font-medium"
+                  >
+                    #{tag}
+                  </li>
+                ))}
+              </ul>
             )}
 
             <div className="mt-12 pt-8 border-t border-edf-gris-clair flex flex-wrap items-center justify-between gap-4">

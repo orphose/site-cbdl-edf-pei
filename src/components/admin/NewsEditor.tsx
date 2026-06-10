@@ -30,6 +30,9 @@ import {
   Hash,
   X,
   ExternalLink,
+  Tag,
+  Search,
+  CalendarClock,
 } from "lucide-react";
 import Image from "next/image";
 import { generateSlug } from "@/hooks/useNewsManager";
@@ -497,6 +500,15 @@ function NewsForm({
                   setNewsForm({ ...newsForm, content })
                 }
               />
+
+              {/* Étiquettes */}
+              <TagsField
+                tags={newsForm.tags}
+                onChange={(tags) => setNewsForm({ ...newsForm, tags })}
+              />
+
+              {/* Référencement (SEO) */}
+              <SeoFields newsForm={newsForm} setNewsForm={setNewsForm} />
             </div>
 
             {/* Colonne latérale */}
@@ -581,6 +593,34 @@ function NewsForm({
                 </div>
               </div>
 
+              {/* Publication programmée (visible si publié) */}
+              {newsForm.is_published && (
+                <div>
+                  <label
+                    htmlFor="news-published-at"
+                    className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-1.5"
+                  >
+                    <CalendarClock className="w-4 h-4 text-gray-400" />
+                    Date de publication
+                  </label>
+                  <input
+                    id="news-published-at"
+                    type="datetime-local"
+                    value={newsForm.published_at}
+                    onChange={(e) =>
+                      setNewsForm({ ...newsForm, published_at: e.target.value })
+                    }
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-edf-blue/20 focus:border-edf-blue"
+                  />
+                  <p className="text-xs text-gray-400 mt-1">
+                    {newsForm.published_at &&
+                    new Date(newsForm.published_at).getTime() > Date.now()
+                      ? "⏳ Programmée — l'article apparaîtra à cette date."
+                      : "Laissez vide pour publier immédiatement."}
+                  </p>
+                </div>
+              )}
+
               {/* LinkedIn share */}
               <LinkedInSharePanel
                 linkedInShare={linkedInShare}
@@ -594,6 +634,157 @@ function NewsForm({
         </CardBody>
       </Card>
     </motion.div>
+  );
+}
+
+// --- Tags ---
+
+function TagsField({
+  tags,
+  onChange,
+}: {
+  tags: string[];
+  onChange: (tags: string[]) => void;
+}) {
+  const addTag = (raw: string) => {
+    const tag = raw.trim().replace(/^#/, "").toLowerCase();
+    if (tag && !tags.includes(tag) && tags.length < 12) {
+      onChange([...tags, tag]);
+    }
+  };
+
+  return (
+    <div>
+      <label
+        htmlFor="news-tag-input"
+        className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-1.5"
+      >
+        <Tag className="w-4 h-4 text-gray-400" />
+        Étiquettes
+      </label>
+      {tags.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 mb-2">
+          {tags.map((tag) => (
+            <span
+              key={tag}
+              className="inline-flex items-center gap-1 px-2 py-1 bg-edf-blue/10 text-edf-blue text-xs rounded-full"
+            >
+              #{tag}
+              <button
+                type="button"
+                aria-label={`Retirer ${tag}`}
+                onClick={() => onChange(tags.filter((t) => t !== tag))}
+                className="ml-0.5 hover:text-red-500"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
+      {tags.length < 12 && (
+        <Input
+          id="news-tag-input"
+          size="sm"
+          placeholder="Ajouter une étiquette, puis Entrée"
+          startContent={<Hash className="w-3 h-3 text-gray-400" />}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              const target = e.target as HTMLInputElement;
+              addTag(target.value);
+              target.value = "";
+            }
+          }}
+          classNames={{
+            inputWrapper: "bg-gray-50 border border-gray-200",
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+// --- SEO ---
+
+function SeoFields({
+  newsForm,
+  setNewsForm,
+}: {
+  newsForm: NewsFormData;
+  setNewsForm: (form: NewsFormData) => void;
+}) {
+  return (
+    <div className="border border-gray-200 rounded-xl overflow-hidden">
+      <div className="flex items-center gap-2 px-4 py-3 bg-gray-50 border-b border-gray-200">
+        <Search className="w-4 h-4 text-gray-500" />
+        <h4 className="text-sm font-semibold text-gray-800">Référencement (SEO)</h4>
+      </div>
+      <div className="p-4 space-y-4">
+        <div>
+          <label
+            htmlFor="news-seo-title"
+            className="block text-xs font-medium text-gray-600 mb-1.5"
+          >
+            Titre SEO{" "}
+            <span className="text-gray-400">— défaut : le titre de l&apos;article</span>
+          </label>
+          <Input
+            id="news-seo-title"
+            size="sm"
+            placeholder={newsForm.title || "Titre affiché dans Google"}
+            value={newsForm.seo_title}
+            onChange={(e) =>
+              setNewsForm({ ...newsForm, seo_title: e.target.value })
+            }
+            classNames={{ inputWrapper: "bg-gray-50 border border-gray-200" }}
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="news-seo-desc"
+            className="block text-xs font-medium text-gray-600 mb-1.5"
+          >
+            Méta-description{" "}
+            <span className="text-gray-400">— défaut : l&apos;extrait</span>
+          </label>
+          <textarea
+            id="news-seo-desc"
+            placeholder={newsForm.excerpt || "Description affichée dans les résultats de recherche"}
+            value={newsForm.seo_description}
+            onChange={(e) => {
+              if (e.target.value.length <= 160)
+                setNewsForm({ ...newsForm, seo_description: e.target.value });
+            }}
+            rows={2}
+            maxLength={160}
+            className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-edf-blue/20 focus:border-edf-blue resize-none"
+          />
+          <p className="text-xs text-gray-400 mt-1">
+            {newsForm.seo_description.length}/160 caractères
+          </p>
+        </div>
+        <div>
+          <label
+            htmlFor="news-og-image"
+            className="block text-xs font-medium text-gray-600 mb-1.5"
+          >
+            Image de partage (OpenGraph){" "}
+            <span className="text-gray-400">— défaut : l&apos;image de couverture</span>
+          </label>
+          <Input
+            id="news-og-image"
+            size="sm"
+            placeholder="https://… (optionnel)"
+            value={newsForm.og_image}
+            onChange={(e) =>
+              setNewsForm({ ...newsForm, og_image: e.target.value })
+            }
+            classNames={{ inputWrapper: "bg-gray-50 border border-gray-200" }}
+          />
+        </div>
+      </div>
+    </div>
   );
 }
 

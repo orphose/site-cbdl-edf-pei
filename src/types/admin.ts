@@ -2,7 +2,7 @@ import type { News, Partnership } from "@/lib/database.types";
 
 // Types pour les vues
 export type ViewMode = "list" | "create" | "edit";
-export type ActiveSection = "news" | "partnerships";
+export type ActiveSection = "news" | "partnerships" | "activity" | "users";
 
 // Formulaire actualité
 export interface NewsFormData {
@@ -12,6 +12,12 @@ export interface NewsFormData {
   content: string;
   image_url: string;
   gallery: string[];
+  tags: string[];
+  seo_title: string;
+  seo_description: string;
+  og_image: string;
+  /** Date/heure ISO de publication ; si dans le futur → programmée. Vide = immédiat. */
+  published_at: string;
   is_published: boolean;
 }
 

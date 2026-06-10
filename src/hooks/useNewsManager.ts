@@ -16,8 +16,22 @@ const EMPTY_NEWS_FORM: NewsFormData = {
   content: "",
   image_url: "",
   gallery: [],
+  tags: [],
+  seo_title: "",
+  seo_description: "",
+  og_image: "",
+  published_at: "",
   is_published: false,
 };
+
+/** ISO (UTC) → valeur d'un <input type="datetime-local"> (heure locale). */
+function isoToLocalInput(iso: string | null): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
 
 const DEFAULT_LINKEDIN_SHARE: LinkedInShareState = {
   enabled: false,
@@ -195,23 +209,29 @@ export function useNewsManager(
       content: item.content || "",
       image_url: item.image_url || "",
       gallery: item.gallery || [],
+      tags: item.tags || [],
+      seo_title: item.seo_title || "",
+      seo_description: item.seo_description || "",
+      og_image: item.og_image || "",
+      published_at: isoToLocalInput(item.published_at),
       is_published: item.is_published,
     });
     setLinkedInShare(DEFAULT_LINKEDIN_SHARE);
     setViewMode("edit");
   };
 
-  // Ouvrir la fenêtre de partage LinkedIn
+  // Ouvrir la fenêtre de partage LinkedIn (le lien de l'article est inclus
+  // dans le texte du post — sans lui, le partage n'a pas d'intérêt).
   const openLinkedInShare = (
-    _articleUrl: string,
-    _title: string,
+    articleUrl: string,
+    title: string,
     content: string
   ) => {
     const hashtags = linkedInShare.hashtags.map((h) => `#${h}`).join(" ");
-    const postText = linkedInShare.customText || content;
-    const fullText = `${postText}\n\n${hashtags}`;
+    const postText = linkedInShare.customText || content || title;
+    const fullText = `${postText}\n\n${articleUrl}\n\n${hashtags}`.trim();
     const linkedInUrl = `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(fullText)}`;
-    window.open(linkedInUrl, "_blank");
+    window.open(linkedInUrl, "_blank", "noopener,noreferrer");
   };
 
   // Ajouter un hashtag
@@ -272,16 +292,20 @@ export function useNewsManager(
         content: newsForm.content || null,
         image_url: newsForm.image_url || null,
         gallery: newsForm.gallery || [],
+        tags: newsForm.tags || [],
+        seo_title: newsForm.seo_title || null,
+        seo_description: newsForm.seo_description || null,
+        og_image: newsForm.og_image || null,
         is_published: newsForm.is_published,
       };
 
-      if (!editingNews) {
-        newsData.published_at = newsForm.is_published
-          ? new Date().toISOString()
-          : null;
-      } else if (newsForm.is_published && !editingNews.published_at) {
-        newsData.published_at = new Date().toISOString();
-      } else if (!newsForm.is_published) {
+      // Date de publication : une date explicite (éventuellement future =
+      // programmée) prime ; sinon on conserve l'existante, sinon « maintenant ».
+      if (newsForm.is_published) {
+        newsData.published_at = newsForm.published_at
+          ? new Date(newsForm.published_at).toISOString()
+          : editingNews?.published_at ?? new Date().toISOString();
+      } else {
         newsData.published_at = null;
       }
 

@@ -29,6 +29,7 @@ export default async function ActualitesPage() {
     .from("news")
     .select("*")
     .eq("is_published", true)
+    .or(`published_at.is.null,published_at.lte.${new Date().toISOString()}`)
     .order("published_at", { ascending: false })
     .limit(50);
 

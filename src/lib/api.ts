@@ -28,6 +28,7 @@ export async function getPublishedNews(limit = 10): Promise<News[]> {
     .from('news')
     .select('*')
     .eq('is_published', true)
+    .or(`published_at.is.null,published_at.lte.${new Date().toISOString()}`)
     .order('published_at', { ascending: false })
     .limit(limit);
 

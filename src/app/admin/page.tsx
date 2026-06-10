@@ -88,6 +88,8 @@ export default function AdminPage() {
   useEffect(() => {
     if (viewMode === "list") {
       formInitialized.current = false;
+      // Revenir à la liste (sauvegarde réussie ou abandon) repart d'un état propre.
+      setHasUnsavedChanges(false);
       return;
     }
     if (!formInitialized.current) {
@@ -97,8 +99,16 @@ export default function AdminPage() {
     setHasUnsavedChanges(true);
   }, [newsManager.newsForm, partnershipManager.partnershipForm, viewMode]);
 
-  // Back to list
+  // Back to list — confirme si des modifications ne sont pas enregistrées
   const backToList = () => {
+    if (
+      hasUnsavedChanges &&
+      !window.confirm(
+        "Des modifications ne sont pas enregistrées. Quitter sans enregistrer ?"
+      )
+    ) {
+      return;
+    }
     setViewMode("list");
     newsManager.setSaveSuccess(false);
     newsManager.setSaveError(null);
