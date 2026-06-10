@@ -24,7 +24,7 @@ const STATS_DATA = [
   },
   {
     icon: Lightbulb,
-    value: "3 500",
+    value: "3 500",
     unit: "GWh/an",
     label: "Énergie produite",
   },
@@ -76,7 +76,7 @@ export default function AboutTransitionSection() {
         {/* Bloc d'engagement — aplat teinté */}
         <motion.div
           {...fadeInUpDelay(0.1)}
-          className="mb-14 bg-edf-blanc-bleute p-8 md:p-10"
+          className="card-motif mb-14 bg-edf-blanc-bleute p-8 md:p-10"
         >
           <p className="text-lead text-edf-bleu-nuit">
             Notre engagement se concrétise par la <strong>conversion à la
@@ -97,10 +97,10 @@ export default function AboutTransitionSection() {
           {STATS_DATA.map((stat) => {
             const IconComponent = stat.icon;
             return (
-              <motion.div key={stat.label} variants={staggerItem} className="h-full">
-                <article className="card-edf h-full p-6 text-center">
+              <motion.div key={stat.label} variants={staggerItem} className="card-pop-wrap">
+                <article className="card-edf card-pop card-pop--center h-full px-6 pb-6 pt-12 text-center">
                   {/* Icône */}
-                  <span className="icon-square mb-4" aria-hidden="true">
+                  <span className="icon-square" aria-hidden="true">
                     <IconComponent className="w-6 h-6" />
                   </span>
 

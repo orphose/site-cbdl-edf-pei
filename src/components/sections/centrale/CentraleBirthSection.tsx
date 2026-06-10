@@ -132,9 +132,9 @@ export default function CentraleBirthSection() {
           {TIMELINE_ITEMS.map((item) => {
             const IconComponent = item.icon;
             return (
-              <motion.div key={item.title} variants={staggerItem} className="h-full">
-                <article className="card-edf h-full p-6">
-                  <span className="icon-square mb-5" aria-hidden="true">
+              <motion.div key={item.title} variants={staggerItem} className="card-pop-wrap">
+                <article className="card-edf card-pop card-motif h-full px-6 pb-6 pt-12">
+                  <span className="icon-square" aria-hidden="true">
                     <IconComponent className="w-6 h-6" />
                   </span>
 

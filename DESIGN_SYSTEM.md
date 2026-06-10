@@ -86,6 +86,15 @@ Longueur de ligne : `max-w-prose` / `max-w-3xl` (45–75 caractères).
   portée par les `icon-square`, les grands chiffres (`stat-value`), les fonds
   teintés (`bg-edf-blanc-bleute`) et l'eyebrow. Les cards reposent sur la
   bordure neutre `border-edf-gris-clair` + l'élévation au hover.
+- **Ornements de carte** (en remplacement des bordures colorées) :
+  - `.card-pop` (+ `.card-pop-wrap`, variante `--center`) : l'icône carrée
+    chevauche le bord supérieur de la carte — écho du cartouche EDF ;
+  - `.card-pop-left` (+ `.card-pop-left-wrap`) : idem sur le bord gauche,
+    pour les cartes en liste ;
+  - `.card-motif` (`--vert`, `--orange`, bleu par défaut) : motif baguette
+    officiel en filigrane dans l'angle bas-droit, intensifié au hover ;
+  - numéro géant en filigrane (piliers numérotés) ;
+  - petit carré camaïeu (`w-2.5 h-2.5`) au-dessus des chiffres clés.
 - Pas de `backdrop-blur` décoratif, pas de blobs flous colorés hors `.glow-effect`.
 
 ---

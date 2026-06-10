@@ -92,17 +92,17 @@ export default function AboutIndustrySection() {
           <div className="space-y-6">
             {EXCELLENCE_PILLARS.map((pillar, index) => (
               <motion.div key={pillar.number} {...fadeInUpDelay(index * 0.1)}>
-                <article className="card-edf p-6 flex gap-6">
-                  {/* Numéro décoratif */}
+                <article className="card-edf relative overflow-hidden p-6">
+                  {/* Numéro géant en filigrane — angle haut-droit */}
                   <span
-                    className="text-4xl font-bold leading-none text-edf-bleu-action/25 flex-shrink-0"
+                    className="absolute -top-4 right-2 text-[4.75rem] font-bold leading-none text-edf-bleu-action/10 select-none"
                     aria-hidden="true"
                   >
                     {pillar.number}
                   </span>
 
                   {/* Contenu */}
-                  <div className="flex-1">
+                  <div className="relative pr-16">
                     <h3 className="heading-4 text-edf-bleu-nuit mb-2">
                       {pillar.title}
                     </h3>

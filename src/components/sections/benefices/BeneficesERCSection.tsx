@@ -136,21 +136,19 @@ export default function BeneficesERCSection() {
                   }`}
                 >
                   {/* Contenu texte */}
-                  <div className={!isEven ? "lg:col-start-2" : ""}>
-                    <article className="card-edf h-full p-8">
-                      <div className="flex items-start justify-between gap-4 mb-6">
-                        <span className="icon-square icon-square--green" aria-hidden="true">
-                          <IconComponent className="w-6 h-6" />
+                  <div className={`card-pop-wrap ${!isEven ? "lg:col-start-2" : ""}`}>
+                    <article className="card-edf card-pop card-motif card-motif--vert h-full px-8 pb-8 pt-6">
+                      <span className="icon-square icon-square--green" aria-hidden="true">
+                        <IconComponent className="w-6 h-6" />
+                      </span>
+                      <p className="text-right mb-4">
+                        <span className="block text-2xl font-bold text-edf-blue leading-tight">
+                          {measure.highlight}
                         </span>
-                        <p className="text-right">
-                          <span className="block text-2xl font-bold text-edf-blue leading-tight">
-                            {measure.highlight}
-                          </span>
-                          <span className="block text-caption mt-0.5">
-                            {measure.highlightLabel}
-                          </span>
-                        </p>
-                      </div>
+                        <span className="block text-caption mt-0.5">
+                          {measure.highlightLabel}
+                        </span>
+                      </p>
 
                       <h3 className="heading-4 text-edf-bleu-nuit mb-3">
                         {measure.title}
@@ -186,7 +184,7 @@ export default function BeneficesERCSection() {
         {/* Bandeau partenariat */}
         <motion.div
           {...fadeInUp}
-          className="mt-16 lg:mt-20 bg-edf-blanc-bleute p-8 md:p-12"
+          className="card-motif card-motif--vert mt-16 lg:mt-20 bg-edf-blanc-bleute p-8 md:p-12"
         >
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
@@ -206,6 +204,7 @@ export default function BeneficesERCSection() {
                 { value: "EDF PEI", label: "Porteur du projet" },
               ].map((item) => (
                 <div key={item.label} className="px-6 py-4 bg-white">
+                  <span className="block w-2.5 h-2.5 bg-edf-green-dark mb-2.5" aria-hidden="true" />
                   <dd className="text-2xl md:text-3xl font-bold text-edf-blue">
                     {item.value}
                   </dd>

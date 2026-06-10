@@ -75,19 +75,17 @@ export default function BenefitsSection() {
           {BENEFITS.map((benefit) => {
             const IconComponent = benefit.icon;
             return (
-              <motion.div key={benefit.title} variants={staggerItem} className="h-full">
-                <article className="card-edf h-full p-7">
-                  <div className="flex items-start justify-between gap-4 mb-5">
-                    <span className="icon-square" aria-hidden="true">
-                      <IconComponent className="w-6 h-6" />
+              <motion.div key={benefit.title} variants={staggerItem} className="card-pop-wrap">
+                <article className="card-edf card-pop card-motif h-full px-7 pb-7 pt-6">
+                  <span className="icon-square" aria-hidden="true">
+                    <IconComponent className="w-6 h-6" />
+                  </span>
+                  <p className="text-right mb-4">
+                    <span className="block text-2xl font-bold text-edf-blue leading-tight">
+                      {benefit.stat}
                     </span>
-                    <p className="text-right">
-                      <span className="block text-2xl font-bold text-edf-blue leading-tight">
-                        {benefit.stat}
-                      </span>
-                      <span className="block text-caption mt-0.5">{benefit.statLabel}</span>
-                    </p>
-                  </div>
+                    <span className="block text-caption mt-0.5">{benefit.statLabel}</span>
+                  </p>
 
                   <h3 className="heading-4 text-edf-bleu-nuit mb-2">{benefit.title}</h3>
                   <p className="text-edf-bleu-nuit/75 leading-relaxed text-[0.9375rem]">

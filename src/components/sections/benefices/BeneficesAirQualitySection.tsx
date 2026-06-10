@@ -96,21 +96,19 @@ export default function BeneficesAirQualitySection() {
           {AIR_QUALITY_ITEMS.map((card) => {
             const IconComponent = card.icon;
             return (
-              <motion.div key={card.title} variants={staggerItem} className="h-full">
-                <article className="card-edf h-full p-7">
-                  <div className="flex items-start justify-between gap-4 mb-5">
-                    <span className="icon-square icon-square--green" aria-hidden="true">
-                      <IconComponent className="w-6 h-6" />
+              <motion.div key={card.title} variants={staggerItem} className="card-pop-wrap">
+                <article className="card-edf card-pop card-motif card-motif--vert h-full px-7 pb-7 pt-6">
+                  <span className="icon-square icon-square--green" aria-hidden="true">
+                    <IconComponent className="w-6 h-6" />
+                  </span>
+                  <p className="text-right mb-4">
+                    <span className="block text-2xl font-bold text-edf-blue leading-tight">
+                      {card.highlight}
                     </span>
-                    <p className="text-right">
-                      <span className="block text-2xl font-bold text-edf-blue leading-tight">
-                        {card.highlight}
-                      </span>
-                      <span className="block text-caption mt-0.5">
-                        {card.highlightLabel}
-                      </span>
-                    </p>
-                  </div>
+                    <span className="block text-caption mt-0.5">
+                      {card.highlightLabel}
+                    </span>
+                  </p>
 
                   <h3 className="heading-4 text-edf-bleu-nuit mb-3">{card.title}</h3>
                   <p className="text-edf-bleu-nuit/75 leading-relaxed text-[0.9375rem]">
@@ -132,6 +130,7 @@ export default function BeneficesAirQualitySection() {
               key={stat.label}
               className="bg-white border border-edf-gris-clair p-6"
             >
+              <span className="block w-2.5 h-2.5 bg-edf-green-dark mb-3" aria-hidden="true" />
               <dd className="flex items-baseline gap-1">
                 <span className="stat-value">{stat.value}</span>
                 {stat.unit && (

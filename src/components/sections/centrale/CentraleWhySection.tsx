@@ -79,21 +79,17 @@ export default function CentraleWhySection() {
               {WHY_ITEMS.map((item) => {
                 const IconComponent = item.icon;
                 return (
-                  <motion.div key={item.title} variants={staggerItem}>
-                    <article className="card-edf p-6">
-                      <div className="flex gap-4">
-                        <span className="icon-square" aria-hidden="true">
-                          <IconComponent className="w-6 h-6" />
-                        </span>
-                        <div className="flex-1">
-                          <h3 className="heading-4 text-edf-bleu-nuit mb-2">
-                            {item.title}
-                          </h3>
-                          <p className="text-edf-bleu-nuit/75 text-sm leading-relaxed">
-                            {item.description}
-                          </p>
-                        </div>
-                      </div>
+                  <motion.div key={item.title} variants={staggerItem} className="card-pop-left-wrap">
+                    <article className="card-edf card-pop-left card-motif p-6 pl-10">
+                      <span className="icon-square" aria-hidden="true">
+                        <IconComponent className="w-6 h-6" />
+                      </span>
+                      <h3 className="heading-4 text-edf-bleu-nuit mb-2">
+                        {item.title}
+                      </h3>
+                      <p className="text-edf-bleu-nuit/75 text-sm leading-relaxed">
+                        {item.description}
+                      </p>
                     </article>
                   </motion.div>
                 );
@@ -118,6 +114,7 @@ export default function CentraleWhySection() {
               {...fadeInUpDelay(0.25)}
               className="mt-4 lg:mt-0 lg:absolute lg:-bottom-6 lg:-left-6 inline-block bg-white p-5 lg:p-6 shadow-3"
             >
+              <span className="block w-2.5 h-2.5 bg-edf-bleu-action mb-3" aria-hidden="true" />
               <p className="flex items-baseline">
                 <span className="stat-value">50</span>
                 <span className="text-xl font-semibold text-edf-bleu-action">%</span>

@@ -86,6 +86,7 @@ export default function PreservationSection() {
                   stat.wide ? "col-span-2" : ""
                 }`}
               >
+                <span className="block w-2.5 h-2.5 bg-edf-green-dark mb-3" aria-hidden="true" />
                 <dd className="flex items-baseline gap-1">
                   <CountUpStat value={stat.value} />
                   {stat.unit && (
