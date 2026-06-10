@@ -82,11 +82,10 @@ export default function PreservationSection() {
             {PRESERVATION_STATS.map((stat) => (
               <div
                 key={stat.label}
-                className={`bg-white border border-edf-gris-clair p-6 ${
+                className={`bg-white border border-edf-gris-clair border-t-4 border-t-edf-green-dark p-6 ${
                   stat.wide ? "col-span-2" : ""
                 }`}
               >
-                <span className="block w-2.5 h-2.5 bg-edf-green-dark mb-3" aria-hidden="true" />
                 <dd className="flex items-baseline gap-1">
                   <CountUpStat value={stat.value} />
                   {stat.unit && (
