@@ -1,15 +1,15 @@
 "use client";
 
-import { IMAGES, VIDEOS } from "@/lib/media";
-
 import { motion } from "framer-motion";
 import { RefreshCw, FileCheck, Users } from "lucide-react";
 import Image from "next/image";
+import { IMAGES } from "@/lib/media";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { fadeInUp, fadeInUpDelay } from "@/lib/motion-variants";
+import { fadeInUp, fadeInUpDelay, staggerContainer, staggerItem } from "@/lib/motion-variants";
 
 /**
- * Données des raisons du projet
+ * Les trois raisons du projet — registre institutionnel :
+ * camaïeu bleu unique (icônes et accents).
  */
 const WHY_ITEMS = [
   {
@@ -17,173 +17,116 @@ const WHY_ITEMS = [
     title: "Remplacer la centrale de Dégrad des Cannes",
     description:
       "La nouvelle centrale bioénergie du Larivot viendra en remplacement de l'actuelle centrale de Dégrad des Cannes pour garantir et sécuriser l'approvisionnement électrique de la Guyane. Ce projet stratégique répondra à la demande croissante en énergie tout en amorçant la transition énergétique.",
-    color: "#001A70",
   },
   {
     icon: FileCheck,
     title: "Satisfaire les besoins exprimés dans la PPE",
     description:
       "En collaboration avec les acteurs locaux, EDF PEI accompagne la transition énergétique du territoire. L'objectif est de définir une stratégie adaptée pour développer les énergies renouvelables et répondre aux besoins inscrits dans le cadre de la PPE. EDF PEI entend réduire la dépendance aux énergies fossiles grâce à une offre durable et maîtrisée.",
-    color: "#88D910",
   },
   {
     icon: Users,
     title: "Répondre aux besoins énergétiques de l'Île de Cayenne",
     description:
       "Un enjeu majeur pour répondre à la demande croissante en énergie de l'Île de Cayenne, cœur économique et démographique de la Guyane. Sécuriser et piloter l'approvisionnement en électricité de près de 50% de la population guyanaise est indispensable pour accompagner un développement durable et raisonné du territoire.",
-    color: "#FFB210",
   },
 ];
 
 /**
- * Animation variants
- */
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, x: -30 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.3, ease: "easeOut" as const },
-  },
-};
-
-/**
- * Section POURQUOI - Un projet clé pour le territoire
+ * Section POURQUOI — un projet clé pour le territoire.
+ * Première section après le hero : fond blanc, accents bleus.
  */
 export default function CentraleWhySection() {
   return (
-    <section aria-labelledby="centrale-why-heading" className="section-padding bg-white relative overflow-hidden">
-      {/* Fond décoratif */}
-      <div className="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-edf-blanc-bleute to-transparent pointer-events-none" />
-
-      <div className="container-custom relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
-          {/* Colonne gauche - Contenu */}
+    <section aria-labelledby="centrale-why-heading" className="section bg-white">
+      <div className="container-custom">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+          {/* Colonne gauche — contenu */}
           <div>
-            {/* En-tête */}
             <SectionHeader
-              badge="Pourquoi"
-              badgeColor="blue"
-              heading={<>Un projet{" "}<span className="text-edf-blue">clé</span>{" "}pour le territoire</>}
-              className="mb-12 max-w-[65%]"
+              eyebrow="Pourquoi"
+              heading={
+                <>
+                  Un projet <span className="text-edf-bleu-action">clé</span> pour le
+                  territoire
+                </>
+              }
               id="centrale-why-heading"
+              className="mb-8"
             />
-            <motion.div {...fadeInUp} className="mb-12 -mt-6">
-              <p className="text-edf-gris-fonce text-lg leading-relaxed">
-                Avec sa puissance garantie de <strong className="text-edf-blue">120 MW</strong>,
-                la Centrale Bioénergie du Larivot se situe sur l&apos;Île de Cayenne
-                dans une zone industrielle hautement stratégique et bénéficie
-                d&apos;une proximité immédiate des consommateurs les plus importants.
+
+            <motion.div {...fadeInUp} className="mb-10">
+              <p className="text-lead text-edf-bleu-nuit/75">
+                Avec sa puissance garantie de{" "}
+                <strong className="font-semibold">120 MW</strong>, la Centrale
+                Bioénergie du Larivot se situe sur l&apos;Île de Cayenne dans une zone
+                industrielle hautement stratégique et bénéficie d&apos;une proximité
+                immédiate des consommateurs les plus importants.
               </p>
-              <p className="text-edf-gris-moyen text-base mt-4">
+              <p className="text-edf-bleu-nuit/75 mt-4">
                 Cette infrastructure permettra de :
               </p>
             </motion.div>
 
-            {/* Liste des raisons */}
+            {/* Liste des raisons — cards à accent border bleu (signature baguette) */}
             <motion.div
-              variants={containerVariants}
+              variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
+              viewport={{ once: true, margin: "-80px" }}
               className="space-y-6"
             >
-              {WHY_ITEMS.map((item, index) => {
+              {WHY_ITEMS.map((item) => {
                 const IconComponent = item.icon;
                 return (
-                  <motion.div
-                    key={index}
-                    variants={itemVariants}
-                    className="group"
-                  >
-                    <div
-                      className="relative bg-white border border-edf-gris-clair p-6 transition-all duration-500 hover:shadow-xl hover:-translate-x-1"
-                      style={{
-                        borderLeft: `4px solid ${item.color}`,
-                      }}
-                    >
-                      {/* Fond au hover */}
-                      <div
-                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                        style={{
-                          background: `linear-gradient(120deg, ${item.color}05 0%, transparent 50%)`,
-                        }}
-                      />
-
-                      <div className="relative flex gap-4">
-                        {/* Icône */}
-                        <div
-                          className="w-12 h-12 flex items-center justify-center shrink-0 shadow-md"
-                          style={{
-                            background: `linear-gradient(120deg, ${item.color} 0%, ${item.color}cc 100%)`,
-                          }}
-                        >
-                          <IconComponent className="w-6 h-6 text-white" />
-                        </div>
-
-                        {/* Contenu */}
+                  <motion.div key={item.title} variants={staggerItem}>
+                    <article className="card-edf p-6 border-l-4 border-l-edf-bleu-action">
+                      <div className="flex gap-4">
+                        <span className="icon-square" aria-hidden="true">
+                          <IconComponent className="w-6 h-6" />
+                        </span>
                         <div className="flex-1">
-                          <h3
-                            className="text-lg font-bold mb-2"
-                            style={{ color: item.color }}
-                          >
+                          <h3 className="heading-4 text-edf-bleu-nuit mb-2">
                             {item.title}
                           </h3>
-                          <p className="text-edf-gris-fonce text-sm leading-relaxed">
+                          <p className="text-edf-bleu-nuit/75 text-sm leading-relaxed">
                             {item.description}
                           </p>
                         </div>
                       </div>
-
-                      {/* Numéro décoratif */}
-                      <div
-                        className="absolute top-2 right-4 text-6xl font-bold leading-none opacity-[0.05] select-none"
-                        style={{ color: item.color }}
-                      >
-                        0{index + 1}
-                      </div>
-                    </div>
+                    </article>
                   </motion.div>
                 );
               })}
             </motion.div>
           </div>
 
-          {/* Colonne droite - Image d'illustration */}
-          <motion.div
-            {...fadeInUpDelay(0.15)}
-            className="relative lg:sticky lg:top-32"
-          >
-            {/* Image d'illustration */}
-            <div className="relative aspect-[4/3] overflow-hidden border border-edf-gris-clair">
+          {/* Colonne droite — image d'illustration */}
+          <motion.div {...fadeInUpDelay(0.15)} className="relative lg:sticky lg:top-32">
+            <div className="relative aspect-[4/3] overflow-hidden shadow-3">
               <Image
                 src={IMAGES.centrale.pourquoiLocalisation}
                 alt="Localisation stratégique de la Centrale Bioénergie du Larivot en Guyane"
                 fill
                 className="object-cover"
+                sizes="(min-width: 1024px) 50vw, 100vw"
               />
             </div>
 
-            {/* Badge statistique */}
+            {/* Chiffre clé — cartouche factuel en angle */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="mt-4 lg:mt-0 lg:absolute lg:-bottom-6 lg:-left-6 bg-white shadow-xl p-4 lg:p-6 border border-edf-gris-clair inline-block"
+              {...fadeInUpDelay(0.25)}
+              className="mt-4 lg:mt-0 lg:absolute lg:-bottom-6 lg:-left-6 inline-block bg-white p-5 lg:p-6 shadow-3 border-t-4 border-t-edf-bleu-action"
             >
-              <div className="text-3xl lg:text-4xl font-bold text-edf-blue">50%</div>
-              <div className="text-xs lg:text-sm text-edf-gris-moyen mt-1">
-                de la population<br />guyanaise alimentée
-              </div>
+              <p className="flex items-baseline">
+                <span className="stat-value">50</span>
+                <span className="text-xl font-semibold text-edf-bleu-action">%</span>
+              </p>
+              <p className="text-caption mt-1">
+                de la population
+                <br />
+                guyanaise alimentée
+              </p>
             </motion.div>
           </motion.div>
         </div>
@@ -191,4 +134,3 @@ export default function CentraleWhySection() {
     </section>
   );
 }
-

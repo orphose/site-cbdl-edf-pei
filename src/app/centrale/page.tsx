@@ -1,12 +1,15 @@
 /**
  * Page Centrale - Centrale Bioénergie du Larivot
- * 
- * Structure:
- * 1. CentraleHeroSection - Hero avec titre "LA CENTRALE"
- * 2. CentraleWhySection - POURQUOI - Un projet clé pour le territoire
- * 3. CentraleDescriptionSection - DESCRIPTION - Électricité 100% renouvelable
- * 4. CentraleEmpriseSection - EMPRISE - Une emprise au sol limitée
- * 5. CentraleBirthSection - NAISSANCE DU PROJET - Concertation publique + galerie
+ *
+ * Structure (alternance des fonds — voir DESIGN_SYSTEM.md) :
+ * 1. CentraleHeroSection - PageHero camaïeu bleu (registre institutionnel)
+ * 2. CentraleWhySection - POURQUOI - fond blanc, accents bleus
+ * 3. CentraleDescriptionSection - DESCRIPTION - moment fort : fond bleu foncé
+ *    + effet lumineux, touches de vert (registre renouvelable)
+ * 4. CentraleEmpriseSection - EMPRISE - fond blanc, touches de vert
+ *    (registre environnemental)
+ * 5. CentraleBirthSection - NAISSANCE DU PROJET - fond blanc bleuté,
+ *    accents bleus + galerie photos
  */
 
 import {

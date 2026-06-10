@@ -1,12 +1,21 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { Calendar, Users, FileText, ImageIcon, X, ChevronLeft, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { motion } from "framer-motion";
+import {
+  Calendar,
+  Users,
+  FileText,
+  ImageIcon,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  ZoomIn,
+} from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { getMediaUrl } from "@/lib/supabase";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { fadeInUp, fadeInUpDelay } from "@/lib/motion-variants";
+import { fadeInUp, staggerContainer, staggerItem } from "@/lib/motion-variants";
 
 /**
  * Photos de la galerie
@@ -27,256 +36,256 @@ const GALLERY_PHOTOS = [
 ];
 
 /**
- * Section NAISSANCE DU PROJET - Concertation publique
+ * Étapes de la naissance du projet — registre institutionnel :
+ * camaïeu bleu unique.
+ */
+const TIMELINE_ITEMS = [
+  {
+    icon: FileText,
+    date: "30 Mars 2017",
+    title: "PPE Guyane",
+    description:
+      "Inscription du projet dans la Programmation Pluriannuelle de l'Énergie de Guyane.",
+  },
+  {
+    icon: Users,
+    date: "2018-2019",
+    title: "Concertation Publique",
+    description:
+      "Dialogue avec les acteurs locaux et la population pour co-construire le projet.",
+  },
+  {
+    icon: Calendar,
+    date: "2021",
+    title: "Décret Biocarburants",
+    description:
+      "Décret du 27 août 2021 confirmant l'utilisation de la biomasse liquide renouvelable.",
+  },
+];
+
+/**
+ * Section NAISSANCE DU PROJET — concertation publique + galerie photos.
+ * Fond Blanc Bleuté, accents bleus (registre institutionnel).
  */
 export default function CentraleBirthSection() {
   const [selectedPhoto, setSelectedPhoto] = useState<number | null>(null);
 
+  const showPrevious = useCallback(() => {
+    setSelectedPhoto((prev) =>
+      prev !== null ? (prev - 1 + GALLERY_PHOTOS.length) % GALLERY_PHOTOS.length : null
+    );
+  }, []);
+
+  const showNext = useCallback(() => {
+    setSelectedPhoto((prev) =>
+      prev !== null ? (prev + 1) % GALLERY_PHOTOS.length : null
+    );
+  }, []);
+
+  /* Navigation clavier de la visionneuse (Échap, flèches) */
+  useEffect(() => {
+    if (selectedPhoto === null) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSelectedPhoto(null);
+      else if (event.key === "ArrowLeft") showPrevious();
+      else if (event.key === "ArrowRight") showNext();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedPhoto, showPrevious, showNext]);
+
   return (
-    <section aria-labelledby="centrale-birth-heading" className="section-padding bg-gradient-to-b from-edf-blanc-bleute to-white relative overflow-hidden">
-      {/* Motif de fond */}
-      <div className="absolute inset-0 opacity-[0.02]">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, #001A70 1px, transparent 0)`,
-            backgroundSize: "48px 48px",
-          }}
-        />
-      </div>
-
-      <div className="container-custom relative z-10">
-        {/* En-tête */}
+    <section aria-labelledby="centrale-birth-heading" className="section section-alt">
+      <div className="container-custom">
         <SectionHeader
-          badge="Naissance du Projet"
-          badgeColor="blue"
-          heading={<>La Centrale bioénergie du Larivot est le fruit d&apos;une{" "}<span className="text-edf-blue">concertation publique</span></>}
-          description={<>Le projet du Larivot est inscrit dans la{" "}<strong className="text-edf-blue">Programmation Pluriannuelle de l&apos;Énergie de Guyane</strong>, validée par décret le 30 Mars 2017, définissant les nouveaux investissements nécessaires à la sécurité du système électrique du territoire.</>}
-          className="max-w-4xl mb-16"
+          eyebrow="Naissance du Projet"
+          heading={
+            <>
+              La Centrale bioénergie du Larivot est le fruit d&apos;une{" "}
+              <span className="text-edf-bleu-action">concertation publique</span>
+            </>
+          }
+          description={
+            <>
+              Le projet du Larivot est inscrit dans la{" "}
+              <strong className="font-semibold">
+                Programmation Pluriannuelle de l&apos;Énergie de Guyane
+              </strong>
+              , validée par décret le 30 Mars 2017, définissant les nouveaux
+              investissements nécessaires à la sécurité du système électrique du
+              territoire.
+            </>
+          }
           id="centrale-birth-heading"
+          className="mb-14"
         />
 
-        {/* Timeline de la concertation */}
+        {/* Étapes de la concertation */}
         <motion.div
-          {...fadeInUpDelay(0.2)}
-          className="grid md:grid-cols-3 gap-8 mb-20"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          className="grid md:grid-cols-3 gap-6 mb-16"
         >
-          {[
-            {
-              icon: FileText,
-              date: "30 Mars 2017",
-              title: "PPE Guyane",
-              description:
-                "Inscription du projet dans la Programmation Pluriannuelle de l'Énergie de Guyane.",
-              color: "#001A70",
-            },
-            {
-              icon: Users,
-              date: "2018-2019",
-              title: "Concertation Publique",
-              description:
-                "Dialogue avec les acteurs locaux et la population pour co-construire le projet.",
-              color: "#88D910",
-            },
-            {
-              icon: Calendar,
-              date: "2021",
-              title: "Décret Biocarburants",
-              description:
-                "Décret du 27 août 2021 confirmant l'utilisation de la biomasse liquide renouvelable.",
-              color: "#FFB210",
-            },
-          ].map((item, index) => {
+          {TIMELINE_ITEMS.map((item) => {
             const IconComponent = item.icon;
             return (
-              <motion.div
-                key={index}
-                {...fadeInUpDelay(0.3 + index * 0.15)}
-                className="relative bg-white border border-edf-gris-clair p-6 shadow-lg hover:shadow-xl transition-shadow"
-              >
-                {/* Icône */}
-                <div
-                  className="w-14 h-14 flex items-center justify-center mb-4 shadow-md"
-                  style={{
-                    background: `linear-gradient(120deg, ${item.color} 0%, ${item.color}cc 100%)`,
-                  }}
-                >
-                  <IconComponent className="w-7 h-7 text-white" />
-                </div>
+              <motion.div key={item.title} variants={staggerItem} className="h-full">
+                <article className="card-edf h-full p-6 border-t-4 border-t-edf-bleu-action">
+                  <span className="icon-square mb-5" aria-hidden="true">
+                    <IconComponent className="w-6 h-6" />
+                  </span>
 
-                {/* Date */}
-                <div
-                  className="text-sm font-semibold mb-2"
-                  style={{ color: item.color }}
-                >
-                  {item.date}
-                </div>
+                  <p className="text-sm font-semibold text-edf-bleu-action mb-2">
+                    {item.date}
+                  </p>
 
-                {/* Titre */}
-                <h3 className="text-lg font-bold text-edf-bleu-nuit mb-2">
-                  {item.title}
-                </h3>
+                  <h3 className="heading-4 text-edf-bleu-nuit mb-2">{item.title}</h3>
 
-                {/* Description */}
-                <p className="text-edf-gris-fonce text-sm leading-relaxed">
-                  {item.description}
-                </p>
-
-                {/* Numéro décoratif */}
-                <div
-                  className="absolute top-4 right-4 text-5xl font-bold leading-none opacity-[0.05] select-none"
-                  style={{ color: item.color }}
-                >
-                  0{index + 1}
-                </div>
+                  <p className="text-edf-bleu-nuit/75 text-sm leading-relaxed">
+                    {item.description}
+                  </p>
+                </article>
               </motion.div>
             );
           })}
         </motion.div>
 
         {/* Galerie de photos */}
-        <motion.div
-          {...fadeInUp}
-        >
+        <motion.div {...fadeInUp}>
           {/* Titre de la galerie */}
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 bg-edf-green flex items-center justify-center">
-              <ImageIcon className="w-5 h-5 text-white" />
-            </div>
-            <h3 className="text-xl font-bold text-edf-bleu-nuit">
-              Galerie Photos
-            </h3>
-            <span className="text-sm text-edf-gris-moyen">
-              ({GALLERY_PHOTOS.length} photos)
+            <span className="icon-square" aria-hidden="true">
+              <ImageIcon className="w-5 h-5" />
             </span>
+            <h3 className="heading-3 text-edf-bleu-nuit">Galerie Photos</h3>
+            <span className="text-caption">({GALLERY_PHOTOS.length} photos)</span>
           </div>
 
           {/* Grille de photos */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <motion.ul
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 list-none"
+          >
             {GALLERY_PHOTOS.map((photo, index) => (
-              <motion.div
-                key={photo.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="group relative aspect-square bg-gray-100 overflow-hidden cursor-pointer hover:shadow-xl transition-all"
-                onClick={() => setSelectedPhoto(index)}
-              >
-                {/* Image */}
-                <Image
-                  src={photo.src}
-                  alt={photo.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
+              <motion.li key={photo.id} variants={staggerItem}>
+                <button
+                  type="button"
+                  onClick={() => setSelectedPhoto(index)}
+                  aria-label={`Agrandir la photo : ${photo.title}`}
+                  className="group relative block w-full aspect-square overflow-hidden img-skeleton cursor-zoom-in"
+                >
+                  <Image
+                    src={photo.src}
+                    alt={photo.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+                  />
 
-                {/* Overlay au hover */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                  <div className="absolute bottom-0 left-0 right-0 p-3">
-                    <p className="text-white text-sm font-medium truncate">
-                      {photo.title}
-                    </p>
-                  </div>
-                </div>
+                  {/* Voile et titre au survol */}
+                  <span
+                    className="absolute inset-0 bg-gradient-to-t from-edf-blue/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity"
+                    aria-hidden="true"
+                  >
+                    <span className="absolute bottom-0 left-0 right-0 p-3 text-left">
+                      <span className="block text-white text-sm font-medium truncate">
+                        {photo.title}
+                      </span>
+                    </span>
+                  </span>
 
-                {/* Icône zoom */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <div className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
-                    <svg
-                      className="w-5 h-5 text-edf-blue"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </motion.div>
+                  {/* Affordance zoom */}
+                  <span
+                    className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity"
+                    aria-hidden="true"
+                  >
+                    <span className="inline-flex items-center justify-center w-11 h-11 bg-white/90 shadow-2">
+                      <ZoomIn className="w-5 h-5 text-edf-blue" />
+                    </span>
+                  </span>
+                </button>
+              </motion.li>
             ))}
-          </div>
+          </motion.ul>
         </motion.div>
 
-        {/* Lightbox */}
-        <AnimatePresence>
-          {selectedPhoto !== null && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
+        {/* Visionneuse plein écran */}
+        {selectedPhoto !== null && (
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Photo agrandie : ${GALLERY_PHOTOS[selectedPhoto].title}`}
+            className="fixed inset-0 z-50 bg-edf-blue/95 flex items-center justify-center p-4"
+            onClick={() => setSelectedPhoto(null)}
+          >
+            {/* Bouton fermer */}
+            <button
+              type="button"
+              aria-label="Fermer la visionneuse"
+              className="absolute top-4 right-4 w-12 h-12 bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
               onClick={() => setSelectedPhoto(null)}
             >
-              {/* Bouton fermer */}
-              <button
-                className="absolute top-4 right-4 w-10 h-10 bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-                onClick={() => setSelectedPhoto(null)}
-              >
-                <X className="w-6 h-6 text-white" />
-              </button>
+              <X className="w-6 h-6 text-white" aria-hidden="true" />
+            </button>
 
-              {/* Navigation précédent */}
-              <button
-                className="absolute left-4 w-12 h-12 bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedPhoto((prev) =>
-                    prev !== null ? (prev - 1 + GALLERY_PHOTOS.length) % GALLERY_PHOTOS.length : null
-                  );
-                }}
-              >
-                <ChevronLeft className="w-6 h-6 text-white" />
-              </button>
+            {/* Navigation précédent */}
+            <button
+              type="button"
+              aria-label="Photo précédente"
+              className="absolute left-4 w-12 h-12 bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                showPrevious();
+              }}
+            >
+              <ChevronLeft className="w-6 h-6 text-white" aria-hidden="true" />
+            </button>
 
-              {/* Image */}
-              <motion.div
-                key={selectedPhoto}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                className="relative w-full max-w-4xl aspect-video"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <Image
-                  src={GALLERY_PHOTOS[selectedPhoto].src}
-                  alt={GALLERY_PHOTOS[selectedPhoto].title}
-                  fill
-                  className="object-contain"
-                />
-                {/* Titre */}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-                  <p className="text-white text-lg font-medium">
-                    {GALLERY_PHOTOS[selectedPhoto].title}
-                  </p>
-                  <p className="text-white/60 text-sm">
-                    {selectedPhoto + 1} / {GALLERY_PHOTOS.length}
-                  </p>
-                </div>
-              </motion.div>
+            {/* Image */}
+            <div
+              className="relative w-full max-w-4xl aspect-video"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Image
+                src={GALLERY_PHOTOS[selectedPhoto].src}
+                alt={GALLERY_PHOTOS[selectedPhoto].title}
+                fill
+                className="object-contain"
+                sizes="100vw"
+              />
+              {/* Titre */}
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-edf-blue/85 to-transparent p-6">
+                <p className="text-white text-lg font-medium">
+                  {GALLERY_PHOTOS[selectedPhoto].title}
+                </p>
+                <p className="text-white/70 text-sm">
+                  {selectedPhoto + 1} / {GALLERY_PHOTOS.length}
+                </p>
+              </div>
+            </div>
 
-              {/* Navigation suivant */}
-              <button
-                className="absolute right-4 w-12 h-12 bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedPhoto((prev) =>
-                    prev !== null ? (prev + 1) % GALLERY_PHOTOS.length : null
-                  );
-                }}
-              >
-                <ChevronRight className="w-6 h-6 text-white" />
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            {/* Navigation suivant */}
+            <button
+              type="button"
+              aria-label="Photo suivante"
+              className="absolute right-4 w-12 h-12 bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                showNext();
+              }}
+            >
+              <ChevronRight className="w-6 h-6 text-white" aria-hidden="true" />
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
 }
-
