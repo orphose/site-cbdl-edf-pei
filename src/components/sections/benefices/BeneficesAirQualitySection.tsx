@@ -14,7 +14,7 @@ const AIR_QUALITY_ITEMS = [
     icon: Leaf,
     title: "Biocombustible neutre",
     description:
-      "La biomasse, en tant que source d'énergie renouvelable, présente un bilan carbone neutre en termes d'émissions directes (« scope 1 » selon les normes internationales). Cette neutralité carbone est atteinte grâce à l'équilibre entre le dioxyde de carbone (CO2) émis lors de la combustion des bioénergies et la quantité de CO2 absorbée pendant la croissance des plantes utilisées comme biomasse. Ce cycle naturel permet une réabsorption du carbone libéré, minimisant de ce fait l'impact sur le changement climatique.",
+      "La biomasse présente un bilan carbone neutre en émissions directes (« scope 1 ») : le CO₂ émis lors de la combustion est compensé par celui absorbé pendant la croissance des plantes. Ce cycle naturel minimise l'impact sur le climat.",
     highlight: "Neutre",
     highlightLabel: "bilan carbone",
   },
@@ -22,7 +22,7 @@ const AIR_QUALITY_ITEMS = [
     icon: Factory,
     title: "Traitement des fumées",
     description:
-      "L'installation d'un système de traitement additionnel des fumées, grâce à la technologie de réduction catalytique sélective (SCR), constitue une avancée significative dans la maîtrise des émissions polluantes. Ce procédé, qui s'appuie sur des méthodes rigoureuses, permet de minimiser efficacement la libération de substances nocives dans l'atmosphère, notamment les oxydes d'azote (NOx), reconnus pour leur impact négatif sur la qualité de l'air et la santé humaine.",
+      "Un traitement additionnel des fumées par réduction catalytique sélective (SCR) minimise le rejet de substances nocives dans l'atmosphère — notamment les oxydes d'azote (NOx), néfastes pour la qualité de l'air et la santé.",
     highlight: "SCR",
     highlightLabel: "technologie",
   },
@@ -30,7 +30,7 @@ const AIR_QUALITY_ITEMS = [
     icon: Settings,
     title: "Conception adaptée",
     description:
-      "Une analyse environnementale rigoureuse a conduit à une conception parfaitement adaptée aux spécificités du site d'implantation de la centrale. De l'ajustement précis de la taille des cheminées à l'optimisation minutieuse des procédures opérationnelles, chaque élément a été finement calibré. Cette démarche garantit une amélioration durable et significative de la qualité de l'air.",
+      "De la taille des cheminées aux procédures d'exploitation, chaque élément a été calibré sur la base d'une analyse environnementale rigoureuse du site, pour une amélioration durable de la qualité de l'air.",
     highlight: "100%",
     highlightLabel: "adapté au site",
   },
@@ -38,7 +38,7 @@ const AIR_QUALITY_ITEMS = [
     icon: Eye,
     title: "Surveillance de la qualité de l'air",
     description:
-      "Une surveillance systématique de la qualité de l'air sera instaurée, à l'instar des mesures déjà mises en place dans les quatre autres centrales opérées par EDF PEI. Cette initiative souligne un engagement soutenu en faveur d'une exploitation énergétique responsable et respectueuse de l'environnement.",
+      "Comme dans les quatre autres centrales exploitées par EDF PEI, la qualité de l'air fera l'objet d'une surveillance systématique — la garantie d'une exploitation responsable et respectueuse de l'environnement.",
     highlight: "24/7",
     highlightLabel: "surveillance",
   },
@@ -74,11 +74,10 @@ export default function BeneficesAirQualitySection() {
           }
           description={
             <>
-              La centrale bioénergie du Larivot utilise des techniques{" "}
-              <strong className="font-semibold">avancées et innovantes</strong> afin
-              de minimiser son impact sur la qualité de l&apos;air environnant.
-              L&apos;emploi de la biomasse liquide, caractérisée par une absence de
-              soufre et de métaux, contribue efficacement à la réduction des
+              Des techniques{" "}
+              <strong className="font-semibold">avancées et innovantes</strong>{" "}
+              minimisent l&apos;impact de la centrale sur l&apos;air environnant :
+              sans soufre ni métaux, la biomasse liquide réduit efficacement les
               émissions de particules fines.
             </>
           }

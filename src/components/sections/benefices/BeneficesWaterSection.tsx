@@ -48,11 +48,9 @@ export default function BeneficesWaterSection() {
                 celle de l&apos;ancienne centrale de Dégrad-des-Cannes.
               </p>
               <p className="text-edf-bleu-nuit/75 leading-relaxed">
-                Elle traduit un progrès significatif dans la préservation des
-                ressources en eau. Cette avancée a été rendue possible grâce à
-                l&apos;utilisation d&apos;aéroréfrigérants secs, une innovation qui
-                ne génère aucun ruissellement d&apos;eau et évite la dispersion de
-                l&apos;humidité dans l&apos;air.
+                Cette avancée repose sur des aéroréfrigérants secs : aucun
+                ruissellement d&apos;eau, aucune dispersion d&apos;humidité
+                dans l&apos;air.
               </p>
             </div>
 

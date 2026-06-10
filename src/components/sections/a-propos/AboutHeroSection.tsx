@@ -1,5 +1,9 @@
 import PageHero from "@/components/ui/PageHero";
 
+/**
+ * Hero de la page À propos — registre institutionnel apaisé :
+ * camaïeu BLEU CLAIR (effet lumineux, texte Bleu Nuit).
+ */
 export default function AboutHeroSection() {
   return (
     <PageHero
@@ -9,7 +13,7 @@ export default function AboutHeroSection() {
       subtitle="Producteur d'électricité insulaire responsable"
       accentWord="responsable"
       description="EDF PEI, filiale à 100% du groupe EDF, conçoit, construit et exploite des centrales électriques de dernière génération dans les régions d'outre-mer et en Corse."
-      camaieu="bleu"
+      camaieu="bleu-clair"
     />
   );
 }

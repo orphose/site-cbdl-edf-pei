@@ -45,10 +45,9 @@ export default function AirQualitySection() {
             />
 
             <p className="text-lead text-white/85 mt-6 mb-9">
-              Avec l&apos;utilisation de biocombustibles, un bilan carbone neutre et
-              l&apos;absence d&apos;émissions de dioxyde de soufre, la centrale du Larivot
-              incarne l&apos;avenir d&apos;une énergie propre et durable contribuant ainsi
-              à une amélioration de la qualité de l&apos;air pour tous.
+              Biocombustibles, bilan carbone neutre, zéro émission de dioxyde
+              de soufre : la centrale du Larivot produit une énergie propre qui
+              améliore la qualité de l&apos;air pour tous.
             </p>
 
             {/* Points clés — touche de vert sur fond bleu foncé (charte p.17) */}

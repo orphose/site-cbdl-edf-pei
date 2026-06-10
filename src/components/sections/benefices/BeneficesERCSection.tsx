@@ -16,7 +16,7 @@ const ERC_MEASURES = [
     icon: TreePine,
     title: "Protéger la flore locale",
     description:
-      "La localisation de la centrale a été choisie pour éviter toute interférence avec la flore protégée, dans le cadre d'une démarche engagée pour la préservation du patrimoine naturel guyanais. Des actions concrètes sont menées, comme la restauration de la population de palmiers Murumuru via la semence sélective et le transplant de jeunes plants. La zone fait l'objet d'une surveillance soutenue pour garantir la pérennité de cette espèce.",
+      "Le site a été choisi pour éviter toute interférence avec la flore protégée. La population de palmiers Murumuru est restaurée par semence sélective et transplantation de jeunes plants, sous surveillance continue.",
     highlight: "Murumuru",
     highlightLabel: "Palmier protégé",
     image: getMediaUrl("murumuru_1.jpg"),
@@ -25,7 +25,7 @@ const ERC_MEASURES = [
     icon: Waves,
     title: "Sauvegarder la mangrove",
     description:
-      "Un engagement fort est pris pour préserver la mangrove présente sur le site, garantissant qu'aucune portion ne soit affectée par l'implantation de la centrale. L'élaboration actuelle d'un plan de gestion rigoureux traduit la volonté de protéger et préserver durablement cet écosystème vital. Il s'agit d'une démarche cruciale démontrant notre détermination à maintenir l'équilibre de cette zone essentielle.",
+      "Aucune portion de la mangrove du site ne sera affectée par l'implantation de la centrale. Un plan de gestion rigoureux, en cours d'élaboration, protégera durablement cet écosystème vital.",
     highlight: "100%",
     highlightLabel: "Mangrove préservée",
     image: getMediaUrl("mangrove_1.png"),
@@ -34,7 +34,7 @@ const ERC_MEASURES = [
     icon: MapPin,
     title: "Limiter et compenser les impacts",
     description:
-      "150 hectares de zones naturelles à haute valeur patrimoniale seront sanctuarisés et préservés. Un plan de gestion minutieux sera élaboré avec le Parc Naturel Régional de Guyane. Initiée et financée par EDF PEI avec le soutien de la CTG, cette démarche traduit un engagement concret pour la protection de l'environnement.",
+      "150 hectares de zones naturelles à haute valeur patrimoniale seront sanctuarisés, avec un plan de gestion élaboré avec le Parc Naturel Régional de Guyane — une démarche initiée et financée par EDF PEI, soutenue par la CTG.",
     highlight: "150 ha",
     highlightLabel: "Zones sanctuarisées",
     image: getMediaUrl("resp_approch.jpg"),
@@ -67,7 +67,7 @@ export default function BeneficesERCSection() {
               responsable
             </>
           }
-          description="EDF PEI fait de la préservation de l'environnement et de la biodiversité une priorité durant toute la phase de construction et de fonctionnement de la centrale bioénergie du Larivot. Ainsi, nous nous sommes engagés à limiter l'impact environnemental à travers une série de mesures compensatoires."
+          description="La préservation de l'environnement et de la biodiversité est une priorité, de la construction à l'exploitation. EDF PEI s'engage à limiter l'impact du projet par une série de mesures concrètes."
           id="benefices-erc-heading"
           className="mb-14"
         />

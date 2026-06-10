@@ -64,11 +64,9 @@ export default function AboutTransitionSection() {
           }
           description={
             <>
-              Fidèle à la raison d&apos;être du Groupe EDF, notre ambition est de
-              contribuer activement à la transition énergétique des territoires
-              insulaires. Nous accompagnons ces régions dans le développement des
-              énergies renouvelables grâce à des solutions innovantes et adaptées
-              à chaque contexte local.
+              Fidèle à la raison d&apos;être du Groupe EDF, EDF PEI accompagne la
+              transition énergétique des territoires insulaires avec des solutions
+              innovantes, adaptées à chaque contexte local.
             </>
           }
           id="about-transition-heading"

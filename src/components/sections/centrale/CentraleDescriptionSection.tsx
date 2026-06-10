@@ -72,11 +72,10 @@ export default function CentraleDescriptionSection() {
           }
           description={
             <>
-              Grâce à son faible impact sur l&apos;environnement, la biomasse liquide,
-              obtenue à partir d&apos;huiles végétales telles que l&apos;huile de colza,
-              s&apos;impose comme une alternative énergétique prometteuse. Elle est en
-              parfait accord avec l&apos;objectif de la Guyane, qui vise à devenir
-              l&apos;un des premiers territoires alimenté à{" "}
+              Produite à partir d&apos;huiles végétales comme le colza, la biomasse
+              liquide est une énergie à faible impact environnemental — en parfait
+              accord avec l&apos;ambition de la Guyane : devenir l&apos;un des
+              premiers territoires alimentés à{" "}
               <strong className="font-semibold text-white">
                 100% par des énergies renouvelables
               </strong>

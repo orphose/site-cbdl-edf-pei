@@ -12,7 +12,7 @@ export default function CentraleHeroSection() {
       title="La Centrale"
       subtitle="Une infrastructure moderne et fiable"
       accentWord="moderne"
-      description="Pour assurer la continuité de l'approvisionnement en électricité sur le territoire et soutenir la croissance démographique et économique en Guyane."
+      description="120 MW de puissance garantie pour sécuriser l'alimentation électrique du territoire et accompagner la croissance de la Guyane."
       camaieu="bleu"
     />
   );

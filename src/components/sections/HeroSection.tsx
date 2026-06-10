@@ -82,8 +82,8 @@ export default function HeroSection() {
                 className="text-lead text-edf-bleu-nuit/75 max-w-xl mt-4 hero-fade-in"
                 style={{ animationDelay: "0.24s" }}
               >
-                Un projet clé qui permettra à la Guyane de franchir une étape
-                significative vers le{" "}
+                Le projet qui fera franchir à la Guyane une étape décisive
+                vers le{" "}
                 <span className="text-edf-green-text font-semibold">
                   100&nbsp;% énergie renouvelable
                 </span>
@@ -117,6 +117,7 @@ export default function HeroSection() {
               loop
               playsInline
               preload="metadata"
+              poster="/images/hero-poster.jpg"
               className="absolute inset-0 w-full h-full object-cover"
             >
               <source src={VIDEOS.modelisation2} type="video/mp4" />

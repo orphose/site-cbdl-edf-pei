@@ -53,11 +53,10 @@ export default function ChantierSecuritySection() {
             />
 
             <p className="text-lead text-white/85 mt-6 mb-9">
-              La sécurité des salariés et des prestataires est un objectif
-              majeur pour EDF PEI qui promeut la politique du{" "}
-              <strong className="font-semibold">zéro accident</strong>.
-              Nous nous engageons à garantir la sécurité et protéger
-              la santé de toutes les parties prenantes du projet.
+              EDF PEI promeut la politique du{" "}
+              <strong className="font-semibold">zéro accident</strong> :
+              protéger la santé et la sécurité de tous, salariés comme
+              prestataires, à chaque étape du projet.
             </p>
 
             {/* Points d'engagement */}

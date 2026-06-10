@@ -16,19 +16,19 @@ const WHY_ITEMS = [
     icon: RefreshCw,
     title: "Remplacer la centrale de Dégrad des Cannes",
     description:
-      "La nouvelle centrale bioénergie du Larivot viendra en remplacement de l'actuelle centrale de Dégrad des Cannes pour garantir et sécuriser l'approvisionnement électrique de la Guyane. Ce projet stratégique répondra à la demande croissante en énergie tout en amorçant la transition énergétique.",
+      "La centrale du Larivot remplace celle de Dégrad des Cannes pour sécuriser l'approvisionnement électrique de la Guyane, répondre à la demande croissante et amorcer la transition énergétique.",
   },
   {
     icon: FileCheck,
     title: "Satisfaire les besoins exprimés dans la PPE",
     description:
-      "En collaboration avec les acteurs locaux, EDF PEI accompagne la transition énergétique du territoire. L'objectif est de définir une stratégie adaptée pour développer les énergies renouvelables et répondre aux besoins inscrits dans le cadre de la PPE. EDF PEI entend réduire la dépendance aux énergies fossiles grâce à une offre durable et maîtrisée.",
+      "Aux côtés des acteurs locaux, EDF PEI développe les énergies renouvelables prévues par la PPE et réduit la dépendance du territoire aux énergies fossiles.",
   },
   {
     icon: Users,
     title: "Répondre aux besoins énergétiques de l'Île de Cayenne",
     description:
-      "Un enjeu majeur pour répondre à la demande croissante en énergie de l'Île de Cayenne, cœur économique et démographique de la Guyane. Sécuriser et piloter l'approvisionnement en électricité de près de 50% de la population guyanaise est indispensable pour accompagner un développement durable et raisonné du territoire.",
+      "Cœur économique et démographique de la Guyane, l'Île de Cayenne concentre près de 50% de la population. Sécuriser son alimentation électrique est indispensable au développement du territoire.",
   },
 ];
 

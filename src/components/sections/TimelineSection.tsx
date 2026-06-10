@@ -81,7 +81,7 @@ export default function TimelineSection() {
               <span className="text-edf-bleu-action">construction</span>
             </>
           }
-          description="Une mise en route opérationnelle à horizon 2026. Découvrez les jalons essentiels à la construction de la centrale bioénergie du Larivot."
+          description="Du terrassement à la mise en service en 2026 : les grands jalons du chantier."
           id="section-timeline-heading"
           className="mb-16 lg:mb-20"
         />

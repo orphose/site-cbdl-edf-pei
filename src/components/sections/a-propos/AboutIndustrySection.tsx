@@ -56,15 +56,12 @@ export default function AboutIndustrySection() {
 
             <motion.div {...fadeInUp} className="mt-6 mb-10">
               <p className="text-lead text-edf-bleu-nuit/75 mb-4">
-                Forts de notre expertise technique et de notre connaissance
-                approfondie des enjeux insulaires, nous poursuivons notre
-                croissance en portant des projets innovants au service de
-                la transition énergétique.
+                Experts des enjeux énergétiques insulaires, nous portons des
+                projets innovants au service de la transition énergétique.
               </p>
               <p className="text-edf-bleu-nuit/75 leading-relaxed">
-                Notre volonté de convertir à la biomasse liquide nos centrales
-                électriques d&apos;outre-mer illustre parfaitement cet engagement
-                vers un avenir décarboné.
+                La conversion de nos centrales d&apos;outre-mer à la biomasse
+                liquide illustre cet engagement vers un avenir décarboné.
               </p>
             </motion.div>
 

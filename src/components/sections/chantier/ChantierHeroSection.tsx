@@ -1,8 +1,8 @@
 import PageHero from "@/components/ui/PageHero";
 
 /**
- * Hero de la page Chantier — registre industriel/institutionnel,
- * camaïeu bleu directeur (charte EDF 2021).
+ * Hero de la page Chantier — registre construction/énergie humaine :
+ * camaïeu ORANGE (un camaïeu directeur par page).
  */
 export default function ChantierHeroSection() {
   return (
@@ -12,8 +12,8 @@ export default function ChantierHeroSection() {
       title="Le Chantier"
       subtitle="Un projet à la hauteur du territoire"
       accentWord="territoire"
-      description="Plus qu'une infrastructure énergétique, la future centrale bioénergie du Larivot est un projet d'avenir pour un territoire en pleine croissance économique."
-      camaieu="bleu"
+      description="Plus qu'une infrastructure énergétique, un projet d'avenir porté par les savoir-faire guyanais, pour un territoire en pleine croissance."
+      camaieu="orange"
     />
   );
 }

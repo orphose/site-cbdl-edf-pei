@@ -3,8 +3,9 @@
 /* ============================================================
    DESIGN SYSTEM — Centrale Bioénergie du Larivot (EDF PEI)
    Charte graphique Groupe EDF 2021 — voir DESIGN_SYSTEM.md
-   Camaïeu directeur : BLEU + touches de VERT (environnement).
-   L'orange est réservé au logo EDF (immuable) — jamais dans l'UI.
+   Un camaïeu directeur PAR PAGE (charte : un camaïeu par support) :
+   bleu (Accueil, Centrale), vert (Bénéfices), orange (Chantier),
+   orange clair (Actualités), bleu clair (À propos).
    ============================================================ */
 
 :root {
@@ -25,6 +26,12 @@
   --edf-green: #88D910;         /* Décor sur fond bleu foncé uniquement */
   --edf-green-light: #C0E410;   /* Décor sur fond bleu foncé uniquement */
 
+  /* --- Camaïeu Orange (pages Chantier et Actualités) --- */
+  --edf-orange: #FE5716;        /* Orange Foncé — couleur principale du logo */
+  --edf-orange-mid: #FF861D;    /* Orange Moyen */
+  --edf-orange-light: #FFB210;  /* Orange Clair */
+  --edf-orange-text: #C13A00;   /* Texte orange ≤ 18px sur fond clair (4.6:1) */
+
   /* --- Gris (usage restreint : captions, bordures) --- */
   --edf-gris-fonce: #333333;
   --edf-gris-moyen: #595959;    /* 7:1 sur blanc — captions */
@@ -36,6 +43,10 @@
   /* --- Dégradés charte : clair (haut-gauche) → foncé (bas-droite) --- */
   --gradient-bleu: linear-gradient(120deg, #1089FF 0%, #001A70 100%);
   --gradient-vert: linear-gradient(120deg, #88D910 0%, #4F9E30 100%);
+  --gradient-orange: linear-gradient(120deg, #FFB210 0%, #FE5716 100%);
+  /* Déclinaisons claires — effet lumineux charte (couleur + blanc) */
+  --gradient-orange-clair: linear-gradient(120deg, #FFFFFF 0%, #FFB210 100%);
+  --gradient-bleu-clair: linear-gradient(120deg, #E9F1F9 0%, #1089FF 100%);
 
   /* --- Header --- */
   --header-h: 64px;
@@ -62,6 +73,12 @@
   --color-edf-green-dark: var(--edf-green-dark);
   --color-edf-green-light: var(--edf-green-light);
   --color-edf-green-text: var(--edf-green-text);
+
+  /* Camaïeu Orange */
+  --color-edf-orange: var(--edf-orange);
+  --color-edf-orange-mid: var(--edf-orange-mid);
+  --color-edf-orange-light: var(--edf-orange-light);
+  --color-edf-orange-text: var(--edf-orange-text);
 
   /* Gris */
   --color-edf-gris-fonce: var(--edf-gris-fonce);
@@ -98,6 +115,9 @@ body {
   font-size: 1rem;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+  /* Garde-fou grand écran : aucun débordement horizontal possible
+     (animations en translation X, décors absolus, vidéos en chargement) */
+  overflow-x: clip;
 }
 
 ::selection {
@@ -331,8 +351,17 @@ body {
   color: var(--edf-green-text);
 }
 
+.eyebrow--orange {
+  color: var(--edf-orange-text);
+}
+
 .eyebrow--on-dark {
   color: #fff;
+}
+
+/* Fonds clairs colorés (heros orange clair / bleu clair) */
+.eyebrow--bleu-nuit {
+  color: var(--edf-bleu-nuit);
 }
 
 /* ============================================================

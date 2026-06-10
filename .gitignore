@@ -61,3 +61,6 @@ public/*.mp4
 # Exception : assets charte EDF (légers, nécessaires au build)
 !public/images/charte/**/*.png
 !public/images/charte/**/*.jpg
+
+# Exception : poster de la vidéo hero (léger, optimisé)
+!public/images/hero-poster.jpg

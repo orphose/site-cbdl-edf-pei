@@ -14,7 +14,7 @@ const BENEFITS = [
     icon: GraduationCap,
     title: "Emploi et formation",
     description:
-      "Favorise le développement de formations et de carrières locales dans le secteur des énergies renouvelables.",
+      "Des formations et des carrières locales dans le secteur des énergies renouvelables.",
     stat: PROJECT_STATS.jobs.value,
     statLabel: "emplois créés",
   },
@@ -22,7 +22,7 @@ const BENEFITS = [
     icon: Battery,
     title: "Autonomie énergétique",
     description:
-      "Elle peut moduler sa capacité de production de façon quasi instantanée en démarrant ou en arrêtant ses moteurs très rapidement.",
+      "Une production modulable quasi instantanément, par simple démarrage ou arrêt des moteurs.",
     stat: PROJECT_STATS.power.value + " " + PROJECT_STATS.power.unit,
     statLabel: "de puissance",
   },
@@ -30,7 +30,7 @@ const BENEFITS = [
     icon: TrendingUp,
     title: "Développement économique",
     description:
-      "Représente le plus gros chantier jamais attribué aux entreprises guyanaises avec un investissement de plus de 600 millions d'euros.",
+      "Le plus gros chantier jamais confié aux entreprises guyanaises : plus de 600 millions d'euros investis.",
     stat: PROJECT_STATS.investment.value + PROJECT_STATS.investment.unit,
     statLabel: "d'investissement",
   },
@@ -38,7 +38,7 @@ const BENEFITS = [
     icon: Cpu,
     title: "Modernisation des infrastructures",
     description:
-      "La centrale bioénergie du Larivot bénéficiera d'équipements de pointe, qui se démarqueront par leur haut niveau de performance technique et environnementale.",
+      "Des équipements de pointe, au meilleur niveau de performance technique et environnementale.",
     stat: PROJECT_STATS.engines.value,
     statLabel: "moteurs nouvelle génération",
   },
@@ -60,7 +60,7 @@ export default function BenefitsSection() {
               <span className="text-edf-bleu-action">Guyane</span>
             </>
           }
-          description="Avec la construction de cette future centrale bioénergie, EDF PEI propose une électricité renouvelable, durable, garantie et pilotable, en vue d'atteindre un mix-énergétique 100 % EnR tout en garantissant la sécurité du système électrique."
+          description="Avec cette centrale, EDF PEI produit une électricité renouvelable, garantie et pilotable : un pas décisif vers le mix 100 % EnR, sans compromis sur la sécurité du réseau."
           id="section-benefits-heading"
           className="mb-14"
         />

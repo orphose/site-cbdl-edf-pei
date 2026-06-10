@@ -49,7 +49,7 @@ export default function ChantierConsortiumSection() {
               <span className="text-edf-bleu-action">entreprises guyanaises</span>
             </>
           }
-          description="Un partenariat local pour un projet phare. La construction de cette centrale bioénergie met en lumière l'agilité, la performance et les savoir-faire complexes d'entreprises locales engagées pour le développement du territoire."
+          description="La construction de la centrale met en lumière l'agilité, la performance et les savoir-faire d'entreprises locales engagées pour le développement du territoire."
           id="chantier-consortium-heading"
           className="mb-14"
         />

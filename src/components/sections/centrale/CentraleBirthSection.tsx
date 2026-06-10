@@ -109,13 +109,12 @@ export default function CentraleBirthSection() {
           }
           description={
             <>
-              Le projet du Larivot est inscrit dans la{" "}
+              Le projet est inscrit dans la{" "}
               <strong className="font-semibold">
                 Programmation Pluriannuelle de l&apos;Énergie de Guyane
-              </strong>
-              , validée par décret le 30 Mars 2017, définissant les nouveaux
-              investissements nécessaires à la sécurité du système électrique du
-              territoire.
+              </strong>{" "}
+              (décret du 30 mars 2017), qui définit les investissements
+              nécessaires à la sécurité électrique du territoire.
             </>
           }
           id="centrale-birth-heading"
@@ -189,17 +188,11 @@ export default function CentraleBirthSection() {
                     sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
                   />
 
-                  {/* Voile et titre au survol */}
+                  {/* Voile au survol */}
                   <span
-                    className="absolute inset-0 bg-gradient-to-t from-edf-blue/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity"
+                    className="absolute inset-0 bg-gradient-to-t from-edf-blue/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity"
                     aria-hidden="true"
-                  >
-                    <span className="absolute bottom-0 left-0 right-0 p-3 text-left">
-                      <span className="block text-white text-sm font-medium truncate">
-                        {photo.title}
-                      </span>
-                    </span>
-                  </span>
+                  />
 
                   {/* Affordance zoom */}
                   <span
@@ -260,12 +253,9 @@ export default function CentraleBirthSection() {
                 className="object-contain"
                 sizes="100vw"
               />
-              {/* Titre */}
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-edf-blue/85 to-transparent p-6">
-                <p className="text-white text-lg font-medium">
-                  {GALLERY_PHOTOS[selectedPhoto].title}
-                </p>
-                <p className="text-white/70 text-sm">
+              {/* Compteur */}
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-edf-blue/70 to-transparent p-6">
+                <p className="text-white/80 text-sm">
                   {selectedPhoto + 1} / {GALLERY_PHOTOS.length}
                 </p>
               </div>

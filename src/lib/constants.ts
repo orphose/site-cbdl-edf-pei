@@ -48,7 +48,7 @@ export const FAQ_ITEMS = [
   {
     question: "Quand la centrale sera-t-elle opérationnelle ?",
     answer:
-      "La mise en service de la Centrale Bioénergie du Larivot est prévue pour accompagner la croissance des besoins énergétiques de la Guyane. Les différentes phases de construction suivent un calendrier rigoureux pour garantir une livraison dans les délais prévus.",
+      "La mise en service est prévue en 2026, à l'issue des grandes phases du chantier : terrassement, fondations, génie civil, installation des équipements puis raccordement au réseau.",
   },
   {
     question: "Comment le site naturel est-il préservé ?",

@@ -16,19 +16,19 @@ const PRESENTATION_CARDS = [
     icon: Settings,
     title: "Technologie de pointe",
     description:
-      "La Centrale bioénergie du Larivot sera dotée de 7 moteurs de nouvelle génération fonctionnant avec de la biomasse liquide comme combustible renouvelable. Leur conception permet de générer une puissance de 120 MW et de sécuriser les besoins de l'île de Cayenne.",
+      "7 moteurs de nouvelle génération, alimentés en biomasse liquide, délivrent 120 MW et sécurisent les besoins électriques de l'île de Cayenne.",
   },
   {
     icon: Leaf,
     title: "Combustible écologique",
     description:
-      "La centrale bioénergie du Larivot utilisera de la biomasse liquide, un biocombustible neutre en émission carbone. Elle permettra d'éviter l'émission d'environ 500 000 tonnes de CO₂ annuellement et la qualité de l'air sera sensiblement améliorée.",
+      "La biomasse liquide est un biocombustible neutre en carbone : environ 500 000 tonnes de CO₂ évitées chaque année, et une qualité de l'air sensiblement améliorée.",
   },
   {
     icon: Zap,
     title: "Énergie garantie et pilotable",
     description:
-      "La Centrale bioénergie du Larivot pourra moduler sa puissance et son énergie en fonction de l'évolution des moyens de production intermittents comme le solaire et l'éolien.",
+      "La centrale ajuste sa puissance en continu pour compenser les variations du solaire et de l'éolien, et garantir l'électricité à tout instant.",
   },
 ];
 
@@ -66,7 +66,7 @@ export default function PresentationSection() {
               <span className="text-edf-green-dark">100&nbsp;% renouvelable</span>
             </>
           }
-          description="Un outil essentiel au développement de la Guyane. Pour remplacer les anciens moyens de production et accompagner le développement économique et démographique du littoral, la centrale bioénergie du Larivot renforce les moyens de production en Guyane, assurant ainsi un équilibre entre l'offre et la demande énergétique."
+          description="La centrale bioénergie du Larivot remplace les anciens moyens de production et accompagne le développement du littoral guyanais, en garantissant l'équilibre entre l'offre et la demande d'électricité."
           id="section-presentation-heading"
           className="mb-14"
         />

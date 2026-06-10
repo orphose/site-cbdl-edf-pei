@@ -15,14 +15,14 @@ const ENVIRONMENT_ITEMS = [
     title: "Contrôle indépendant",
     subtitle: "Respect des normes environnementales",
     description:
-      "L'avancement du chantier fait l'objet d'un suivi rigoureux mené par un bureau d'études spécialisé et indépendant. Ce contrôle systématique assuré par des experts externes garantit le respect des réglementations environnementales applicables.",
+      "Un bureau d'études spécialisé et indépendant suit l'avancement du chantier et garantit le respect des réglementations environnementales.",
   },
   {
     icon: Building,
     title: "Contrôle réglementaire",
     subtitle: "Inspections conjointes DGTM",
     description:
-      "EDF PEI réalise chaque mois, conjointement avec la DGTM, des inspections rigoureuses du site de la centrale du Larivot. Ces vérifications communes garantissent la conformité réglementaire à chaque phase du chantier.",
+      "Chaque mois, EDF PEI et la DGTM inspectent conjointement le site pour vérifier la conformité réglementaire à chaque phase du chantier.",
   },
 ];
 
@@ -44,7 +44,7 @@ export default function ChantierEnvironmentSection() {
               de l&apos;environnement
             </>
           }
-          description="À travers la construction de la Centrale Bioénergie du Larivot, EDF PEI s'engage dans une démarche de préservation de l'environnement. Durant le chantier, des mesures concrètes seront déployées pour réduire l'empreinte écologique du projet."
+          description="Tout au long du chantier, EDF PEI déploie des mesures concrètes pour réduire l'empreinte écologique du projet."
           id="chantier-environment-heading"
           className="mb-14"
         />
