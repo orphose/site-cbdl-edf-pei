@@ -36,13 +36,22 @@ src/
     └── NextUIProvider.tsx
 ```
 
-## 🎨 Palette de couleurs (Inspirée EDF)
+## 🎨 Design system (Charte EDF 2021)
+
+Le design du site suit la **charte graphique Groupe EDF 2021** : camaïeu directeur
+**bleu** + touches de **vert** (registre environnemental), radius 0 (signature carré),
+couleurs web accessibles WCAG AA. Référence complète : [`DESIGN_SYSTEM.md`](./DESIGN_SYSTEM.md).
 
 | Variable | Couleur | Usage |
 |----------|---------|-------|
-| `--edf-blue` | `#0d2240` | Couleur principale |
-| `--edf-orange` | `#ff6b35` | Accents, CTAs |
-| `--edf-green` | `#00a86b` | Écologie, succès |
+| `--edf-bleu-nuit` | `#00155A` | Textes et titres (remplace le noir) |
+| `--edf-bleu-action` | `#005BFF` | Liens, boutons, accents UI |
+| `--edf-blanc-bleute` | `#E9F1F9` | Fonds de sections alternés |
+| `--edf-blue` | `#001A70` | Fonds sombres (footer, moments forts) |
+| `--edf-green-dark` | `#4F9E30` | Touches environnementales (icônes, titres) |
+
+> ⚠️ L'orange EDF est réservé au logo (immuable) — jamais dans l'UI (un seul
+> mélange de camaïeux autorisé par la charte : bleu + touches de vert).
 
 ## 🖼️ Médias à ajouter
 

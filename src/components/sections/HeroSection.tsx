@@ -3,28 +3,19 @@
 import { useRef, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, X } from "lucide-react";
-import { VIDEOS } from "@/lib/media";
 import Link from "next/link";
+import { VIDEOS } from "@/lib/media";
+import Cartouche from "@/components/ui/Cartouche";
 
 /**
- * Section Hero - Section 1
- * Fond blanc avec texte à gauche et vidéo pleine hauteur à droite (50/50)
- * La vidéo commence directement sous la navbar
+ * Hero de la page d'accueil.
+ * Composition 50/50 dans le flux : message à gauche sur fond blanc,
+ * vidéo de modélisation à droite signée par le cartouche EDF (charte p.34).
  */
 export default function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const modalVideoRef = useRef<HTMLVideoElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false);
-
-  // Detect desktop vs mobile to load only one video
-  useEffect(() => {
-    const mql = window.matchMedia("(min-width: 1024px)");
-    setIsDesktop(mql.matches);
-    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
-    mql.addEventListener("change", handler);
-    return () => mql.removeEventListener("change", handler);
-  }, []);
 
   // Force la lecture de la vidéo au montage
   useEffect(() => {
@@ -33,9 +24,9 @@ export default function HeroSection() {
       video.muted = true;
       video.play().catch(() => {});
     }
-  }, [isDesktop]);
+  }, []);
 
-  // Gérer la lecture de la vidéo dans la modal
+  // Lecture de la vidéo dans la modal
   useEffect(() => {
     if (isModalOpen && modalVideoRef.current) {
       modalVideoRef.current.currentTime = 0;
@@ -43,12 +34,10 @@ export default function HeroSection() {
     }
   }, [isModalOpen]);
 
-  // Fermer la modal avec la touche Escape
+  // Fermer la modal avec Escape + scroll lock
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setIsModalOpen(false);
-      }
+      if (e.key === "Escape") setIsModalOpen(false);
     };
 
     if (isModalOpen) {
@@ -64,95 +53,63 @@ export default function HeroSection() {
 
   return (
     <>
-      <section className="relative flex flex-col lg:block lg:h-screen">
-        {/* Colonne droite - Vidéo fixée en haut à droite (desktop uniquement) */}
-        {isDesktop && (
-          <div className="hidden lg:block fixed top-[100px] right-0 w-1/2 h-[calc(100vh-100px)] bg-edf-blue z-0 overflow-hidden">
-            <video
-              ref={videoRef}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              className="absolute inset-0 w-full h-full object-cover"
-            >
-              <source src={VIDEOS.modelisation2} type="video/mp4" />
-            </video>
-            <p className="sr-only">Modélisation 3D de la future Centrale Bioénergie du Larivot</p>
-            <div className="absolute inset-0 bg-edf-blue/10" aria-hidden="true" />
-          </div>
-        )}
+      <section className="bg-white pt-16 md:pt-20" aria-labelledby="hero-heading">
+        <div className="grid lg:grid-cols-2 items-stretch">
+          {/* Colonne gauche — message */}
+          <div className="flex items-center order-2 lg:order-1">
+            <div className="w-full max-w-2xl ml-auto px-5 sm:px-8 lg:px-12 py-14 lg:py-24">
+              <p className="eyebrow mb-5 hero-fade-in" style={{ animationDelay: "0s" }}>
+                EDF PEI — Guyane française
+              </p>
 
-        {/* Colonne gauche - Contenu texte */}
-        <div className="relative z-10 w-full lg:w-1/2 flex-1 lg:min-h-screen flex items-start lg:items-center bg-white pt-[72px] md:pt-[100px]">
-          <div className="px-8 lg:px-16 py-8 lg:py-12 max-w-2xl">
-            {/* Titre principal */}
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="heading-xl text-edf-bleu-nuit mb-4 uppercase"
-            >
-              Centrale bioénergie
-              <br />
-              <span className="text-edf-blue">du Larivot</span>
-            </motion.h1>
-
-            {/* Sous-titre */}
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-2xl md:text-3xl text-edf-bleu-nuit font-light mb-6"
-            >
-              UNE ÉNERGIE{" "}
-              <span className="text-edf-blue font-semibold">VERTE</span> ET{" "}
-              <span className="text-edf-orange font-semibold">GARANTIE</span>
-            </motion.p>
-
-            {/* Description */}
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="text-edf-gris-fonce text-lg max-w-xl mb-10"
-            >
-              Un projet clé qui permettra à la Guyane de franchir une étape
-              significative vers le{" "}
-              <strong className="text-edf-bleu-nuit">
-                100% énergie renouvelable
-              </strong>
-              .
-            </motion.p>
-
-            {/* Boutons CTA - Style carré conforme EDF */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="flex flex-col sm:flex-row gap-4"
-            >
-              <Link
-                href="/centrale"
-                className="inline-flex items-center justify-center px-8 py-3 bg-edf-bleu-action text-white font-semibold hover:bg-edf-blue transition-all text-base"
+              <h1
+                id="hero-heading"
+                className="heading-display text-edf-blue hero-fade-in"
+                style={{ animationDelay: "0.08s" }}
               >
-                Découvrir le projet
-              </Link>
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="inline-flex items-center justify-center gap-2 px-8 py-3 border-2 border-edf-bleu-nuit text-edf-bleu-nuit font-semibold hover:bg-edf-bleu-nuit hover:text-white transition-all text-base"
-              >
-                <Play className="w-4 h-4" />
-                Voir la vidéo
-              </button>
-            </motion.div>
-          </div>
-        </div>
+                Centrale Bioénergie du Larivot
+              </h1>
 
-        {/* Version mobile de la vidéo - Dans le flux normal */}
-        {!isDesktop && (
-          <div className="lg:hidden relative w-full h-64 bg-edf-blue overflow-hidden flex-shrink-0">
+              <p
+                className="text-xl md:text-2xl text-edf-bleu-nuit mt-5 hero-fade-in"
+                style={{ animationDelay: "0.16s" }}
+              >
+                Une énergie <strong className="font-semibold">verte</strong> et{" "}
+                <strong className="font-semibold">garantie</strong> pour la Guyane.
+              </p>
+
+              <p
+                className="text-lead text-edf-bleu-nuit/75 max-w-xl mt-4 hero-fade-in"
+                style={{ animationDelay: "0.24s" }}
+              >
+                Un projet clé qui permettra à la Guyane de franchir une étape
+                significative vers le{" "}
+                <span className="text-edf-green-text font-semibold">
+                  100&nbsp;% énergie renouvelable
+                </span>
+                .
+              </p>
+
+              <div
+                className="flex flex-col sm:flex-row gap-4 mt-9 hero-fade-in"
+                style={{ animationDelay: "0.32s" }}
+              >
+                <Link href="/centrale" className="btn btn-primary">
+                  Découvrir le projet
+                </Link>
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className="btn btn-secondary"
+                >
+                  <Play className="w-4 h-4" aria-hidden="true" />
+                  Voir la vidéo
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Colonne droite — vidéo signée par le cartouche EDF */}
+          <div className="relative order-1 lg:order-2 h-64 sm:h-80 lg:h-auto lg:min-h-[calc(100vh-5rem)] bg-edf-blue overflow-hidden">
             <video
               ref={videoRef}
               autoPlay
@@ -164,9 +121,26 @@ export default function HeroSection() {
             >
               <source src={VIDEOS.modelisation2} type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-edf-blue/20" aria-hidden="true" />
+            <p className="sr-only">
+              Modélisation 3D de la future Centrale Bioénergie du Larivot
+            </p>
+
+            {/* Cartouche EDF — signature de marque, angle bas-gauche */}
+            <div className="absolute bottom-5 left-5 hidden sm:block hero-fade-in">
+              <Cartouche
+                label={
+                  <>
+                    Énergie verte
+                    <br />
+                    &amp; garantie
+                  </>
+                }
+                camaieu="bleu"
+                size="md"
+              />
+            </div>
           </div>
-        )}
+        </div>
       </section>
 
       {/* Modal vidéo */}
@@ -179,24 +153,22 @@ export default function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-edf-bleu-nuit/95 p-4"
             onClick={() => setIsModalOpen(false)}
           >
-            {/* Bouton fermer */}
             <button
               onClick={() => setIsModalOpen(false)}
               aria-label="Fermer la vidéo"
               className="absolute top-6 right-6 w-12 h-12 bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors z-10"
             >
-              <X className="w-6 h-6 text-white" />
+              <X className="w-6 h-6 text-white" aria-hidden="true" />
             </button>
 
-            {/* Conteneur vidéo */}
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
+              initial={{ scale: 0.96, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              exit={{ scale: 0.96, opacity: 0 }}
+              transition={{ duration: 0.25 }}
               className="relative w-full max-w-5xl aspect-video"
               onClick={(e) => e.stopPropagation()}
             >
@@ -205,13 +177,12 @@ export default function HeroSection() {
                 controls
                 autoPlay
                 playsInline
-                className="w-full h-full object-contain bg-black"
+                className="w-full h-full object-contain bg-edf-bleu-nuit"
               >
                 <source src={VIDEOS.modelisation2} type="video/mp4" />
               </video>
             </motion.div>
 
-            {/* Texte indicatif */}
             <p className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/85 text-sm">
               Appuyez sur Échap ou cliquez à l&apos;extérieur pour fermer
             </p>

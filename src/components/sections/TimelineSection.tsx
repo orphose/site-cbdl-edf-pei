@@ -2,11 +2,12 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Truck, Building2, Droplets, Zap, Cog, Handshake, CheckCircle2 } from "lucide-react";
+import { Truck, Building2, Droplets, Zap, Cog, Handshake, Flag } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
 
 /**
- * Données de la timeline de construction
+ * Étapes de la construction — mono-camaïeu bleu (un seul registre
+ * coloriel par composition, charte p.17).
  */
 const TIMELINE_STEPS = [
   {
@@ -15,7 +16,6 @@ const TIMELINE_STEPS = [
     phase: "Terrassement",
     description: "Préparation du terrain et travaux de terrassement",
     icon: Truck,
-    color: "#FFB210",
   },
   {
     year: "2024",
@@ -23,15 +23,13 @@ const TIMELINE_STEPS = [
     phase: "Fondations",
     description: "Fondations profondes et pose des pieux",
     icon: Building2,
-    color: "#88D910",
   },
   {
     year: "2024",
     quarter: "S2",
-    phase: "Génie Civil",
+    phase: "Génie civil",
     description: "Construction des structures principales",
     icon: Building2,
-    color: "#001A70",
   },
   {
     year: "2025",
@@ -39,7 +37,6 @@ const TIMELINE_STEPS = [
     phase: "Canalisation",
     description: "Travaux de pose de la canalisation",
     icon: Droplets,
-    color: "#88D910",
   },
   {
     year: "2025",
@@ -47,7 +44,6 @@ const TIMELINE_STEPS = [
     phase: "Électromécanique",
     description: "Installation des équipements électromécaniques",
     icon: Zap,
-    color: "#FFB210",
   },
   {
     year: "2026",
@@ -55,7 +51,6 @@ const TIMELINE_STEPS = [
     phase: "Raccordement",
     description: "Raccordement HTB au réseau",
     icon: Cog,
-    color: "#001A70",
   },
   {
     year: "2026",
@@ -63,226 +58,133 @@ const TIMELINE_STEPS = [
     phase: "Mise en service",
     description: "Essais finaux et mise en service",
     icon: Handshake,
-    color: "#88D910",
     isLast: true,
   },
 ];
 
 /**
- * Section Timeline - Section 5
- * Les grandes étapes de la construction
- * Design moderne avec animations progressives
+ * Section Timeline — les grandes étapes de la construction.
+ * Nœuds carrés (signature EDF), rail de progression Bleu Action.
  */
 export default function TimelineSection() {
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
 
   return (
-    <section className="section-padding bg-gradient-to-b from-gray-50 to-white relative overflow-hidden" aria-labelledby="section-timeline-heading">
-      {/* Motif de fond subtil */}
-      <div className="absolute inset-0 opacity-[0.02]" aria-hidden="true">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, #001A70 1px, transparent 0)`,
-          backgroundSize: '40px 40px'
-        }} />
-      </div>
-
-      <div className="container-custom relative z-10" ref={containerRef}>
-        {/* En-tête */}
+    <section className="section bg-white" aria-labelledby="section-timeline-heading">
+      <div className="container-custom" ref={containerRef}>
         <SectionHeader
-          badge="Construction"
-          badgeColor="orange"
-          heading={<>Les grandes étapes de la{" "}<span className="text-edf-orange">construction</span></>}
+          eyebrow="Construction"
+          heading={
+            <>
+              Les grandes étapes de la{" "}
+              <span className="text-edf-bleu-action">construction</span>
+            </>
+          }
           description="Une mise en route opérationnelle à horizon 2026. Découvrez les jalons essentiels à la construction de la centrale bioénergie du Larivot."
           id="section-timeline-heading"
-          className="max-w-3xl mb-20"
+          className="mb-16 lg:mb-20"
         />
 
-        {/* Timeline Desktop */}
-        <div className="hidden lg:block relative">
-          {/* Ligne de progression illuminée */}
-          <div className="absolute top-[44px] left-0 right-0 h-[2px]">
-            {/* Rail gris — base discrète */}
-            <div className="absolute inset-0 bg-gray-200 rounded-full" />
-
-            {/* Ligne active — cœur fin avec glow deux couches */}
+        {/* Timeline desktop — horizontale */}
+        <ol className="hidden lg:grid grid-cols-7 gap-4 relative list-none">
+          {/* Rail de progression */}
+          <div className="absolute top-7 left-0 right-0 h-0.5 bg-edf-gris-clair" aria-hidden="true">
             <motion.div
-              className="absolute inset-y-0 left-0 rounded-full"
-              style={{
-                background: "linear-gradient(to right, #FFB210, #88D910, #001A70)",
-                boxShadow:
-                  "0 0 6px rgba(136, 217, 16, 0.20), " + /* ambient — large, subtil */
-                  "0 0 2px rgba(136, 217, 16, 0.35)",    /* core — serré, défini */
-              }}
+              className="h-full bg-edf-bleu-action"
               initial={{ width: "0%" }}
               animate={isInView ? { width: "100%" } : { width: "0%" }}
-              transition={{ duration: 2, ease: "easeOut", delay: 0.25 }}
+              transition={{ duration: 1.6, ease: "easeOut", delay: 0.2 }}
             />
           </div>
 
-          {/* Steps */}
-          <div className="grid grid-cols-7 gap-4">
-            {TIMELINE_STEPS.map((step, index) => {
-              const IconComponent = step.icon;
-              
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-                  transition={{ duration: 0.3, delay: 0.15 + index * 0.075 }}
-                  className="relative flex flex-col items-center"
+          {TIMELINE_STEPS.map((step, index) => {
+            const IconComponent = step.icon;
+            return (
+              <motion.li
+                key={step.phase + step.year}
+                initial={{ opacity: 0, y: 12 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.45, ease: "easeOut", delay: 0.15 + index * 0.07 }}
+                className="relative flex flex-col items-center text-center"
+              >
+                {/* Nœud carré — signature EDF */}
+                <span
+                  className={`relative z-10 inline-flex items-center justify-center w-14 h-14 mb-4 ${
+                    step.isLast ? "bg-edf-bleu-action" : "bg-edf-blue"
+                  }`}
+                  aria-hidden="true"
                 >
-                  {/* Point sur la ligne */}
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={isInView ? { scale: 1 } : { scale: 0 }}
-                    transition={{ duration: 0.4, delay: 0.25 + index * 0.075 }}
-                    className="relative mb-5"
-                  >
-                    {/* Cercle extérieur animé */}
-                    <motion.div
-                      className="absolute inset-0 rounded-full"
-                      style={{ backgroundColor: step.color }}
-                      initial={{ scale: 1, opacity: 0.3 }}
-                      animate={isInView ? {
-                        scale: [1, 1.3, 1],
-                        opacity: [0.15, 0, 0.15]
-                      } : {}}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        delay: index * 0.1
-                      }}
-                    />
-                    
-                    {/* Cercle principal */}
-                    <div
-                      className="w-[90px] h-[90px] rounded-full flex items-center justify-center shadow-lg relative z-10 border-4 border-white"
-                      style={{
-                        background: `linear-gradient(120deg, ${step.color} 0%, ${step.color}dd 100%)`,
-                        boxShadow: `0 6px 25px ${step.color}25`
-                      }}
-                    >
-                      <IconComponent className="w-8 h-8 text-white" />
-                    </div>
+                  <IconComponent className="w-6 h-6 text-white" />
+                </span>
 
-                    {/* Date discrète en bas à droite du cercle */}
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-                      transition={{ duration: 0.4, delay: 0.35 + index * 0.075 }}
-                      className="absolute -bottom-1 -right-1 z-20"
-                    >
-                      <div
-                        className="bg-white px-2 py-0.5 rounded-full shadow-md text-xs font-semibold tracking-wide"
-                        style={{ color: step.color }}
-                      >
-                        {step.year} {step.quarter}
-                      </div>
-                    </motion.div>
-                  </motion.div>
+                <p className="text-sm font-bold text-edf-bleu-action tracking-wide">
+                  {step.year}&nbsp;{step.quarter}
+                </p>
+                <h3 className="text-sm font-semibold text-edf-bleu-nuit uppercase tracking-wide mt-1 mb-1.5">
+                  {step.phase}
+                </h3>
+                <p className="text-caption max-w-[140px] mx-auto">{step.description}</p>
 
-                  {/* Contenu texte */}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-                    transition={{ duration: 0.5, delay: 0.4 + index * 0.075 }}
-                    className="text-center"
-                  >
-                    <h3 
-                      className="font-bold text-sm mb-2 uppercase tracking-wide"
-                      style={{ color: step.color }}
-                    >
-                      {step.phase}
-                    </h3>
-                    <p className="text-xs text-gray-500 leading-relaxed max-w-[130px] mx-auto">
-                      {step.description}
-                    </p>
-                  </motion.div>
+                {step.isLast && (
+                  <p className="inline-flex items-center gap-1.5 mt-3 px-2.5 py-1 bg-edf-blanc-bleute text-edf-blue text-xs font-semibold uppercase tracking-wide">
+                    <Flag className="w-3.5 h-3.5" aria-hidden="true" />
+                    Objectif
+                  </p>
+                )}
+              </motion.li>
+            );
+          })}
+        </ol>
 
-                  {/* Indicateur de fin */}
-                  {step.isLast && (
-                    <motion.div
-                      initial={{ scale: 0, rotate: -180 }}
-                      animate={isInView ? { scale: 1, rotate: 0 } : { scale: 0 }}
-                      transition={{ duration: 0.5, delay: 1.25 }}
-                      className="absolute -bottom-10"
-                    >
-                      <CheckCircle2 className="w-6 h-6 text-edf-green" />
-                    </motion.div>
-                  )}
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Timeline Mobile - Version verticale */}
-        <div className="lg:hidden relative">
-          {/* Ligne verticale */}
-          <div className="absolute left-7 top-0 bottom-0 w-0.5 bg-gray-200">
+        {/* Timeline mobile — verticale */}
+        <ol className="lg:hidden relative list-none">
+          {/* Rail vertical */}
+          <div className="absolute left-6 top-2 bottom-2 w-0.5 bg-edf-gris-clair" aria-hidden="true">
             <motion.div
-              className="w-full bg-gradient-to-b from-edf-orange via-edf-green to-edf-blue"
+              className="w-full bg-edf-bleu-action"
               initial={{ height: "0%" }}
-              animate={isInView ? { height: "100%" } : { height: "0%" }}
-              transition={{ duration: 2, ease: "easeOut" }}
+              whileInView={{ height: "100%" }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.6, ease: "easeOut" }}
             />
           </div>
 
           <div className="space-y-8">
             {TIMELINE_STEPS.map((step, index) => {
               const IconComponent = step.icon;
-
               return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
+                <motion.li
+                  key={step.phase + step.year}
+                  initial={{ opacity: 0, x: -12 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.05 }}
-                  className="flex items-start gap-6 relative"
+                  transition={{ duration: 0.45, ease: "easeOut", delay: index * 0.04 }}
+                  className="relative flex items-start gap-5"
                 >
-                  {/* Icône */}
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    whileInView={{ scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.3, delay: index * 0.05 + 0.1 }}
-                    className="w-14 h-14 rounded-full flex items-center justify-center shrink-0 shadow-lg relative z-10 border-2 border-white"
-                    style={{
-                      background: `linear-gradient(120deg, ${step.color}, ${step.color}dd)`,
-                    }}
+                  <span
+                    className={`relative z-10 inline-flex items-center justify-center w-12 h-12 shrink-0 ${
+                      step.isLast ? "bg-edf-bleu-action" : "bg-edf-blue"
+                    }`}
+                    aria-hidden="true"
                   >
-                    <IconComponent className="w-6 h-6 text-white" />
-                  </motion.div>
+                    <IconComponent className="w-5 h-5 text-white" />
+                  </span>
 
-                  {/* Contenu */}
-                  <div className="flex-1 pb-4">
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="text-sm font-bold text-gray-900">
-                        {step.year}
-                      </span>
-                      <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded">
-                        {step.quarter}
-                      </span>
-                    </div>
-                    <h3
-                      className="font-bold text-base mb-1 uppercase"
-                      style={{ color: step.color }}
-                    >
+                  <div className="flex-1 pt-0.5">
+                    <p className="text-sm font-bold text-edf-bleu-action tracking-wide">
+                      {step.year}&nbsp;{step.quarter}
+                    </p>
+                    <h3 className="text-base font-semibold text-edf-bleu-nuit uppercase tracking-wide mt-0.5 mb-1">
                       {step.phase}
                     </h3>
-                    <p className="text-sm text-gray-500">
-                      {step.description}
-                    </p>
+                    <p className="text-caption">{step.description}</p>
                   </div>
-                </motion.div>
+                </motion.li>
               );
             })}
           </div>
-        </div>
-
+        </ol>
       </div>
     </section>
   );

@@ -2,66 +2,59 @@ import Image from "next/image";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
 /**
- * Camaïeu EDF — chaque page utilise un seul camaïeu.
- * Charte EDF 2021, p.19 : dégradés clair (haut-gauche) → foncé (bas-droite), angle 120deg.
+ * Camaïeu du hero — bleu par défaut (registre institutionnel),
+ * vert UNIQUEMENT pour le registre environnemental (page Bénéfices).
+ * L'orange est exclu de l'UI du site (un seul mélange autorisé : bleu + vert).
  */
-type Camaieu = "bleu" | "orange" | "vert";
+type Camaieu = "bleu" | "vert";
 
 /**
- * Dégradé CLAIR → FONCÉ au sein du même camaïeu (120deg).
- * Charte p.19 : "la couleur la plus claire en haut à gauche
- * vers la couleur la plus sombre en bas à droite"
+ * Dégradé charte : clair (haut-gauche) → foncé (bas-droite), 120deg.
  */
 const GRADIENT_MAP: Record<Camaieu, string> = {
-  bleu:   "linear-gradient(120deg, #1089FF 0%, #001A70 100%)",
-  orange: "linear-gradient(120deg, #FFB210 0%, #FE5716 100%)",
-  vert:   "linear-gradient(120deg, #88D910 0%, #4F9E30 100%)",
+  bleu: "linear-gradient(120deg, #1089FF 0%, #001A70 100%)",
+  vert: "linear-gradient(120deg, #88D910 0%, #4F9E30 100%)",
 };
 
-/** Motif EDF officiel (charte p.44-46) — un par camaïeu */
+/** Motif baguette officiel (charte p.44-46) — un par camaïeu */
 const MOTIF_MAP: Record<Camaieu, string> = {
-  bleu:   "/images/charte/motifs/motif-bleu.png",
-  orange: "/images/charte/motifs/motif-orange.png",
-  vert:   "/images/charte/motifs/motif-vert.png",
+  bleu: "/images/charte/motifs/motif-bleu.png",
+  vert: "/images/charte/motifs/motif-vert.png",
 };
 
-/** Symbole flèche EDF (charte p.47) — un par camaïeu */
+/** Symbole flèche EDF (charte p.47) — max 1 symbole par composition */
 const FLECHE_MAP: Record<Camaieu, string> = {
-  bleu:   "/images/charte/symboles/fleche-bleu.png",
-  orange: "/images/charte/symboles/fleche-orange.png",
-  vert:   "/images/charte/symboles/fleche-vert.png",
+  bleu: "/images/charte/symboles/fleche-bleu.png",
+  vert: "/images/charte/symboles/fleche-vert.png",
 };
 
 interface PageHeroProps {
   breadcrumbLabel: string;
-  badge: string;
+  /** Surtitre court au-dessus du H1. */
+  eyebrow: string;
   title: string;
   subtitle: string;
   /**
-   * Mot(s) mis en exergue dans le sous-titre par la GRAISSE (bold).
-   * Charte p.26 : sur fond coloré, la mise en exergue se fait
-   * uniquement par la graisse, jamais par la couleur.
+   * Mot(s) du sous-titre mis en exergue par la GRAISSE.
+   * Sur fond coloré, l'exergue se fait uniquement par la graisse (charte p.26).
    */
   accentWord?: string;
   description: string;
-  /** Camaïeu EDF de la page (défaut: bleu) */
   camaieu?: Camaieu;
 }
 
 /**
- * Hero unifié pour les pages secondaires.
+ * Hero unifié des pages secondaires.
  *
  * Conformité charte EDF 2021 :
- * — Dégradé mono-camaïeu clair→foncé, angle 120deg (p.19)
- * — Motif officiel en arrière-plan subtil (p.44-46)
- * — Symbole flèche décoratif (p.47)
- * — Texte blanc uniquement sur fond coloré (p.18, p.26)
- * — Mise en exergue par graisse, pas par couleur (p.26)
- * — Un seul camaïeu par composition (p.17)
+ * — dégradé mono-camaïeu clair→foncé 120deg (p.19)
+ * — motif baguette en arrière-plan subtil (p.44-46)
+ * — un seul symbole (flèche) par composition (p.47)
+ * — texte blanc sur fond coloré, exergue par graisse (p.18, p.26)
  */
 export default function PageHero({
   breadcrumbLabel,
-  badge,
+  eyebrow,
   title,
   subtitle,
   accentWord,
@@ -81,7 +74,7 @@ export default function PageHero({
     return (
       <>
         {before}
-        <strong className="text-white font-bold">{match}</strong>
+        <strong className="font-bold text-white">{match}</strong>
         {after}
       </>
     );
@@ -89,14 +82,11 @@ export default function PageHero({
 
   return (
     <section
-      className="relative overflow-hidden pt-[72px] md:pt-[80px]"
+      className="relative overflow-hidden pt-16 md:pt-20"
       style={{ background: GRADIENT_MAP[camaieu] }}
     >
-      {/* Motif EDF officiel — subtil, côté droit (charte p.44-46) */}
-      <div
-        className="absolute inset-0 opacity-[0.07] pointer-events-none"
-        aria-hidden="true"
-      >
+      {/* Motif baguette — subtil, côté droit */}
+      <div className="absolute inset-0 opacity-[0.07] pointer-events-none" aria-hidden="true">
         <Image
           src={MOTIF_MAP[camaieu]}
           alt=""
@@ -107,57 +97,44 @@ export default function PageHero({
         />
       </div>
 
-      {/* Symbole flèche EDF — décoratif, bas-droite (charte p.47) */}
+      {/* Symbole flèche — décoratif, bas-droite */}
       <div
         className="absolute bottom-4 right-8 md:bottom-8 md:right-16 w-16 h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 opacity-20 pointer-events-none"
         aria-hidden="true"
       >
-        <Image
-          src={FLECHE_MAP[camaieu]}
-          alt=""
-          fill
-          className="object-contain"
-          sizes="128px"
-        />
+        <Image src={FLECHE_MAP[camaieu]} alt="" fill className="object-contain" sizes="128px" />
       </div>
 
-      <div className="container-custom relative z-10 py-12 md:py-16 lg:py-20">
+      <div className="container-custom relative z-10 py-14 md:py-20 lg:py-24">
         <div className="max-w-3xl">
           <Breadcrumbs items={[{ label: breadcrumbLabel }]} />
 
-          {/* Badge */}
-          <div className="hero-fade-in" style={{ animationDelay: "0s" }}>
-            <span className="inline-block px-4 py-1.5 bg-white/10 text-white/90 text-xs font-medium mb-6 border border-white/20 uppercase tracking-widest">
-              {badge}
-            </span>
-          </div>
+          <p className="eyebrow eyebrow--on-dark mb-5 hero-fade-in" style={{ animationDelay: "0s" }}>
+            {eyebrow}
+          </p>
 
-          {/* Titre principal — blanc pur */}
           <h1
-            className="heading-lg font-bold text-white mb-4 tracking-tight hero-fade-in"
+            className="heading-1 text-white hero-fade-in"
             style={{ animationDelay: "0.08s" }}
           >
             {title}
           </h1>
 
-          {/* Sous-titre — blanc, exergue par graisse uniquement */}
           <p
-            className="text-xl md:text-2xl text-white/90 font-light mb-6 hero-fade-in"
+            className="text-xl md:text-2xl text-white/90 mt-4 hero-fade-in"
             style={{ animationDelay: "0.16s" }}
           >
             {renderSubtitle()}
           </p>
 
-          {/* Description — blanc atténué */}
           <p
-            className="text-white/80 text-base md:text-lg max-w-2xl leading-relaxed hero-fade-in"
+            className="text-lead text-white/80 max-w-2xl mt-5 hero-fade-in"
             style={{ animationDelay: "0.24s" }}
           >
             {description}
           </p>
         </div>
       </div>
-
     </section>
   );
 }

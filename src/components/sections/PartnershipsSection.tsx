@@ -2,8 +2,15 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Card, CardBody, Button, Skeleton } from "@nextui-org/react";
-import { ChevronLeft, ChevronRight, Zap, Flower2, Heart, TreePine, LucideIcon } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Zap,
+  Flower2,
+  Heart,
+  TreePine,
+  LucideIcon,
+} from "lucide-react";
 import Image from "next/image";
 import { getMediaUrl } from "@/lib/supabase";
 import { getActivePartnerships } from "@/lib/api";
@@ -11,9 +18,6 @@ import type { Partnership } from "@/lib/database.types";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import SectionHeader from "@/components/ui/SectionHeader";
 
-/**
- * Mapping des noms d'icônes vers les composants Lucide
- */
 const ICON_MAP: Record<string, LucideIcon> = {
   zap: Zap,
   flower: Flower2,
@@ -22,9 +26,9 @@ const ICON_MAP: Record<string, LucideIcon> = {
 };
 
 /**
- * Section Partenariats - Section 7
- * Carousel centré avec carte active au milieu - transitions fluides
- * Données dynamiques depuis Supabase
+ * Section Partenariats — carousel centré, données Supabase.
+ * Camaïeu bleu unique (les couleurs stockées en base sont ignorées
+ * au profit de la charte).
  */
 export default function PartnershipsSection() {
   const [partnerships, setPartnerships] = useState<Partnership[]>([]);
@@ -32,7 +36,6 @@ export default function PartnershipsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const prefersReducedMotion = useReducedMotion();
 
-  // Chargement des partenariats
   useEffect(() => {
     async function loadPartnerships() {
       try {
@@ -57,7 +60,7 @@ export default function PartnershipsSection() {
     setCurrentIndex((prev) => (prev - 1 + partnerships.length) % partnerships.length);
   }, [partnerships.length]);
 
-  // Keyboard navigation: ArrowLeft / ArrowRight
+  // Navigation clavier
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "ArrowLeft") {
@@ -71,39 +74,39 @@ export default function PartnershipsSection() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [nextSlide, prevSlide]);
 
-  // Écran de chargement
   if (loading) {
     return (
       <section
         role="status"
         aria-busy="true"
         aria-live="polite"
-        className="section-padding bg-edf-blanc-bleute relative overflow-hidden"
+        className="section bg-white"
       >
         <span className="sr-only">Chargement des partenariats…</span>
         <div className="container-custom">
-          <Skeleton className="h-8 w-32 mb-6 rounded-lg" />
-          <Skeleton className="h-12 w-96 mb-12 rounded-lg" />
+          <div className="img-skeleton h-4 w-32 mb-6" />
+          <div className="img-skeleton h-10 w-full max-w-xl mb-12" />
           <div className="flex justify-center">
-            <Skeleton className="w-[850px] h-[340px] rounded-xl" />
+            <div className="img-skeleton w-full max-w-[850px] h-[340px]" />
           </div>
         </div>
       </section>
     );
   }
 
-  // Si pas de partenariats : section sobre annonçant les partenariats à venir
   if (partnerships.length === 0) {
     return (
-      <section className="section-padding bg-edf-blanc-bleute" aria-labelledby="section-partnerships-heading">
+      <section className="section bg-white" aria-labelledby="section-partnerships-heading">
         <div className="container-custom">
           <SectionHeader
-            badge="Partenariats"
-            badgeColor="orange"
-            heading={<>Ancrage local et{" "}<span className="text-edf-orange">partenariats</span></>}
+            eyebrow="Partenariats"
+            heading={
+              <>
+                Ancrage local et <span className="text-edf-bleu-action">partenariats</span>
+              </>
+            }
             id="section-partnerships-heading"
             description="Les premiers partenaires locaux du projet seront présentés ici très prochainement."
-            className="max-w-3xl"
           />
         </div>
       </section>
@@ -111,51 +114,45 @@ export default function PartnershipsSection() {
   }
 
   return (
-    <section className="section-padding bg-edf-blanc-bleute relative overflow-hidden" aria-labelledby="section-partnerships-heading">
-      {/* Fond décoratif */}
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-edf-green/5 to-transparent" />
-        <div className="absolute bottom-0 right-0 w-1/2 h-full bg-gradient-to-l from-edf-orange/5 to-transparent" />
-      </div>
-
-      {/* En-tête */}
-      <div className="container-custom relative z-10">
+    <section
+      className="section bg-white overflow-hidden"
+      aria-labelledby="section-partnerships-heading"
+    >
+      <div className="container-custom">
         <SectionHeader
-          badge="Partenariats"
-          badgeColor="orange"
-          heading={<>Ancrage local et{" "}<span className="text-edf-orange">partenariats</span></>}
+          eyebrow="Partenariats"
+          heading={
+            <>
+              Ancrage local et <span className="text-edf-bleu-action">partenariats</span>
+            </>
+          }
           id="section-partnerships-heading"
-          className="max-w-4xl mb-12"
+          className="mb-12"
         />
       </div>
 
       {/* Carousel centré */}
       <div
-        className="relative z-10 h-[520px] md:h-[380px]"
+        className="relative h-[520px] md:h-[380px]"
         role="region"
         aria-roledescription="carousel"
         aria-label="Partenariats"
       >
-        {/* Annonce pour lecteurs d'écran */}
         <div aria-live="polite" className="sr-only">
           Partenariat {currentIndex + 1} sur {partnerships.length} :{" "}
           {partnerships[currentIndex]?.name}
         </div>
 
         <div className="absolute inset-0 flex items-center justify-center">
-          {/* Toutes les cartes avec animation fluide */}
           {partnerships.map((partnership, index) => {
-            // Calcul de la position relative par rapport à la carte active
             let position = index - currentIndex;
 
-            // Gestion du wrap-around pour l'effet infini
             if (position > partnerships.length / 2) {
               position -= partnerships.length;
             } else if (position < -partnerships.length / 2) {
               position += partnerships.length;
             }
 
-            // Déterminer les styles selon la position
             const isActive = position === 0;
             const isPrev = position === -1;
             const isNext = position === 1;
@@ -163,7 +160,6 @@ export default function PartnershipsSection() {
 
             if (!isVisible) return null;
 
-            // Calcul des transformations
             let translateX = "0%";
             let scale = 1;
             let opacity = 1;
@@ -172,12 +168,12 @@ export default function PartnershipsSection() {
             if (isPrev) {
               translateX = "-75%";
               scale = 0.85;
-              opacity = 0.5;
+              opacity = 0.4;
               zIndex = 10;
             } else if (isNext) {
               translateX = "75%";
               scale = 0.85;
-              opacity = 0.5;
+              opacity = 0.4;
               zIndex = 10;
             }
 
@@ -186,28 +182,16 @@ export default function PartnershipsSection() {
                 key={partnership.id}
                 className="absolute w-[85%] md:w-[55%] max-w-[850px]"
                 initial={false}
-                animate={{
-                  x: translateX,
-                  scale,
-                  opacity,
-                  zIndex,
-                }}
+                animate={{ x: translateX, scale, opacity, zIndex }}
                 transition={
                   prefersReducedMotion
                     ? { duration: 0 }
-                    : {
-                        type: "spring",
-                        stiffness: 300,
-                        damping: 30,
-                      }
+                    : { type: "spring", stiffness: 300, damping: 30 }
                 }
                 style={{ zIndex }}
                 aria-hidden={!isActive}
               >
-                <PartnershipCard
-                  partnership={partnership}
-                  isActive={isActive}
-                />
+                <PartnershipCard partnership={partnership} isActive={isActive} />
               </motion.div>
             );
           })}
@@ -215,61 +199,51 @@ export default function PartnershipsSection() {
       </div>
 
       {/* Navigation */}
-      <div className="container-custom relative z-30">
-        <div className="flex justify-center items-center gap-6 mt-8">
-          <Button
-            isIconOnly
-            variant="bordered"
-            className="border-edf-blue text-edf-blue hover:bg-edf-blue hover:text-white transition-all"
-            radius="sm"
-            onPress={prevSlide}
+      <div className="container-custom">
+        <div className="flex justify-center items-center gap-5 mt-8">
+          <button
+            onClick={prevSlide}
             aria-label="Partenariat précédent"
+            className="inline-flex items-center justify-center w-12 h-12 border-2 border-edf-blue text-edf-blue hover:bg-edf-blue hover:text-white transition-colors"
           >
-            <ChevronLeft className="w-5 h-5" />
-          </Button>
+            <ChevronLeft className="w-5 h-5" aria-hidden="true" />
+          </button>
 
-          {/* Indicateurs */}
-          <div className="flex gap-2" role="tablist" aria-label="Sélection de partenariat">
+          {/* Indicateurs carrés */}
+          <div className="flex" role="tablist" aria-label="Sélection de partenariat">
             {partnerships.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
-                className="p-2 flex items-center justify-center"
-                style={{ minWidth: "44px", minHeight: "44px" }}
+                className="p-2 flex items-center justify-center min-w-11 min-h-11"
                 role="tab"
                 aria-selected={index === currentIndex}
                 aria-label={`Partenariat ${index + 1} sur ${partnerships.length}`}
               >
                 <span
-                  className={`block h-3 rounded-full transition-all duration-300 ${
+                  className={`block h-2.5 transition-all duration-300 ${
                     index === currentIndex
-                      ? "bg-edf-orange w-8"
-                      : "bg-edf-gris-clair hover:bg-edf-gris-moyen w-3"
+                      ? "bg-edf-bleu-action w-7"
+                      : "bg-edf-gris-clair hover:bg-edf-blue-mid w-2.5"
                   }`}
                 />
               </button>
             ))}
           </div>
 
-          <Button
-            isIconOnly
-            variant="bordered"
-            className="border-edf-blue text-edf-blue hover:bg-edf-blue hover:text-white transition-all"
-            radius="sm"
-            onPress={nextSlide}
+          <button
+            onClick={nextSlide}
             aria-label="Partenariat suivant"
+            className="inline-flex items-center justify-center w-12 h-12 border-2 border-edf-blue text-edf-blue hover:bg-edf-blue hover:text-white transition-colors"
           >
-            <ChevronRight className="w-5 h-5" />
-          </Button>
+            <ChevronRight className="w-5 h-5" aria-hidden="true" />
+          </button>
         </div>
       </div>
     </section>
   );
 }
 
-/**
- * Composant carte de partenariat
- */
 interface PartnershipCardProps {
   partnership: Partnership;
   isActive: boolean;
@@ -277,60 +251,50 @@ interface PartnershipCardProps {
 
 function PartnershipCard({ partnership, isActive }: PartnershipCardProps) {
   const Icon = ICON_MAP[partnership.icon_name || "zap"] || Zap;
-  const color = partnership.color || "#001A70";
   const imageUrl = partnership.logo_url ? getMediaUrl(partnership.logo_url) : null;
   const hasRealImage = imageUrl && !imageUrl.includes("/images/");
 
   return (
-    <Card className={`bg-white border-none overflow-hidden transition-shadow duration-300 ${
-      isActive ? "shadow-2xl" : "shadow-xl"
-    }`}>
-      <CardBody className="p-0">
-        <div className="grid md:grid-cols-2 gap-0">
-          {/* Image */}
-          <div
-            className="h-[200px] md:h-[340px] relative"
-            style={{ backgroundColor: `${color}15` }}
-          >
-            {hasRealImage ? (
-              <Image
-                src={imageUrl}
-                alt={partnership.name}
-                fill
-                className="object-cover"
-              />
-            ) : (
-              <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
-                <div
-                  className="w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center mb-3"
-                  style={{ backgroundColor: color }}
-                >
-                  <Icon className="w-10 h-10 md:w-12 md:h-12 text-white" />
-                </div>
-                <p className="text-edf-gris-moyen text-xs md:text-sm text-center">
-                  Photo à venir
-                </p>
-              </div>
-            )}
-          </div>
-
-          {/* Contenu */}
-          <div className="h-auto min-h-[200px] md:h-[340px] p-5 md:p-8 flex flex-col justify-center">
-            <span
-              className="inline-block self-start px-3 py-1 text-xs font-medium uppercase tracking-wide mb-3 text-white"
-              style={{ backgroundColor: color }}
-            >
-              PARTENARIAT LOCAL
-            </span>
-            <h3 className="text-lg md:text-xl font-bold text-edf-bleu-nuit mb-3 line-clamp-2">
-              {partnership.name}
-            </h3>
-            <p className="text-edf-gris-fonce leading-relaxed text-sm line-clamp-4 md:line-clamp-5">
-              {partnership.description}
-            </p>
-          </div>
+    <article
+      className={`bg-white overflow-hidden transition-shadow duration-300 ${
+        isActive ? "shadow-4" : "shadow-2"
+      }`}
+    >
+      <div className="grid md:grid-cols-2">
+        {/* Image */}
+        <div className="h-[200px] md:h-[340px] relative bg-edf-blanc-bleute">
+          {hasRealImage ? (
+            <Image
+              src={imageUrl}
+              alt={partnership.name}
+              fill
+              className="object-cover"
+              sizes="(min-width: 768px) 425px, 85vw"
+            />
+          ) : (
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
+              <span
+                className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-edf-blue mb-3"
+                aria-hidden="true"
+              >
+                <Icon className="w-10 h-10 md:w-12 md:h-12 text-white" />
+              </span>
+              <p className="text-caption text-center">Photo à venir</p>
+            </div>
+          )}
         </div>
-      </CardBody>
-    </Card>
+
+        {/* Contenu */}
+        <div className="min-h-[200px] md:h-[340px] p-6 md:p-8 flex flex-col justify-center">
+          <p className="eyebrow mb-3">Partenariat local</p>
+          <h3 className="heading-4 text-edf-bleu-nuit mb-3 line-clamp-2">
+            {partnership.name}
+          </h3>
+          <p className="text-edf-bleu-nuit/75 leading-relaxed text-sm line-clamp-4 md:line-clamp-5">
+            {partnership.description}
+          </p>
+        </div>
+      </div>
+    </article>
   );
 }

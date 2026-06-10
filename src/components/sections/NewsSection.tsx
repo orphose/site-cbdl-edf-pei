@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Card, CardBody, CardFooter, Button, Skeleton } from "@nextui-org/react";
 import { Calendar, ArrowRight } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
@@ -12,14 +11,13 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import { fadeInUp, fadeInUpDelay } from "@/lib/motion-variants";
 
 /**
- * Section Actualités - Section 8
- * Affiche les 3 dernières actualités depuis Supabase
+ * Section Actualités — les 3 dernières actualités depuis Supabase.
+ * Fond blanc bleuté, cards blanches, lien tertiaire Bleu Action.
  */
 export default function NewsSection() {
   const [news, setNews] = useState<News[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Chargement des actualités au montage
   useEffect(() => {
     async function loadNews() {
       try {
@@ -43,7 +41,6 @@ export default function NewsSection() {
     loadNews();
   }, []);
 
-  // Formatage de la date
   const formatDate = (dateString: string | null): string => {
     if (!dateString) return "";
     const date = new Date(dateString);
@@ -55,33 +52,31 @@ export default function NewsSection() {
   };
 
   return (
-    <section className="section-padding bg-white relative overflow-hidden" aria-labelledby="section-news-heading">
-      <div className="container-custom relative z-10">
-        {/* En-tête */}
+    <section className="section section-alt" aria-labelledby="section-news-heading">
+      <div className="container-custom">
+        {/* En-tête avec action secondaire */}
         <motion.div
           {...fadeInUp}
-          className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12"
+          className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12"
         >
           <SectionHeader
-            badge="Actualités"
-            badgeColor="blue"
-            heading={<>Nos dernières <span className="text-edf-orange">actualités</span></>}
+            eyebrow="Actualités"
+            heading={
+              <>
+                Nos dernières <span className="text-edf-bleu-action">actualités</span>
+              </>
+            }
             id="section-news-heading"
           />
-          <Button
-            as={Link}
-            href="/actualites"
-            className="bg-edf-bleu-action text-white font-medium hover:bg-edf-blue transition-all"
-            radius="none"
-            endContent={<ArrowRight className="w-4 h-4" />}
-          >
+          <Link href="/actualites" className="btn btn-secondary shrink-0">
             Toutes les actualités
-          </Button>
+            <ArrowRight className="w-4 h-4" aria-hidden="true" />
+          </Link>
         </motion.div>
 
         {/* Grille d'actualités */}
         <div
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
           role={loading ? "status" : undefined}
           aria-busy={loading || undefined}
           aria-live={loading ? "polite" : undefined}
@@ -90,77 +85,75 @@ export default function NewsSection() {
             <>
               <span className="sr-only">Chargement des actualités…</span>
               {Array.from({ length: 3 }).map((_, index) => (
-                <Card key={index} className="h-full bg-white border border-edf-gris-clair">
-                  <Skeleton className="aspect-video rounded-none" />
-                  <CardBody className="p-6">
-                    <Skeleton className="w-32 h-4 mb-3 rounded" />
-                    <Skeleton className="w-full h-6 mb-3 rounded" />
-                    <Skeleton className="w-3/4 h-4 rounded" />
-                  </CardBody>
-                </Card>
+                <div key={index} className="bg-white border border-edf-gris-clair">
+                  <div className="img-skeleton aspect-video" />
+                  <div className="p-6 space-y-3">
+                    <div className="img-skeleton w-32 h-4" />
+                    <div className="img-skeleton w-full h-6" />
+                    <div className="img-skeleton w-3/4 h-4" />
+                  </div>
+                </div>
               ))}
             </>
           ) : news.length === 0 ? (
-            // Message si pas d'actualités
             <div className="col-span-full text-center py-12">
-              <p className="text-edf-gris-fonce">Aucune actualité pour le moment.</p>
+              <p className="text-edf-bleu-nuit/75">Aucune actualité pour le moment.</p>
             </div>
           ) : (
-            // Affichage des actualités
             news.map((item, index) => (
-            <motion.div
+              <motion.article
                 key={item.id}
-              {...fadeInUpDelay(index * 0.05)}
-            >
-                <Link href={`/actualites/${item.slug}`}>
-                  <Card className="h-full card-hover bg-white border border-edf-gris-clair shadow-sm cursor-pointer">
-                    {/* Image */}
-                <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 relative overflow-hidden">
-                      {item.image_url ? (
-                        <Image
-                          src={item.image_url}
-                          alt={item.title}
-                          fill
-                          className="object-cover"
-                        />
-                      ) : (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                          <p className="text-edf-gris-moyen text-sm">📷 Image actualité</p>
-                  </div>
-                      )}
-                  {/* Badge catégorie */}
-                  <span className="absolute top-4 left-4 px-3 py-1 bg-edf-blue text-white text-xs font-medium">
-                        Actualité
-                  </span>
-                </div>
-
-                <CardBody className="p-6">
-                  {/* Date */}
-                  <div className="flex items-center gap-2 text-edf-gris-moyen text-sm mb-3">
-                    <Calendar className="w-4 h-4" />
-                        <span>{formatDate(item.published_at)}</span>
+                {...fadeInUpDelay(index * 0.05)}
+                className="h-full"
+              >
+                <Link
+                  href={`/actualites/${item.slug}`}
+                  className="card-edf group flex flex-col h-full"
+                >
+                  {/* Image */}
+                  <div className="aspect-video bg-edf-blanc-bleute relative overflow-hidden">
+                    {item.image_url ? (
+                      <Image
+                        src={item.image_url}
+                        alt=""
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                        sizes="(min-width: 1024px) 400px, (min-width: 768px) 50vw, 100vw"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <p className="text-caption">Image à venir</p>
+                      </div>
+                    )}
                   </div>
 
-                  {/* Titre */}
-                  <h3 className="text-lg font-bold text-edf-bleu-nuit mb-3 line-clamp-2">
-                        {item.title}
-                  </h3>
+                  <div className="flex flex-col flex-1 p-6">
+                    {/* Date */}
+                    <p className="flex items-center gap-2 text-caption mb-3">
+                      <Calendar className="w-4 h-4" aria-hidden="true" />
+                      <time dateTime={item.published_at ?? undefined}>
+                        {formatDate(item.published_at)}
+                      </time>
+                    </p>
 
-                  {/* Extrait */}
-                  <p className="text-edf-gris-fonce text-sm line-clamp-2">
-                        {item.excerpt || ""}
-                  </p>
-                </CardBody>
+                    {/* Titre */}
+                    <h3 className="text-lg font-semibold leading-snug text-edf-bleu-nuit mb-2 line-clamp-2 group-hover:text-edf-bleu-action transition-colors">
+                      {item.title}
+                    </h3>
 
-                <CardFooter className="px-6 pb-6 pt-0">
-                  <span className="text-edf-orange font-medium inline-flex items-center gap-1">
-                    Lire la suite
-                    <ArrowRight className="w-4 h-4" />
-                  </span>
-                </CardFooter>
-              </Card>
+                    {/* Extrait */}
+                    <p className="text-edf-bleu-nuit/75 text-sm line-clamp-2 mb-4">
+                      {item.excerpt || ""}
+                    </p>
+
+                    {/* Lien tertiaire */}
+                    <span className="link-arrow mt-auto text-sm">
+                      Lire la suite
+                      <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                    </span>
+                  </div>
                 </Link>
-            </motion.div>
+              </motion.article>
             ))
           )}
         </div>

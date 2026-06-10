@@ -1,158 +1,107 @@
 "use client";
 
-import { VIDEOS } from "@/lib/media";
-
 import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { TreePine, Calendar, Euro } from "lucide-react";
 import { useCountUp } from "@/hooks/useCountUp";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { fadeInLeft } from "@/lib/motion-variants";
+import { fadeInLeft, fadeInRight } from "@/lib/motion-variants";
+import { VIDEOS } from "@/lib/media";
 
 /**
- * Données des statistiques de préservation
+ * Statistiques de préservation — registre environnemental (touches de vert).
  */
 const PRESERVATION_STATS = [
-  {
-    value: "150",
-    unit: "",
-    label: "hectares de surface sanctuarisée",
-    icon: TreePine,
-  },
-  {
-    value: "10",
-    unit: "",
-    label: "hectares d'emprise",
-    icon: TreePine,
-  },
-  {
-    value: "25",
-    unit: "ans",
-    label: "d'exploitation de la centrale",
-    icon: Calendar,
-  },
-  {
-    value: "99",
-    unit: "ans",
-    label: "de préservation du site",
-    icon: Calendar,
-  },
-  {
-    value: "+400.000€",
-    unit: "",
-    label: "pour la préservation du site",
-    icon: Euro,
-  },
+  { value: "150", unit: "ha", label: "de surface sanctuarisée" },
+  { value: "10", unit: "ha", label: "d'emprise de la centrale" },
+  { value: "25", unit: "ans", label: "d'exploitation de la centrale" },
+  { value: "99", unit: "ans", label: "de préservation du site" },
+  { value: "+400 000", unit: "€", label: "investis pour la préservation du site", wide: true },
 ];
 
-function CountUpStat({ value, unit }: { value: string; unit: string }) {
-  // Extract numeric part
-  const numericMatch = value.match(/(\d[\d.]*)/);
+function CountUpStat({ value }: { value: string }) {
+  const numericMatch = value.match(/(\d[\d\s.]*)/);
   const prefix = value.match(/^([^\d]*)/)?.[1] || "";
-  const suffix = value.match(/[\d.]+(.*)/)?.[1] || "";
-  const numericValue = numericMatch ? parseInt(numericMatch[1].replace(/\./g, "")) : 0;
+  const numericValue = numericMatch
+    ? parseInt(numericMatch[1].replace(/[\s.]/g, ""))
+    : 0;
 
   const { count, ref } = useCountUp(numericValue);
 
-  // Format the count back with dots for thousands
-  const formattedCount = numericValue >= 1000
-    ? count.toLocaleString("fr-FR")
-    : count.toString();
+  const formattedCount =
+    numericValue >= 1000 ? count.toLocaleString("fr-FR") : count.toString();
 
   return (
-    <span ref={ref} className="text-4xl font-bold text-edf-blue">
-      {prefix}{formattedCount}{suffix}
+    <span ref={ref} className="stat-value">
+      {prefix}
+      {formattedCount}
     </span>
   );
 }
 
 /**
- * Section Préservation - Section 6
- * Valoriser et protéger l'environnement
+ * Section Préservation — valoriser et protéger la biodiversité.
+ * Fond blanc bleuté, accents verts (registre environnemental).
  */
 export default function PreservationSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Force la lecture de la vidéo au montage
   useEffect(() => {
-    const playVideo = async () => {
-      if (videoRef.current) {
-        try {
-          videoRef.current.muted = true;
-          await videoRef.current.play();
-        } catch (error) {
-          console.log("Autoplay bloqué par le navigateur");
-        }
-      }
-    };
-
-    playVideo();
+    const video = videoRef.current;
+    if (video) {
+      video.muted = true;
+      video.play().catch(() => {});
+    }
   }, []);
 
   return (
-    <section className="section-padding bg-white relative overflow-hidden" aria-labelledby="section-preservation-heading">
-      {/* Fond décoratif végétal */}
-      <div className="absolute top-0 right-0 w-1/3 h-full opacity-5" aria-hidden="true">
-        <div className="w-full h-full bg-[url('data:image/svg+xml,%3Csvg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 100 100&quot;%3E%3Cpath d=&quot;M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z&quot; fill=&quot;%2300a86b&quot;/%3E%3C/svg%3E')] bg-repeat bg-[length:50px_50px]" />
-      </div>
-
-      <div className="container-custom relative z-10">
-        {/* En-tête */}
+    <section className="section section-alt" aria-labelledby="section-preservation-heading">
+      <div className="container-custom">
         <SectionHeader
-          badge="Biodiversité"
-          badgeColor="green"
-          heading={<>Valoriser et <span className="text-edf-green">protéger</span></>}
+          eyebrow="Biodiversité"
+          tone="green"
+          heading={
+            <>
+              Préserver l&apos;environnement et{" "}
+              <span className="text-edf-green-dark">la biodiversité</span>
+            </>
+          }
+          description={
+            <>
+              Un espace <strong className="font-semibold">10 fois plus vaste</strong> que
+              la superficie de la centrale, dédié à la préservation de la biodiversité
+              locale — un investissement de plus de 400&nbsp;000&nbsp;€.
+            </>
+          }
           id="section-preservation-heading"
-          className="max-w-4xl mb-4"
+          className="mb-14"
         />
-        <div className="max-w-4xl mb-16">
-          <h3 className="text-2xl text-edf-bleu-nuit font-light mb-6">
-            Préserver l&apos;environnement et la biodiversité
-          </h3>
-          <p className="text-edf-gris-fonce text-lg max-w-3xl">
-            Un espace <strong className="text-edf-green">10 fois plus vaste</strong> que la
-            superficie de la centrale, dédié à la préservation de la
-            biodiversité locale, cela représente un investissement de plus de{" "}
-            <strong className="text-edf-blue">400 000 €</strong>.
-          </p>
-        </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
           {/* Statistiques */}
-          <motion.div
-            {...fadeInLeft}
-            className="grid grid-cols-2 gap-6"
-          >
-            {PRESERVATION_STATS.map((stat, index) => (
+          <motion.dl {...fadeInLeft} className="grid grid-cols-2 gap-4">
+            {PRESERVATION_STATS.map((stat) => (
               <div
-                key={index}
-                className={`p-6 bg-gradient-to-br from-gray-50 to-white border border-edf-gris-clair shadow-sm ${
-                  index === 4 ? "col-span-2" : ""
+                key={stat.label}
+                className={`bg-white border border-edf-gris-clair border-t-4 border-t-edf-green-dark p-6 ${
+                  stat.wide ? "col-span-2" : ""
                 }`}
               >
-                <div className="flex items-baseline gap-1 mb-2">
-                  <CountUpStat value={stat.value} unit={stat.unit} />
+                <dd className="flex items-baseline gap-1">
+                  <CountUpStat value={stat.value} />
                   {stat.unit && (
-                    <span className="text-lg text-edf-green font-medium">
+                    <span className="text-lg font-semibold text-edf-green-text">
                       {stat.unit}
                     </span>
                   )}
-                </div>
-                <p className="text-edf-gris-fonce text-sm">{stat.label}</p>
+                </dd>
+                <dt className="text-sm text-edf-bleu-nuit/75 mt-2">{stat.label}</dt>
               </div>
             ))}
-          </motion.div>
+          </motion.dl>
 
           {/* Vidéo zone sanctuarisée */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.3, delay: 0.1 }}
-            className="relative"
-          >
-            <div className="relative aspect-video overflow-hidden shadow-xl">
-              {/* Vidéo de sanctuarisation */}
+          <motion.div {...fadeInRight} className="relative">
+            <div className="relative aspect-video overflow-hidden shadow-3">
               <video
                 ref={videoRef}
                 autoPlay
@@ -164,27 +113,19 @@ export default function PreservationSection() {
               >
                 <source src={VIDEOS.sanctuarisation} type="video/mp4" />
               </video>
-              <p className="sr-only">Vue aérienne de la zone de sanctuarisation environnementale du site du Larivot</p>
-
-              {/* Bordure */}
-              <div className="absolute inset-0 border-2 border-edf-green/20 pointer-events-none" aria-hidden="true" />
+              <p className="sr-only">
+                Vue aérienne de la zone de sanctuarisation environnementale du site du
+                Larivot
+              </p>
             </div>
 
-            {/* Badge flottant */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="absolute -bottom-4 -right-4 bg-edf-green text-white px-6 py-3 shadow-lg"
-            >
-              <span className="font-bold">10x</span>
-              <span className="text-sm ml-1">plus vaste</span>
-            </motion.div>
+            {/* Étiquette factuelle — angle bas-droite */}
+            <p className="absolute -bottom-4 right-4 bg-edf-green-dark text-white px-5 py-2.5 shadow-2 text-sm">
+              <strong className="font-bold">10×</strong> plus vaste que l&apos;emprise
+            </p>
           </motion.div>
         </div>
       </div>
     </section>
   );
 }
-

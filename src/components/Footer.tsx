@@ -1,9 +1,8 @@
 "use client";
 
-import { Mail, MapPin, ExternalLink, Phone, Linkedin, Twitter, Youtube } from "lucide-react";
+import { Mail, MapPin, ExternalLink, Linkedin, Twitter, Youtube } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { IMAGES } from "@/lib/media";
 import { NAV_LINKS, FOOTER_LEGAL_LINKS } from "@/lib/constants";
 
@@ -14,142 +13,91 @@ const SOCIAL_LINKS = [
 ];
 
 /**
- * Footer du site
- * Design moderne et épuré avec informations de contact EDF PEI
+ * Footer du site.
+ * Charte EDF : fond Bleu Foncé #001A70, texte blanc, logo EDF version blanche,
+ * effet lumineux (halo blanc/bleu clair) en signature de marque.
  */
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative bg-edf-blue text-white overflow-hidden">
-      {/* Fond décoratif */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-edf-orange/10 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2" />
-      </div>
-
-      {/* Contenu principal */}
-      <div className="max-w-7xl mx-auto relative z-10 px-6 md:px-8 lg:px-12 py-20">
+    <footer className="section-dark glow-effect">
+      <div className="container-custom pt-16 md:pt-20 pb-10">
         {/* Grille principale */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-12">
-          
-          {/* Colonne Logo et Contact - 5 colonnes */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 pb-14">
+          {/* Marque et contact */}
           <div className="lg:col-span-5">
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3 }}
-            >
-              {/* Logo */}
-              <div className="mb-8">
-                <Image
-                  src={IMAGES.logo.blanc}
-                  alt="EDF PEI"
-                  width={180}
-                  height={70}
-                  className="h-14 w-auto object-contain mb-4"
-                />
-                <p className="text-white/90 text-lg font-light">
-                  Centrale Bioénergie du Larivot
-                </p>
-                <p className="text-white/80 text-sm mt-2 max-w-sm">
-                  Un projet clé pour la transition énergétique de la Guyane vers le 100% renouvelable.
-                </p>
-              </div>
+            <Image
+              src={IMAGES.logo.blanc}
+              alt="EDF PEI"
+              width={180}
+              height={72}
+              className="h-12 w-auto object-contain mb-5"
+            />
+            <p className="text-lg font-semibold">Centrale Bioénergie du Larivot</p>
+            <p className="text-white/80 text-sm mt-2 mb-8 max-w-sm leading-relaxed">
+              Un projet clé pour la transition énergétique de la Guyane vers le
+              100&nbsp;% renouvelable.
+            </p>
 
-              {/* Informations de contact */}
-              <div className="space-y-4">
-                <div className="flex items-start gap-4 group">
-                  <div className="w-10 h-10 bg-white/10 flex items-center justify-center flex-shrink-0 group-hover:bg-edf-orange/20 transition-colors">
-                    <MapPin className="w-5 h-5 text-edf-orange-bright" />
-                  </div>
-                  <div>
-                    <p className="text-white/90 text-sm font-medium">Adresse</p>
-                    <p className="text-white/90 text-sm">
-                      20 PL de La Défense<br />
-                      92050 Paris, Cedex 42
-                    </p>
-                  </div>
+            <ul className="space-y-5">
+              <li className="flex items-start gap-4">
+                <span className="icon-square icon-square--light icon-square--sm" aria-hidden="true">
+                  <MapPin className="w-5 h-5" />
+                </span>
+                <div>
+                  <p className="text-sm font-semibold">Adresse</p>
+                  <p className="text-white/80 text-sm leading-relaxed">
+                    20 PL de La Défense
+                    <br />
+                    92050 Paris, Cedex 42
+                  </p>
                 </div>
-
-                <div className="flex items-start gap-4 group">
-                  <div className="w-10 h-10 bg-white/10 flex items-center justify-center flex-shrink-0 group-hover:bg-edf-orange/20 transition-colors">
-                    <Mail className="w-5 h-5 text-edf-orange-bright" />
-                  </div>
-                  <div>
-                    <p className="text-white/90 text-sm font-medium">Email</p>
-                    <Link
-                      href="mailto:centraledularivot@edf.fr"
-                      className="text-white/90 text-sm hover:text-edf-orange-bright transition-colors"
-                    >
-                      centraledularivot@edf.fr
-                    </Link>
-                  </div>
+              </li>
+              <li className="flex items-start gap-4">
+                <span className="icon-square icon-square--light icon-square--sm" aria-hidden="true">
+                  <Mail className="w-5 h-5" />
+                </span>
+                <div>
+                  <p className="text-sm font-semibold">Email</p>
+                  <a
+                    href="mailto:centraledularivot@edf.fr"
+                    className="text-white/80 text-sm underline-offset-4 hover:underline hover:text-white transition-colors"
+                  >
+                    centraledularivot@edf.fr
+                  </a>
                 </div>
-
-                <div className="flex items-start gap-4 group">
-                  <div className="w-10 h-10 bg-white/10 flex items-center justify-center flex-shrink-0 group-hover:bg-edf-orange/20 transition-colors">
-                    <Phone className="w-5 h-5 text-edf-orange-bright" />
-                  </div>
-                  <div>
-                    <p className="text-white/90 text-sm font-medium">Contact</p>
-                    <p className="text-white/80 text-sm">
-                      Via le formulaire de contact EDF
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+              </li>
+            </ul>
           </div>
 
-          {/* Colonne Pages - 3 colonnes */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.3, delay: 0.05 }}
-            className="lg:col-span-3"
-          >
-            <h4 className="text-lg font-semibold mb-6 relative inline-block">
-              Pages
-              <span className="absolute -bottom-2 left-0 w-8 h-0.5 bg-edf-orange" />
-            </h4>
+          {/* Navigation */}
+          <nav className="lg:col-span-3" aria-label="Pied de page — pages du site">
+            <h2 className="text-base font-semibold mb-5">Le projet</h2>
             <ul className="space-y-1">
-              {NAV_LINKS.map((link, index) => (
+              {NAV_LINKS.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-white/90 text-sm hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2 group py-2 min-h-[44px]"
+                    className="inline-flex items-center min-h-11 py-2 text-sm text-white/80 hover:text-white underline-offset-4 hover:underline transition-colors"
                   >
-                    <span className="w-0 h-px bg-edf-orange group-hover:w-3 transition-all" />
                     {link.name}
                   </Link>
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </nav>
 
-          {/* Colonne Légal & Groupe EDF - 4 colonnes */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.3, delay: 0.1 }}
-            className="lg:col-span-4"
-          >
-            <h4 className="text-lg font-semibold mb-6 relative inline-block">
-              Informations
-              <span className="absolute -bottom-2 left-0 w-8 h-0.5 bg-edf-orange" />
-            </h4>
+          {/* Informations et réseaux */}
+          <div className="lg:col-span-4">
+            <h2 className="text-base font-semibold mb-5">Informations</h2>
             <ul className="space-y-1 mb-8">
               {FOOTER_LEGAL_LINKS.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-white/90 text-sm hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2 group py-2 min-h-[44px]"
+                    className="inline-flex items-center min-h-11 py-2 text-sm text-white/80 hover:text-white underline-offset-4 hover:underline transition-colors"
                   >
-                    <span className="w-0 h-px bg-edf-orange group-hover:w-3 transition-all" />
                     {link.name}
                   </Link>
                 </li>
@@ -157,70 +105,63 @@ export default function Footer() {
             </ul>
 
             {/* Lien Groupe EDF */}
-            <div className="p-4 bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
-              <Link
-                href="https://www.edf.fr"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between text-white group"
-              >
-                <div>
-                  <p className="font-medium text-sm">Groupe EDF</p>
-                  <p className="text-white/70 text-xs">Découvrir le groupe</p>
-                </div>
-                <ExternalLink className="w-5 h-5 text-white/70 group-hover:text-edf-orange-bright transition-colors" />
-              </Link>
-            </div>
+            <a
+              href="https://www.edf.fr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between gap-4 p-4 border border-white/20 hover:bg-white/10 transition-colors group"
+            >
+              <span>
+                <span className="block font-semibold text-sm">Groupe EDF</span>
+                <span className="block text-white/70 text-xs mt-0.5">
+                  Découvrir le groupe — edf.fr
+                </span>
+              </span>
+              <ExternalLink
+                className="w-5 h-5 text-white/70 group-hover:text-white transition-colors shrink-0"
+                aria-hidden="true"
+              />
+            </a>
 
             {/* Réseaux sociaux */}
-            <div className="mt-8">
-              <p className="text-sm text-white/80 mb-4">Suivez-nous</p>
-              <div className="flex gap-3">
-                {SOCIAL_LINKS.map((social) => {
-                  const Icon = social.icon;
-                  return (
-                    <Link
-                      key={social.name}
+            <p className="text-sm font-semibold mt-8 mb-3">Suivez-nous</p>
+            <ul className="flex gap-3">
+              {SOCIAL_LINKS.map((social) => {
+                const Icon = social.icon;
+                return (
+                  <li key={social.name}>
+                    <a
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-11 h-11 bg-white/10 flex items-center justify-center hover:bg-edf-orange transition-colors group"
-                      aria-label={social.name}
+                      className="flex items-center justify-center w-11 h-11 border border-white/20 text-white/80 hover:bg-white hover:text-edf-blue transition-colors"
+                      aria-label={`${social.name} (nouvelle fenêtre)`}
                     >
-                      <Icon className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" />
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          </motion.div>
+                      <Icon className="w-5 h-5" aria-hidden="true" />
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </div>
 
-        {/* Séparateur */}
-        <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent mb-8" aria-hidden="true" />
-
-        {/* Copyright et crédits */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-white/80 text-sm">
+        {/* Barre légale */}
+        <div className="border-t border-white/15 pt-8 flex flex-col md:flex-row justify-between items-center gap-3">
+          <p className="text-white/70 text-sm">
             © {currentYear} EDF PEI. Tous droits réservés.
           </p>
-          <div className="flex items-center gap-6 text-white/70 text-xs">
-            <span>Centrale Bioénergie du Larivot</span>
-            <span className="hidden md:inline">•</span>
-            <span className="hidden md:inline">Guyane française</span>
-            <span className="hidden md:inline">•</span>
-            <span className="hidden md:inline">
-              Site créé par{" "}
-              <Link
-                href="https://orphose.studio"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white/80 hover:text-edf-orange-bright transition-colors"
-              >
-                orphose.studio
-              </Link>
-            </span>
-          </div>
+          <p className="text-white/70 text-sm text-center md:text-right">
+            Centrale Bioénergie du Larivot — Guyane française · Site créé par{" "}
+            <a
+              href="https://orphose.studio"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-4 hover:text-white transition-colors"
+            >
+              orphose.studio
+            </a>
+          </p>
         </div>
       </div>
     </footer>

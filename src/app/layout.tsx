@@ -9,11 +9,12 @@ import Footer from "@/components/Footer";
  * Polices de caractères
  * Work Sans: police complémentaire EDF pour le B2C (Google Font libre)
  * Conforme charte EDF 2021 — alternative à EDF 2020 (propriétaire)
+ * Graisses 400+ uniquement (lisibilité UI)
  */
 const workSans = Work_Sans({
   variable: "--font-work-sans",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
 });
 
 /**
@@ -58,9 +59,14 @@ export default function RootLayout({
         className={`${workSans.variable} antialiased`}
       >
         <NextUIProvider>
+          <a href="#contenu" className="skip-link">
+            Aller au contenu principal
+          </a>
           <div className="flex flex-col min-h-screen">
             <Header />
-            <main className="flex-grow">{children}</main>
+            <main id="contenu" className="flex-grow">
+              {children}
+            </main>
             <Footer />
           </div>
         </NextUIProvider>

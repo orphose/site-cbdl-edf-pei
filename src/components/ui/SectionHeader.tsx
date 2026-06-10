@@ -3,60 +3,65 @@
 import { motion } from "framer-motion";
 import { fadeInUp } from "@/lib/motion-variants";
 
-type BadgeColor = "orange" | "green" | "blue";
-
-/**
- * Couleurs des badges — toutes les combinaisons respectent WCAG AA (≥ 4.5:1).
- * Les teintes foncées (`orange-dark`, `green-text`) remplacent les versions
- * vives qui ne passaient pas sur un fond clair 10%.
- */
-const BADGE_BG: Record<BadgeColor, string> = {
-  orange: "bg-edf-orange/15",
-  green: "bg-edf-green/20",
-  blue: "bg-edf-blue/10",
-};
-
-const BADGE_TEXT: Record<BadgeColor, string> = {
-  orange: "text-edf-orange-dark",
-  green: "text-edf-green-text",
-  blue: "text-edf-blue",
-};
+type Tone = "blue" | "green";
+type Align = "left" | "center";
 
 interface SectionHeaderProps {
-  badge: string;
-  badgeColor?: BadgeColor;
+  /** Surtitre court (1 à 3 mots) affiché au-dessus du titre. */
+  eyebrow: string;
+  /**
+   * Titre H2. Pour la mise en exergue (charte p.26) : graisse OU couleur,
+   * jamais les deux — ex. <span className="text-edf-bleu-action">mot</span>.
+   */
   heading: React.ReactNode;
-  headingColor?: "black" | "white";
   description?: React.ReactNode;
+  /**
+   * Registre coloriel de l'eyebrow : "blue" par défaut,
+   * "green" réservé aux sections environnementales.
+   */
+  tone?: Tone;
+  /** Sur fond Bleu Foncé (.section-dark) */
+  onDark?: boolean;
+  align?: Align;
   className?: string;
   id?: string;
 }
 
+/**
+ * En-tête de section unifié : eyebrow → H2 → description.
+ * Toutes les sections du site public passent par ce composant
+ * pour garantir une hiérarchie visuelle constante.
+ */
 export default function SectionHeader({
-  badge,
-  badgeColor = "green",
+  eyebrow,
   heading,
-  headingColor = "black",
   description,
+  tone = "blue",
+  onDark = false,
+  align = "left",
   className = "",
   id,
 }: SectionHeaderProps) {
-  const textColor = headingColor === "white" ? "text-white" : "text-edf-bleu-nuit";
+  const eyebrowClass = onDark
+    ? "eyebrow eyebrow--on-dark"
+    : tone === "green"
+      ? "eyebrow eyebrow--green"
+      : "eyebrow";
+
+  const headingColor = onDark ? "text-white" : "text-edf-bleu-nuit";
+  const descriptionColor = onDark ? "text-white/80" : "text-edf-bleu-nuit/75";
+  const alignClass = align === "center" ? "text-center mx-auto" : "";
 
   return (
-    <motion.div {...fadeInUp} className={className}>
-      <span
-        className={`inline-block px-4 py-2 ${BADGE_BG[badgeColor]} ${BADGE_TEXT[badgeColor]} text-sm font-semibold uppercase tracking-wide mb-6`}
-      >
-        {badge}
-      </span>
-      <h2 id={id} className={`heading-lg ${textColor} mb-6`}>
+    <motion.div {...fadeInUp} className={`max-w-3xl ${alignClass} ${className}`}>
+      <p className={`${eyebrowClass} mb-4 ${align === "center" ? "justify-center" : ""}`}>
+        {eyebrow}
+      </p>
+      <h2 id={id} className={`heading-2 ${headingColor}`}>
         {heading}
       </h2>
       {description && (
-        <p className="text-edf-gris-fonce text-lg leading-relaxed max-w-3xl">
-          {description}
-        </p>
+        <p className={`text-lead ${descriptionColor} mt-5`}>{description}</p>
       )}
     </motion.div>
   );

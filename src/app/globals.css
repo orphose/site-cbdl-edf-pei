@@ -1,114 +1,88 @@
 @import "tailwindcss";
 
-/* === PALETTE EDF OFFICIELLE — Charte 2021 === */
+/* ============================================================
+   DESIGN SYSTEM — Centrale Bioénergie du Larivot (EDF PEI)
+   Charte graphique Groupe EDF 2021 — voir DESIGN_SYSTEM.md
+   Camaïeu directeur : BLEU + touches de VERT (environnement).
+   L'orange est réservé au logo EDF (immuable) — jamais dans l'UI.
+   ============================================================ */
+
 :root {
-  /* Camaïeu Orange */
-  --edf-orange: #FE5716;        /* Orange Foncé — couleur principale */
-  --edf-orange-mid: #FF861D;    /* Orange Moyen */
-  --edf-orange-light: #FFB210;  /* Orange Clair */
+  /* --- Camaïeu Bleu (dominant) --- */
+  --edf-blue: #001A70;          /* Bleu Foncé — fonds sombres, titres forts */
+  --edf-blue-mid: #1057C8;      /* Bleu Moyen — hovers, data-viz */
+  --edf-blue-light: #1089FF;    /* Bleu Clair — accents sur fond sombre uniquement */
+  --edf-blue-logo: #10367A;     /* Bleu Logo EDF */
 
-  /* Camaïeu Bleu */
-  --edf-blue: #001A70;          /* Bleu Foncé — dominant */
-  --edf-blue-mid: #1057C8;      /* Bleu Moyen */
-  --edf-blue-light: #1089FF;    /* Bleu Clair */
-  --edf-blue-logo: #10367A;     /* Bleu Logo (texte "edf") */
+  /* --- Couleurs Web EDF (accessibilité WCAG) --- */
+  --edf-bleu-nuit: #00155A;     /* Textes et titres — remplace le noir */
+  --edf-bleu-action: #005BFF;   /* Liens et boutons */
+  --edf-blanc-bleute: #E9F1F9;  /* Fonds de sections */
 
-  /* Camaïeu Vert */
-  --edf-green: #88D910;         /* Vert Moyen */
-  --edf-green-dark: #4F9E30;    /* Vert Foncé */
-  --edf-green-light: #C0E410;   /* Vert Clair */
+  /* --- Touches de Vert (registre environnement uniquement) --- */
+  --edf-green-dark: #4F9E30;    /* Icônes, titres ≥ 24px (3.3:1) */
+  --edf-green-text: #3C7A24;    /* Texte vert ≤ 18px sur fond clair (5:1) */
+  --edf-green: #88D910;         /* Décor sur fond bleu foncé uniquement */
+  --edf-green-light: #C0E410;   /* Décor sur fond bleu foncé uniquement */
 
-  /* Couleurs Web spécifiques (accessibilité WCAG) */
-  --edf-bleu-nuit: #00155A;     /* Textes et titres — remplace noir */
-  --edf-bleu-action: #005BFF;   /* Boutons CTA et liens */
-  --edf-blanc-bleute: #E9F1F9;  /* Fonds de sections — remplace gris */
+  /* --- Gris (usage restreint : captions, bordures) --- */
+  --edf-gris-fonce: #333333;
+  --edf-gris-moyen: #595959;    /* 7:1 sur blanc — captions */
+  --edf-gris-clair: #E0E0E0;    /* bordures uniquement */
 
-  /* Gris EDF — échelle conforme WCAG AA sur blanc (≥ 4.5:1) */
-  --edf-gris-fonce: #333333;     /* 12.6:1 sur blanc — corps de texte principal */
-  --edf-gris-moyen: #595959;     /* 7.0:1 sur blanc — remplace #666 pour le texte */
-  --edf-gris-clair: #E0E0E0;     /* bordures uniquement — jamais en texte */
-
-  /* Couleurs de fond */
   --background: #ffffff;
-  --background-dark: #001A70;
-  --foreground: #00155A;
-  --foreground-light: #E9F1F9;
+  --foreground: var(--edf-bleu-nuit);
 
-  /* Couleurs secondaires */
-  --text-muted: #595959;
-  --border-color: #E0E0E0;
+  /* --- Dégradés charte : clair (haut-gauche) → foncé (bas-droite) --- */
+  --gradient-bleu: linear-gradient(120deg, #1089FF 0%, #001A70 100%);
+  --gradient-vert: linear-gradient(120deg, #88D910 0%, #4F9E30 100%);
 
-  /* Teintes accentuées pour badges accessibles (≥ 4.5:1 sur blanc) */
-  --edf-orange-dark: #C13A00;    /* 4.6:1 — texte orange lisible */
-  --edf-green-text: #3C7A24;     /* 5.0:1 — texte vert lisible */
-
-  /* Spacing scale — base 4px, progression non-linéaire (Refactoring UI) */
-  --space-xs: 0.25rem;   /* 4px */
-  --space-sm: 0.5rem;    /* 8px */
-  --space-md: 1rem;      /* 16px */
-  --space-lg: 1.5rem;    /* 24px */
-  --space-xl: 2.5rem;    /* 40px */
-  --space-2xl: 4rem;     /* 64px */
-  --space-3xl: 6rem;     /* 96px */
-
-  /* Type scale body — Work Sans */
-  --text-xs: 0.75rem;    /* 12px — labels */
-  --text-sm: 0.875rem;   /* 14px — meta, captions */
-  --text-base: 1rem;     /* 16px — corps */
-  --text-lg: 1.125rem;   /* 18px — lead */
-  --text-xl: 1.25rem;    /* 20px */
-  --text-2xl: 1.5rem;    /* 24px */
-
-  /* Radius — charte EDF 2021 = 0 (carré) par défaut */
-  --radius-0: 0;
-  --radius-sm: 2px;      /* exceptions: skeletons, scrollbar */
-
-  /* Elevation system — 5 niveaux */
-  --shadow-1: 0 1px 3px rgba(0,0,0,0.08);
-  --shadow-2: 0 4px 12px rgba(0,0,0,0.10);
-  --shadow-3: 0 8px 24px rgba(0,0,0,0.12);
-  --shadow-4: 0 16px 40px rgba(0,0,0,0.14);
-  --shadow-5: 0 24px 60px rgba(0,0,0,0.16);
-
-  /* Dégradés EDF — angle 120deg (clair haut-gauche → foncé bas-droite) */
-  --gradient-hero: linear-gradient(120deg, #1089FF 0%, #001A70 100%);
-  --gradient-accent: linear-gradient(120deg, #FFB210 0%, #FE5716 100%);
-  --gradient-green: linear-gradient(120deg, #C0E410 0%, #4F9E30 100%);
-  --gradient-blue: linear-gradient(120deg, #1089FF 0%, #001A70 100%);
+  /* --- Header --- */
+  --header-h: 64px;
+  --header-h-md: 80px;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
   /* Camaïeu Bleu */
   --color-edf-blue: var(--edf-blue);
   --color-edf-blue-mid: var(--edf-blue-mid);
   --color-edf-blue-light: var(--edf-blue-light);
   --color-edf-blue-logo: var(--edf-blue-logo);
-  /* Camaïeu Orange */
-  --color-edf-orange: var(--edf-orange);
-  --color-edf-orange-mid: var(--edf-orange-mid);
-  --color-edf-orange-light: var(--edf-orange-light);
-  /* Camaïeu Vert */
-  --color-edf-green: var(--edf-green);
-  --color-edf-green-dark: var(--edf-green-dark);
-  --color-edf-green-light: var(--edf-green-light);
+
   /* Couleurs Web */
   --color-edf-bleu-nuit: var(--edf-bleu-nuit);
   --color-edf-bleu-action: var(--edf-bleu-action);
   --color-edf-blanc-bleute: var(--edf-blanc-bleute);
-  /* Gris EDF */
+
+  /* Touches de Vert */
+  --color-edf-green: var(--edf-green);
+  --color-edf-green-dark: var(--edf-green-dark);
+  --color-edf-green-light: var(--edf-green-light);
+  --color-edf-green-text: var(--edf-green-text);
+
+  /* Gris */
   --color-edf-gris-fonce: var(--edf-gris-fonce);
   --color-edf-gris-moyen: var(--edf-gris-moyen);
   --color-edf-gris-clair: var(--edf-gris-clair);
-  /* Teintes accessibles */
-  --color-edf-orange-dark: var(--edf-orange-dark);
-  --color-edf-green-text: var(--edf-green-text);
+
+  /* Élévation — ombres teintées bleu nuit, 5 niveaux */
+  --shadow-1: 0 1px 2px rgba(0, 21, 90, 0.06), 0 1px 3px rgba(0, 21, 90, 0.08);
+  --shadow-2: 0 2px 4px rgba(0, 21, 90, 0.05), 0 4px 12px rgba(0, 21, 90, 0.08);
+  --shadow-3: 0 4px 8px rgba(0, 21, 90, 0.06), 0 8px 24px rgba(0, 21, 90, 0.10);
+  --shadow-4: 0 8px 16px rgba(0, 21, 90, 0.07), 0 16px 40px rgba(0, 21, 90, 0.12);
+  --shadow-5: 0 16px 32px rgba(0, 21, 90, 0.08), 0 24px 64px rgba(0, 21, 90, 0.14);
+
   /* Typographie */
   --font-sans: var(--font-work-sans);
 }
 
-/* === BASE STYLES === */
+/* ============================================================
+   BASE
+   ============================================================ */
+
 * {
   box-sizing: border-box;
 }
@@ -121,124 +95,335 @@ body {
   background: var(--background);
   color: var(--edf-bleu-nuit);
   font-family: var(--font-work-sans), system-ui, sans-serif;
-  line-height: 1.6;
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* === NAVBAR NEXTUI OVERRIDE === */
-nav[data-slot="base"] {
-  --navbar-height: 100px;
-  height: 100px !important;
-  max-height: 100px !important;
-  min-height: 100px !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  background-color: white !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+::selection {
+  background: var(--edf-bleu-action);
+  color: #fff;
 }
 
-@media (max-width: 767px) {
-  nav[data-slot="base"] {
-    --navbar-height: 72px;
-    height: 72px !important;
-    max-height: 72px !important;
-    min-height: 72px !important;
-  }
+/* ============================================================
+   COMPOSANTS DU DESIGN SYSTEM
+   Déclarés dans @layer components afin que les utilitaires
+   Tailwind (layer utilities) puissent les surcharger
+   (ex. border-l-4 sur .card-edf, w-10 sur .icon-square).
+   ============================================================ */
+
+@layer components {
+
+/* ------------------------------------------------------------
+   Typographie — échelle hand-crafted
+   ------------------------------------------------------------ */
+
+.heading-display {
+  font-size: clamp(2.5rem, 5vw, 3.75rem);   /* 40 → 60px */
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
 }
 
-nav[data-slot="base"] header {
-  height: 100%;
-  padding: 0 1.5rem;
-  margin: 0;
+.heading-1 {
+  font-size: clamp(2rem, 4vw, 2.75rem);     /* 32 → 44px */
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
 }
 
-/* === UTILITAIRES === */
-.bg-edf-blue {
-  background-color: var(--edf-blue);
+.heading-2 {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);  /* 28 → 36px */
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
 }
 
-.bg-edf-blue-light {
-  background-color: var(--edf-blue-light);
+.heading-3 {
+  font-size: 1.5rem;                         /* 24px */
+  font-weight: 600;
+  line-height: 1.3;
 }
 
-.bg-edf-orange {
-  background-color: var(--edf-orange);
+.heading-4 {
+  font-size: 1.25rem;                        /* 20px */
+  font-weight: 600;
+  line-height: 1.4;
 }
 
-.bg-edf-green {
-  background-color: var(--edf-green);
+.text-lead {
+  font-size: 1.125rem;                       /* 18px */
+  line-height: 1.7;
 }
 
-/* Texte sur fond clair — utilise Bleu Nuit pour le texte courant */
-.text-edf-orange {
-  color: var(--edf-orange);
+.text-caption {
+  font-size: 0.875rem;                       /* 14px */
+  line-height: 1.5;
+  color: var(--edf-gris-moyen);
 }
 
-.text-edf-green {
-  color: var(--edf-green-dark);
+.text-balance {
+  text-wrap: balance;
 }
 
-.text-edf-blue {
-  color: var(--edf-blue);
+/* Longueur de ligne lisible (45–75 caractères) */
+.prose-readable {
+  max-width: 65ch;
 }
 
-.text-edf-bleu-nuit {
-  color: var(--edf-bleu-nuit);
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+
+.container-custom {
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
 }
 
-/* Texte lumineux pour fonds sombres */
-.text-edf-orange-bright {
-  color: var(--edf-orange);
+@media (min-width: 640px) {
+  .container-custom { padding-inline: 2rem; }
 }
 
-.text-edf-green-bright {
-  color: var(--edf-green);
+@media (min-width: 1024px) {
+  .container-custom { padding-inline: 3rem; }
 }
 
-/* Fond Blanc Bleuté — remplace bg-gray-50 */
-.bg-edf-blanc-bleute {
+/* Rythme vertical des sections */
+.section {
+  padding-block: clamp(4rem, 8vw, 7rem);
+}
+
+.section-alt {
   background-color: var(--edf-blanc-bleute);
 }
 
-.gradient-hero {
-  background: var(--gradient-hero);
+.section-dark {
+  background-color: var(--edf-blue);
+  color: #fff;
 }
 
-.gradient-accent {
-  background: var(--gradient-accent);
+/* Effet lumineux EDF — halo blanc sur fond bleu foncé (signature de marque) */
+.glow-effect {
+  position: relative;
+  overflow: hidden;
 }
 
-.gradient-green {
-  background: var(--gradient-green);
+.glow-effect::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 80% at 85% 0%, rgba(255, 255, 255, 0.10) 0%, transparent 60%),
+    radial-gradient(40% 60% at 0% 100%, rgba(16, 137, 255, 0.18) 0%, transparent 60%);
 }
 
-.gradient-blue {
-  background: var(--gradient-blue);
+.glow-effect > * {
+  position: relative;
 }
 
-/* === ELEVATION SYSTEM === */
-.elevation-1 { box-shadow: var(--shadow-1); }
-.elevation-2 { box-shadow: var(--shadow-2); }
-.elevation-3 { box-shadow: var(--shadow-3); }
-.elevation-4 { box-shadow: var(--shadow-4); }
-.elevation-5 { box-shadow: var(--shadow-5); }
+/* ============================================================
+   COMPOSANTS — Boutons (hiérarchie : primary / secondary / link)
+   ============================================================ */
 
-/* === ANIMATIONS ===
- * Règle : Framer Motion orchestre les sections dynamiques (whileInView),
- * CSS ne fournit que deux animations utilitaires :
- *   - hero-fade-in : animation initiale sans dépendance JS (LCP friendly)
- *   - shimmer       : loading skeletons
- * Les keyframes `fadeInUp`, `pulse-glow`, `float` ont été retirés : soit
- * inutilisés, soit remplacés par Framer Motion dans les composants.
- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3rem;                 /* 48px — cible tactile */
+  padding: 0.75rem 1.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+  border-radius: 0;                 /* signature EDF : le carré */
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-primary {
+  background-color: var(--edf-bleu-action);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: var(--edf-blue);
+}
+
+.btn-secondary {
+  border: 2px solid var(--edf-bleu-nuit);
+  color: var(--edf-bleu-nuit);
+  background: transparent;
+}
+
+.btn-secondary:hover {
+  background-color: var(--edf-bleu-nuit);
+  color: #fff;
+}
+
+/* Variantes pour fonds sombres */
+.btn-on-dark {
+  background-color: #fff;
+  color: var(--edf-blue);
+}
+
+.btn-on-dark:hover {
+  background-color: var(--edf-blanc-bleute);
+}
+
+.btn-outline-dark {
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  color: #fff;
+  background: transparent;
+}
+
+.btn-outline-dark:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Lien tertiaire avec flèche */
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 2.75rem;              /* 44px — cible tactile */
+  color: var(--edf-bleu-action);
+  font-weight: 600;
+  transition: gap 0.2s ease;
+}
+
+.link-arrow:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  gap: 0.625rem;
+}
+
+/* ============================================================
+   COMPOSANTS — Eyebrow (surtitre de section)
+   Petit carré plein (rappel du cartouche) + label uppercase.
+   ============================================================ */
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 0.8125rem;             /* 13px */
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--edf-bleu-action);
+}
+
+.eyebrow::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  flex-shrink: 0;
+  background-color: currentColor;
+}
+
+.eyebrow--green {
+  color: var(--edf-green-text);
+}
+
+.eyebrow--on-dark {
+  color: #fff;
+}
+
+/* ============================================================
+   COMPOSANTS — Cards
+   ============================================================ */
+
+.card-edf {
+  background: #fff;
+  border: 1px solid var(--edf-gris-clair);
+  border-radius: 0;
+  transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+}
+
+.card-edf:hover {
+  box-shadow: var(--shadow-3);
+  transform: translateY(-2px);
+  border-color: transparent;
+}
+
+/* Conteneur d'icône carré — une seule couleur par section */
+.icon-square {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  flex-shrink: 0;
+  border-radius: 0;
+  background-color: var(--edf-blue);
+  color: #fff;
+}
+
+.icon-square--green {
+  background-color: var(--edf-green-dark);
+}
+
+.icon-square--action {
+  background-color: var(--edf-bleu-action);
+}
+
+.icon-square--light {
+  background-color: var(--edf-blanc-bleute);
+  color: var(--edf-blue);
+}
+
+.icon-square--sm {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+/* Grand chiffre clé — "data" EDF : grands chiffres en couleur de marque */
+.stat-value {
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--edf-blue);
+}
+
+/* ============================================================
+   DÉGRADÉS CHARTE
+   ============================================================ */
+
+.gradient-bleu {
+  background: var(--gradient-bleu);
+}
+
+.gradient-vert {
+  background: var(--gradient-vert);
+}
+
+/* ============================================================
+   ANIMATIONS UTILITAIRES
+   (Framer Motion orchestre le reste via motion-variants.ts)
+   ============================================================ */
+
 @keyframes shimmer {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
 
-/* Hero page secondaire — animation CSS pure (pas de dépendance JS pour le LCP) */
+.img-skeleton {
+  background: linear-gradient(90deg, #f0f4f9 25%, #e3eaf3 50%, #f0f4f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Hero — animation CSS pure (pas de dépendance JS pour le LCP) */
 .hero-fade-in {
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(12px);
   animation: heroFadeIn 0.5s ease-out forwards;
 }
 
@@ -249,15 +434,7 @@ nav[data-slot="base"] header {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .hero-fade-in {
-    opacity: 1;
-    transform: none;
-    animation: none;
-  }
-}
-
-/* Toast slide-in (top-right) */
+/* Toast slide-in */
 @keyframes toastSlideIn {
   from {
     opacity: 0;
@@ -273,151 +450,34 @@ nav[data-slot="base"] header {
   animation: toastSlideIn 0.2s ease-out forwards;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .toast-enter {
-    animation: none;
-    opacity: 1;
-    transform: none;
-  }
-}
+} /* fin @layer components */
 
-/* === COMPOSANTS PERSONNALISES === */
-.glass-card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0;
-}
+/* ============================================================
+   ACCESSIBILITÉ
+   ============================================================ */
 
-.glass-card-white {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: 0;
-}
-
-.card-hover {
-  transition: all 0.3s ease;
-}
-
-.card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-}
-
-/* === SECTIONS === */
-.section-padding {
-  padding: 5rem 1rem;
-}
-
-@media (min-width: 768px) {
-  .section-padding {
-    padding: 6rem 2rem;
-  }
-}
-
-.container-custom {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding-inline: 2rem;
-}
-
-@media (min-width: 768px) {
-  .container-custom {
-    padding-inline: 3rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .container-custom {
-    padding-inline: 4rem;
-  }
-}
-
-@media (min-width: 1440px) {
-  .container-custom {
-    padding-inline: 5rem;
-  }
-}
-
-/* === TYPOGRAPHY === */
-.heading-xl {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-}
-
-.heading-lg {
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-}
-
-.heading-md {
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 600;
-  line-height: 1.3;
-}
-
-.heading-sm {
-  font-size: clamp(1.125rem, 2vw, 1.5rem);
-  font-weight: 600;
-  line-height: 1.4;
-}
-
-.text-balance {
-  text-wrap: balance;
-}
-
-/* === VIDEO PLACEHOLDER === */
-.video-placeholder {
-  background: linear-gradient(120deg, #1089FF 0%, #001A70 100%);
-  border-radius: 0;
-  position: relative;
-  overflow: hidden;
-}
-
-.video-placeholder::before {
-  content: '';
+/* Lien d'évitement — premier élément focusable de la page */
+.skip-link {
   position: absolute;
-  inset: 0;
-  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  top: -100%;
+  left: 1rem;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  background: var(--edf-bleu-nuit);
+  color: #fff;
+  font-weight: 600;
+  transition: top 0.2s ease;
 }
 
-/* === IMAGE PLACEHOLDER === */
-.img-skeleton {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s ease-in-out infinite;
+.skip-link:focus-visible {
+  top: 1rem;
 }
 
-/* === SCROLLBAR CUSTOM === */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--edf-blue);
-  border-radius: var(--radius-sm);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--edf-blue-light);
-}
-
-/* === ACCESSIBILITE — Focus Visible === */
 :focus-visible {
-  outline: 2px solid var(--edf-blue);
+  outline: 2px solid var(--edf-bleu-action);
   outline-offset: 2px;
 }
 
-/* === ACCESSIBILITE — Reduced Motion === */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -427,10 +487,32 @@ nav[data-slot="base"] header {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+
+  .hero-fade-in,
+  .toast-enter {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
 }
 
-/* === TYPOGRAPHY — Prose line length === */
-.prose-readable {
-  max-width: 65ch;
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
 }
 
+::-webkit-scrollbar-track {
+  background: var(--edf-blanc-bleute);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--edf-blue-mid);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--edf-blue);
+}

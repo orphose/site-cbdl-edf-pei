@@ -1,19 +1,19 @@
 import Image from "next/image";
 import { IMAGES } from "@/lib/media";
 
-type Camaieu = "bleu" | "orange" | "vert";
+/** Camaïeux du site : bleu (dominant) + vert (touches environnement). */
+type Camaieu = "bleu" | "vert";
 
 /**
- * Couleurs de fond du cartouche (charte EDF 2021, p. 34-36).
+ * Couleurs de fond du cartouche (charte EDF 2021, p.34-36).
  * Règles strictes :
  *   - Toujours CARRÉ (jamais rectangulaire)
- *   - 1/3 haut blanc (logo), 2/3 bas couleur (texte)
- *   - Jamais en transparence (la charte n'autorise pas plus de 10%, on s'en dispense)
+ *   - Bichromie : 1/3 haut blanc (logo), 2/3 bas couleur (texte)
+ *   - Jamais en transparence
  *   - Un seul camaïeu par composition
  */
 const CARTOUCHE_BG: Record<Camaieu, string> = {
   bleu: "bg-edf-blue",
-  orange: "bg-edf-orange",
   vert: "bg-edf-green-dark",
 };
 
@@ -34,10 +34,8 @@ interface CartoucheProps {
 }
 
 /**
- * Cartouche carré EDF — signature visuelle pour hero, réseaux sociaux, goodies.
- *
- * Usage : un seul cartouche par composition, placé en angle (haut-gauche, bas-droite).
- * Pour les fonds sombres, utiliser le logo blanc en miniature ; charte p.34.
+ * Cartouche carré EDF — signature visuelle de la marque.
+ * Un seul cartouche par composition, placé en angle.
  */
 export default function Cartouche({
   label,
@@ -49,7 +47,7 @@ export default function Cartouche({
 
   return (
     <div
-      className={`relative inline-flex flex-col ${root} ${className}`}
+      className={`relative inline-flex flex-col shadow-3 ${root} ${className}`}
       aria-label="Cartouche EDF"
     >
       {/* 1/3 haut — fond blanc, logo EDF couleurs */}
@@ -65,9 +63,7 @@ export default function Cartouche({
       </div>
 
       {/* 2/3 bas — couleur camaïeu + texte blanc */}
-      <div
-        className={`basis-2/3 ${CARTOUCHE_BG[camaieu]} flex items-center justify-center px-3`}
-      >
+      <div className={`basis-2/3 ${CARTOUCHE_BG[camaieu]} flex items-center justify-center px-3`}>
         <p className={`${text} text-white font-semibold leading-tight text-center uppercase tracking-wide`}>
           {label}
         </p>

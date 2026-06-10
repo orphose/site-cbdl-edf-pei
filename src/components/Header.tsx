@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Settings } from "lucide-react";
@@ -11,8 +10,12 @@ import { NAV_LINKS } from "@/lib/constants";
 import { createClient } from "@/utils/supabase/client";
 
 /**
- * Header/Navigation du site
- * Header personnalisé sans NextUI pour un contrôle total de la hauteur
+ * Header / navigation principale.
+ *
+ * Design system : fond blanc permanent (charte EDF — nav blanc ou blanc bleuté),
+ * texte Bleu Nuit, état actif marqué par une barre Bleu Action collée au bas
+ * du header ("you are here" évident, Krug). Aucune animation d'entrée : la
+ * navigation est un repère stable.
  */
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,7 +29,6 @@ export default function Header() {
   useEffect(() => {
     if (!isMenuOpen) return;
 
-    // Lock body scroll
     document.body.style.overflow = "hidden";
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -36,7 +38,6 @@ export default function Header() {
         return;
       }
 
-      // Focus trap
       if (e.key === "Tab" && menuRef.current) {
         const focusableEls = menuRef.current.querySelectorAll<HTMLElement>("a, button");
         const firstEl = focusableEls[0];
@@ -52,7 +53,6 @@ export default function Header() {
       }
     };
 
-    // Focus le premier lien du menu à l'ouverture
     const firstLink = menuRef.current?.querySelector("a");
     firstLink?.focus();
 
@@ -63,16 +63,19 @@ export default function Header() {
     };
   }, [isMenuOpen]);
 
-  const isActive = useCallback((href: string) => {
-    if (href === "/") return pathname === "/";
-    return pathname.startsWith(href);
-  }, [pathname]);
+  const isActive = useCallback(
+    (href: string) => {
+      if (href === "/") return pathname === "/";
+      return pathname.startsWith(href);
+    },
+    [pathname]
+  );
 
-  // Scroll effect pour le header
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      setScrolled(window.scrollY > 8);
     };
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -80,14 +83,14 @@ export default function Header() {
   // Vérifier si un admin est connecté
   useEffect(() => {
     const supabase = createClient();
-    
-    // Vérifier la session actuelle
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setIsAdmin(!!session?.user);
     });
 
-    // Écouter les changements d'authentification
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       setIsAdmin(!!session?.user);
     });
 
@@ -95,183 +98,152 @@ export default function Header() {
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 h-[72px] md:h-[100px] transition-all duration-300 ${
-      scrolled
-        ? "bg-white/95 backdrop-blur-md shadow-lg"
-        : "bg-white shadow-sm"
-    }`}>
-      <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
-        {/* Logo EDF PEI */}
-        <Link href="/" className="flex items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center"
-          >
-            <Image
-              src={IMAGES.logo.couleurs}
-              alt="EDF PEI Centrale du Larivot Logo"
-              width={200}
-              height={80}
-              className="h-14 md:h-20 w-auto"
-              priority
-            />
-          </motion.div>
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 h-16 md:h-20 bg-white transition-shadow duration-200 ${
+        scrolled ? "shadow-2" : "border-b border-edf-gris-clair"
+      }`}
+    >
+      <div className="container-custom h-full flex items-center justify-between gap-6">
+        {/* Logo EDF PEI — toujours en haut à gauche (charte) */}
+        <Link
+          href="/"
+          className="flex items-center shrink-0"
+          aria-label="EDF PEI — Centrale Bioénergie du Larivot, accueil"
+        >
+          <Image
+            src={IMAGES.logo.couleurs}
+            alt="EDF PEI"
+            width={180}
+            height={72}
+            className="h-10 md:h-12 w-auto"
+            priority
+          />
         </Link>
 
         {/* Navigation desktop */}
-        <nav aria-label="Navigation principale" className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map((link, index) => (
-            <motion.div
-              key={link.name}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
+        <nav aria-label="Navigation principale" className="hidden lg:flex items-center self-stretch gap-1">
+          {NAV_LINKS.map((link) => {
+            const active = isActive(link.href);
+            return (
               <Link
+                key={link.name}
                 href={link.href}
-                className={`text-sm font-medium transition-colors pb-1 ${
-                  isActive(link.href)
-                    ? "text-edf-blue border-b-2 border-edf-orange"
-                    : "text-edf-bleu-nuit hover:text-edf-blue"
+                className={`relative flex items-center h-full px-3 text-[0.9375rem] transition-colors ${
+                  active
+                    ? "text-edf-bleu-action font-semibold"
+                    : "text-edf-bleu-nuit font-medium hover:text-edf-bleu-action"
                 }`}
-                aria-current={isActive(link.href) ? "page" : undefined}
+                aria-current={active ? "page" : undefined}
               >
                 {link.name}
+                {/* Barre active — repère "vous êtes ici" */}
+                <span
+                  aria-hidden="true"
+                  className={`absolute inset-x-3 bottom-0 h-[3px] transition-colors ${
+                    active ? "bg-edf-bleu-action" : "bg-transparent"
+                  }`}
+                />
               </Link>
-            </motion.div>
-          ))}
+            );
+          })}
 
-          {/* CTA Presse — utilitaire (Krug § navigation utilities) */}
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: NAV_LINKS.length * 0.1 }}
+          {/* Utilitaire Presse — séparé de la navigation de contenu */}
+          <Link
+            href="/presse"
+            className={`ml-4 inline-flex items-center min-h-11 px-5 border-2 text-sm font-semibold transition-colors ${
+              isActive("/presse")
+                ? "border-edf-bleu-nuit bg-edf-bleu-nuit text-white"
+                : "border-edf-bleu-nuit text-edf-bleu-nuit hover:bg-edf-bleu-nuit hover:text-white"
+            }`}
+            aria-current={isActive("/presse") ? "page" : undefined}
           >
-            <Link
-              href="/presse"
-              className="inline-flex items-center px-4 py-2 border border-edf-bleu-nuit text-edf-bleu-nuit text-sm font-semibold hover:bg-edf-bleu-nuit hover:text-white transition-colors"
-              aria-current={isActive("/presse") ? "page" : undefined}
-            >
-              Presse
-            </Link>
-          </motion.div>
+            Presse
+          </Link>
 
-          {/* Bouton Admin - visible uniquement si connecté */}
+          {/* Accès admin — visible uniquement si connecté */}
           {isAdmin && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
+            <Link
+              href="/admin"
+              className="ml-2 inline-flex items-center gap-2 min-h-11 px-4 bg-edf-blue text-white text-sm font-semibold hover:bg-edf-blue-mid transition-colors"
             >
-              <Link
-                href="/admin"
-                className="flex items-center gap-2 px-4 py-2 bg-edf-blue text-white text-sm font-medium hover:bg-edf-blue-light transition-colors"
-              >
-                <Settings className="w-4 h-4" />
-                Admin
-              </Link>
-            </motion.div>
+              <Settings className="w-4 h-4" aria-hidden="true" />
+              Admin
+            </Link>
           )}
         </nav>
 
-        {/* Bouton menu mobile — cible tactile 48x48 min (Fitts) */}
+        {/* Bouton menu mobile — cible tactile 48px (Fitts) */}
         <button
           ref={hamburgerRef}
-          className="md:hidden inline-flex items-center justify-center min-w-[48px] min-h-[48px] p-3"
+          className="lg:hidden inline-flex items-center justify-center min-w-12 min-h-12 p-3 -mr-3"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label={isMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
           aria-expanded={isMenuOpen}
           aria-controls="mobile-menu"
         >
-          <div className="w-6 h-5 relative flex flex-col justify-between">
+          <span className="w-6 h-[1.125rem] relative flex flex-col justify-between" aria-hidden="true">
             <span
-              className={`w-full h-0.5 bg-edf-bleu-nuit transition-all ${
+              className={`w-full h-0.5 bg-edf-bleu-nuit transition-transform ${
                 isMenuOpen ? "rotate-45 translate-y-2" : ""
               }`}
             />
             <span
-              className={`w-full h-0.5 bg-edf-bleu-nuit transition-all ${
+              className={`w-full h-0.5 bg-edf-bleu-nuit transition-opacity ${
                 isMenuOpen ? "opacity-0" : ""
               }`}
             />
             <span
-              className={`w-full h-0.5 bg-edf-bleu-nuit transition-all ${
+              className={`w-full h-0.5 bg-edf-bleu-nuit transition-transform ${
                 isMenuOpen ? "-rotate-45 -translate-y-2" : ""
               }`}
             />
-          </div>
+          </span>
         </button>
       </div>
 
-      {/* Menu mobile */}
+      {/* Menu mobile — panneau blanc cohérent avec la nav desktop */}
       {isMenuOpen && (
-        <motion.nav
+        <nav
           ref={menuRef}
           id="mobile-menu"
-          role="navigation"
-          aria-label="Menu principal"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="md:hidden absolute top-[72px] md:top-[100px] left-0 right-0 bg-edf-blue shadow-lg"
+          aria-label="Navigation principale"
+          className="lg:hidden absolute top-16 inset-x-0 bg-white border-t border-edf-gris-clair shadow-4 max-h-[calc(100dvh-4rem)] overflow-y-auto"
         >
-          <div className="py-4">
-            {NAV_LINKS.map((link, index) => (
-              <motion.div
-                key={link.name}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.05 }}
-              >
-                <Link
-                  href={link.href}
-                  className={`block px-6 py-3 min-h-[48px] text-white transition-colors ${
-                    isActive(link.href) ? "bg-white/20 font-semibold" : "hover:bg-white/10"
-                  }`}
-                  onClick={() => setIsMenuOpen(false)}
-                  aria-current={isActive(link.href) ? "page" : undefined}
-                >
-                  {link.name}
-                </Link>
-              </motion.div>
-            ))}
+          <ul className="py-2">
+            {[...NAV_LINKS, { name: "Presse", href: "/presse" as const }].map((link) => {
+              const active = isActive(link.href);
+              return (
+                <li key={link.name}>
+                  <Link
+                    href={link.href}
+                    className={`flex items-center min-h-12 px-5 py-3 text-base border-l-4 transition-colors ${
+                      active
+                        ? "border-edf-bleu-action bg-edf-blanc-bleute text-edf-bleu-action font-semibold"
+                        : "border-transparent text-edf-bleu-nuit font-medium hover:bg-edf-blanc-bleute"
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                    aria-current={active ? "page" : undefined}
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              );
+            })}
 
-            {/* Lien Presse mobile */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: NAV_LINKS.length * 0.05 }}
-            >
-              <Link
-                href="/presse"
-                className={`block px-6 py-3 min-h-[48px] text-white transition-colors ${
-                  isActive("/presse") ? "bg-white/20 font-semibold" : "hover:bg-white/10"
-                }`}
-                onClick={() => setIsMenuOpen(false)}
-                aria-current={isActive("/presse") ? "page" : undefined}
-              >
-                Presse
-              </Link>
-            </motion.div>
-
-            {/* Bouton Admin mobile - visible uniquement si connecté */}
             {isAdmin && (
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: NAV_LINKS.length * 0.05 }}
-              >
+              <li className="mt-2 border-t border-edf-gris-clair">
                 <Link
                   href="/admin"
-                  className="flex items-center gap-2 px-6 py-3 text-white bg-edf-orange hover:bg-edf-orange-light transition-colors"
+                  className="flex items-center gap-2 min-h-12 px-5 py-3 text-base font-semibold text-white bg-edf-blue hover:bg-edf-blue-mid transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  <Settings className="w-4 h-4" />
+                  <Settings className="w-4 h-4" aria-hidden="true" />
                   Administration
                 </Link>
-              </motion.div>
+              </li>
             )}
-          </div>
-        </motion.nav>
+          </ul>
+        </nav>
       )}
     </header>
   );

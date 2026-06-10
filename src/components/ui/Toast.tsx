@@ -46,7 +46,7 @@ export default function Toast({
     <div
       role="status"
       aria-live="polite"
-      className={`toast-enter fixed top-6 right-6 z-[100] flex items-center gap-3 px-4 py-3 shadow-lg max-w-sm ${bg}`}
+      className={`toast-enter fixed top-6 right-6 z-[100] flex items-center gap-3 px-4 py-3 shadow-3 max-w-sm ${bg}`}
     >
       <Icon className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
       <p className="text-sm flex-1">{message}</p>
