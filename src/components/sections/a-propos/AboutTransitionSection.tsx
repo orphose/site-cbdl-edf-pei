@@ -1,13 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Card, CardBody } from "@nextui-org/react";
 import { Users, Zap, Lightbulb, Award, Wind } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { fadeInUp, fadeInUpDelay } from "@/lib/motion-variants";
+import { fadeInUpDelay, staggerContainer, staggerItem } from "@/lib/motion-variants";
 
 /**
- * Données des statistiques clés EDF PEI
+ * Données des statistiques clés EDF PEI — accent unique camaïeu bleu,
+ * conformément à la charte (une seule couleur d'icône par section).
  */
 const STATS_DATA = [
   {
@@ -15,141 +15,112 @@ const STATS_DATA = [
     value: "430",
     unit: "",
     label: "Salariés engagés",
-    color: "#001A70",
   },
   {
     icon: Zap,
     value: "750",
     unit: "MW",
     label: "Capacité totale installée",
-    color: "#FFB210",
   },
   {
     icon: Lightbulb,
     value: "3 500",
     unit: "GWh/an",
     label: "Énergie produite",
-    color: "#88D910",
   },
   {
     icon: Wind,
     value: "50",
     unit: "MW",
     label: "Projets EnR en développement",
-    color: "#00d4ff",
   },
   {
     icon: Award,
     value: "4",
     unit: "",
     label: "Centrales certifiées ISO 14001",
-    color: "#001A70",
   },
 ];
 
 /**
- * Animation variants
- */
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.3, ease: "easeOut" as const },
-  },
-};
-
-/**
- * Section Transition Énergétique - Page À propos
- * Mission EDF PEI et chiffres clés
+ * Section Transition Énergétique — Page À propos.
+ * Mission EDF PEI et chiffres clés. Fond blanc, registre institutionnel
+ * bleu ; seule l'exergue « transition énergétique » porte la touche
+ * environnementale verte (charte p.17).
  */
 export default function AboutTransitionSection() {
   return (
-    <section aria-labelledby="about-transition-heading" className="section-padding bg-white relative overflow-hidden">
-      {/* Fond décoratif */}
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-edf-blanc-bleute to-transparent pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-64 h-64 bg-edf-green/5 rounded-full blur-3xl" />
-
-      <div className="container-custom relative z-10">
+    <section aria-labelledby="about-transition-heading" className="section bg-white">
+      <div className="container-custom">
         {/* En-tête de section */}
         <SectionHeader
-          badge="Notre mission"
-          badgeColor="orange"
-          heading={<>EDF PEI, acteur clé de la{" "}<span className="text-edf-green">transition énergétique</span>{" "}insulaire</>}
-          description={<>Fidèle à la raison d&apos;être du Groupe EDF, notre ambition est de contribuer activement à la transition énergétique des territoires insulaires. Nous accompagnons ces régions dans le développement des énergies renouvelables grâce à des solutions innovantes et adaptées à chaque contexte local.</>}
-          className="max-w-4xl mb-16"
+          eyebrow="Notre mission"
+          heading={
+            <>
+              EDF PEI, acteur clé de la{" "}
+              <span className="text-edf-green-dark">transition énergétique</span>{" "}
+              insulaire
+            </>
+          }
+          description={
+            <>
+              Fidèle à la raison d&apos;être du Groupe EDF, notre ambition est de
+              contribuer activement à la transition énergétique des territoires
+              insulaires. Nous accompagnons ces régions dans le développement des
+              énergies renouvelables grâce à des solutions innovantes et adaptées
+              à chaque contexte local.
+            </>
+          }
           id="about-transition-heading"
+          className="mb-14"
         />
 
-        {/* Bloc d'engagement */}
+        {/* Bloc d'engagement — accent baguette bleu action */}
         <motion.div
           {...fadeInUpDelay(0.1)}
-          className="mb-16"
+          className="mb-14 border-l-4 border-edf-bleu-action bg-edf-blanc-bleute p-8"
         >
-          <Card className="border-l-4 border-l-edf-orange bg-edf-blanc-bleute shadow-none">
-            <CardBody className="p-8">
-              <p className="text-edf-bleu-nuit text-lg leading-relaxed">
-                Notre engagement se concrétise par la <strong className="text-edf-blue">conversion 
-                à la biomasse liquide</strong> de nos centrales moteurs : d&apos;abord à La Réunion, 
-                puis en Guadeloupe et en Martinique. En Guyane, nous construisons une centrale 
-                fonctionnant avec ce combustible renouvelable dès <strong className="text-edf-orange">2026</strong>.
-              </p>
-            </CardBody>
-          </Card>
+          <p className="text-lead text-edf-bleu-nuit">
+            Notre engagement se concrétise par la <strong>conversion à la
+            biomasse liquide</strong> de nos centrales moteurs : d&apos;abord à La Réunion,
+            puis en Guadeloupe et en Martinique. En Guyane, nous construisons une centrale
+            fonctionnant avec ce combustible renouvelable dès <strong>2026</strong>.
+          </p>
         </motion.div>
 
-        {/* Grille des statistiques */}
+        {/* Grille des statistiques — grands chiffres en couleur de marque */}
         <motion.div
-          variants={containerVariants}
+          variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-80px" }}
           className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6"
         >
-          {STATS_DATA.map((stat, index) => {
+          {STATS_DATA.map((stat) => {
             const IconComponent = stat.icon;
             return (
-              <motion.div key={index} variants={itemVariants}>
-                <Card className="h-full border-none shadow-lg card-hover bg-white">
-                  <CardBody className="p-6 text-center">
-                    {/* Icône */}
-                    <div
-                      className="w-12 h-12 mx-auto mb-4 flex items-center justify-center"
-                      style={{ backgroundColor: `${stat.color}15` }}
-                    >
-                      <IconComponent
-                        className="w-6 h-6"
-                        style={{ color: stat.color }}
-                      />
-                    </div>
+              <motion.div key={stat.label} variants={staggerItem} className="h-full">
+                <article className="card-edf h-full p-6 text-center">
+                  {/* Icône */}
+                  <span className="icon-square mb-4" aria-hidden="true">
+                    <IconComponent className="w-6 h-6" />
+                  </span>
 
-                    {/* Valeur */}
-                    <div className="flex items-baseline justify-center gap-1 mb-2">
-                      <span
-                        className="text-3xl md:text-4xl font-bold"
-                        style={{ color: stat.color }}
-                      >
-                        {stat.value}
+                  {/* Valeur */}
+                  <p className="flex items-baseline justify-center gap-1 mb-1">
+                    <span className="text-3xl md:text-4xl font-bold text-edf-blue leading-tight">
+                      {stat.value}
+                    </span>
+                    {stat.unit && (
+                      <span className="text-base font-semibold text-edf-bleu-action">
+                        {stat.unit}
                       </span>
-                      {stat.unit && (
-                        <span className="text-lg font-medium text-edf-gris-moyen">
-                          {stat.unit}
-                        </span>
-                      )}
-                    </div>
+                    )}
+                  </p>
 
-                    {/* Label */}
-                    <p className="text-edf-gris-fonce text-sm">{stat.label}</p>
-                  </CardBody>
-                </Card>
+                  {/* Label */}
+                  <p className="text-caption">{stat.label}</p>
+                </article>
               </motion.div>
             );
           })}
@@ -158,4 +129,3 @@ export default function AboutTransitionSection() {
     </section>
   );
 }
-

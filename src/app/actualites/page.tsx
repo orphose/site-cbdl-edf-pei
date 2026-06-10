@@ -3,7 +3,7 @@ import { Calendar, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
-import PageHero from "@/components/ui/PageHero";
+import ActualitesHeroSection from "@/components/sections/actualites/ActualitesHeroSection";
 import type { News } from "@/lib/database.types";
 import ActualitesSearch from "./ActualitesSearch";
 
@@ -35,25 +35,21 @@ export default async function ActualitesPage() {
   const news = (data as News[]) || [];
 
   return (
-    <div>
-      <PageHero
-        breadcrumbLabel="Actualités"
-        badge="Actualités & Événements"
-        title="Actualités"
-        subtitle="Toute l'actualité du projet CBDL"
-        accentWord="CBDL"
-        description="Suivez les dernières avancées de la Centrale Bioénergie du Larivot et restez informé des événements importants."
-        camaieu="orange"
-      />
+    <>
+      <ActualitesHeroSection />
 
-      <section className="section-padding bg-edf-blanc-bleute">
+      <section className="section section-alt" aria-labelledby="actualites-liste-heading">
         <div className="container-custom">
+          <h2 id="actualites-liste-heading" className="sr-only">
+            Toutes les actualités du projet
+          </h2>
+
           {error && (
             <div role="alert" className="text-center py-20">
-              <h2 className="text-2xl font-bold text-edf-bleu-nuit mb-3">
+              <h3 className="heading-3 text-edf-bleu-nuit mb-3">
                 Impossible de charger les actualités
-              </h2>
-              <p className="text-edf-gris-fonce mb-8 max-w-md mx-auto">
+              </h3>
+              <p className="text-edf-bleu-nuit/75 mb-8 max-w-md mx-auto">
                 Un problème est survenu lors du chargement. Veuillez réessayer
                 dans quelques instants.
               </p>
@@ -63,29 +59,23 @@ export default async function ActualitesPage() {
           {!error && news.length === 0 && (
             <div className="text-center py-20">
               <div
-                className="w-24 h-24 bg-edf-blanc-bleute flex items-center justify-center mx-auto mb-6"
+                className="w-24 h-24 bg-white border border-edf-gris-clair flex items-center justify-center mx-auto mb-6"
                 aria-hidden="true"
               >
                 <Calendar className="w-12 h-12 text-edf-blue" />
               </div>
-              <h2 className="text-2xl font-bold text-edf-bleu-nuit mb-4">
+              <h3 className="heading-3 text-edf-bleu-nuit mb-4">
                 Aucune actualité pour le moment
-              </h2>
-              <p className="text-edf-gris-fonce max-w-md mx-auto mb-8">
+              </h3>
+              <p className="text-edf-bleu-nuit/75 max-w-md mx-auto mb-8">
                 Les prochaines actualités du projet seront publiées ici.
                 En attendant, découvrez la centrale et son chantier.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link
-                  href="/centrale"
-                  className="inline-flex items-center justify-center px-6 py-3 min-h-[44px] bg-edf-bleu-action text-white font-semibold hover:bg-edf-blue transition-colors"
-                >
+                <Link href="/centrale" className="btn btn-primary">
                   Découvrir la centrale
                 </Link>
-                <Link
-                  href="/chantier"
-                  className="inline-flex items-center justify-center px-6 py-3 min-h-[44px] border-2 border-edf-bleu-nuit text-edf-bleu-nuit font-semibold hover:bg-edf-bleu-nuit hover:text-white transition-colors"
-                >
+                <Link href="/chantier" className="btn btn-secondary">
                   Suivre le chantier
                 </Link>
               </div>
@@ -96,60 +86,63 @@ export default async function ActualitesPage() {
             <>
               <ActualitesSearch newsCount={news.length} />
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {news.map((item) => (
-                  <Link key={item.id} href={`/actualites/${item.slug}`}>
-                    <article className="h-full bg-white border border-edf-gris-clair hover:shadow-lg transition-shadow cursor-pointer group">
-                      <div className="relative h-48 overflow-hidden">
+                  <article key={item.id} className="h-full">
+                    <Link
+                      href={`/actualites/${item.slug}`}
+                      className="card-edf group flex flex-col h-full"
+                    >
+                      {/* Image */}
+                      <div className="aspect-video bg-edf-blanc-bleute relative overflow-hidden">
                         {item.image_url ? (
                           <Image
                             src={item.image_url}
-                            alt={item.title}
+                            alt=""
                             fill
-                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                            sizes="(min-width: 1024px) 400px, (min-width: 768px) 50vw, 100vw"
                           />
                         ) : (
-                          <div className="w-full h-full bg-gradient-to-br from-edf-blue to-edf-blue-mid flex items-center justify-center">
-                            <span className="text-white/30 text-6xl font-bold">
-                              CBDL
-                            </span>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <p className="text-caption">Image à venir</p>
                           </div>
                         )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                       </div>
 
-                      <div className="p-6">
-                        {/* Label date — hiérarchie tertiaire (Wathan § Hierarchy) */}
-                        <p className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-edf-gris-fonce mb-3">
-                          <Calendar className="w-3.5 h-3.5" aria-hidden="true" />
-                          <span>{formatDate(item.published_at)}</span>
+                      <div className="flex flex-col flex-1 p-6">
+                        {/* Date */}
+                        <p className="flex items-center gap-2 text-caption mb-3">
+                          <Calendar className="w-4 h-4" aria-hidden="true" />
+                          <time dateTime={item.published_at ?? undefined}>
+                            {formatDate(item.published_at)}
+                          </time>
                         </p>
 
-                        {/* Titre — hiérarchie primaire */}
-                        <h3 className="text-lg font-bold text-edf-bleu-nuit mb-3 group-hover:text-edf-blue transition-colors line-clamp-2">
+                        {/* Titre */}
+                        <h3 className="text-lg font-semibold leading-snug text-edf-bleu-nuit mb-2 line-clamp-2 group-hover:text-edf-bleu-action transition-colors">
                           {item.title}
                         </h3>
 
-                        {/* Extrait — hiérarchie secondaire */}
-                        {item.excerpt && (
-                          <p className="text-edf-gris-fonce text-sm line-clamp-3 mb-4">
-                            {item.excerpt}
-                          </p>
-                        )}
+                        {/* Extrait */}
+                        <p className="text-edf-bleu-nuit/75 text-sm line-clamp-2 mb-4">
+                          {item.excerpt || ""}
+                        </p>
 
-                        <div className="flex items-center gap-2 text-edf-orange-dark font-semibold text-sm group-hover:gap-3 transition-all">
-                          <span>Lire la suite</span>
+                        {/* Lien tertiaire */}
+                        <span className="link-arrow mt-auto text-sm">
+                          Lire la suite
                           <ArrowRight className="w-4 h-4" aria-hidden="true" />
-                        </div>
+                        </span>
                       </div>
-                    </article>
-                  </Link>
+                    </Link>
+                  </article>
                 ))}
               </div>
             </>
           )}
         </div>
       </section>
-    </div>
+    </>
   );
 }

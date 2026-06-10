@@ -2,13 +2,17 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@nextui-org/react";
+import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { fadeInUp, staggerContainer, staggerItem } from "@/lib/motion-variants";
 
 interface ArticleGalleryProps {
   images: string[];
 }
+
+/** Bouton de contrôle carré de la lightbox (fond Bleu Nuit). */
+const LIGHTBOX_BTN_CLASS =
+  "inline-flex h-12 w-12 items-center justify-center border-2 border-white text-white hover:bg-white hover:text-edf-blue transition-colors";
 
 export default function ArticleGallery({ images }: ArticleGalleryProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -51,21 +55,24 @@ export default function ArticleGallery({ images }: ArticleGalleryProps) {
 
   return (
     <>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.5 }}
-        className="mt-12"
-      >
-        <h2 className="text-2xl font-bold text-edf-bleu-nuit mb-6">Galerie photos</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="mt-12">
+        <motion.h2 {...fadeInUp} className="heading-3 text-edf-bleu-nuit mb-6">
+          Galerie photos
+        </motion.h2>
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+        >
           {images.map((url, index) => (
-            <motion.div
+            <motion.button
               key={index}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-              className="relative aspect-square cursor-pointer group overflow-hidden shadow-md"
+              variants={staggerItem}
+              type="button"
+              aria-label={`Agrandir la photo ${index + 1} sur ${images.length}`}
+              className="relative aspect-square cursor-pointer group overflow-hidden border border-edf-gris-clair"
               onClick={() => {
                 setLightboxIndex(index);
                 setLightboxOpen(true);
@@ -73,87 +80,86 @@ export default function ArticleGallery({ images }: ArticleGalleryProps) {
             >
               <Image
                 src={url}
-                alt={`Photo ${index + 1}`}
+                alt=""
                 fill
                 loading="lazy"
-                className="object-cover transition-transform duration-300 group-hover:scale-110"
+                sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+                className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
               />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
-            </motion.div>
+              <div
+                className="absolute inset-0 bg-edf-blue/0 group-hover:bg-edf-blue/15 transition-colors"
+                aria-hidden="true"
+              />
+            </motion.button>
           ))}
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
 
-      <AnimatePresence>
-        {lightboxOpen && (
-          <motion.div
-            role="dialog"
-            aria-modal="true"
-            aria-label={`Galerie photos — image ${lightboxIndex + 1} sur ${images.length}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
+      {lightboxOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Galerie photos — image ${lightboxIndex + 1} sur ${images.length}`}
+          className="fixed inset-0 z-50 bg-edf-bleu-nuit/95 flex items-center justify-center"
+          onClick={() => setLightboxOpen(false)}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          <button
+            type="button"
+            aria-label="Fermer la galerie"
+            className={`${LIGHTBOX_BTN_CLASS} absolute top-4 right-4 z-10`}
             onClick={() => setLightboxOpen(false)}
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
           >
-            <Button
-              isIconOnly
-              variant="light"
-              aria-label="Fermer la galerie"
-              className="absolute top-4 right-4 text-white z-10 min-w-[48px] min-h-[48px]"
-              onPress={() => setLightboxOpen(false)}
+            <X className="w-6 h-6" aria-hidden="true" />
+          </button>
+
+          {lightboxIndex > 0 && (
+            <button
+              type="button"
+              aria-label="Image précédente"
+              className={`${LIGHTBOX_BTN_CLASS} absolute left-4 z-10`}
+              onClick={(e) => {
+                e.stopPropagation();
+                setLightboxIndex(lightboxIndex - 1);
+              }}
             >
-              <X className="w-8 h-8" />
-            </Button>
+              <ChevronLeft className="w-6 h-6" aria-hidden="true" />
+            </button>
+          )}
 
-            {lightboxIndex > 0 && (
-              <Button
-                isIconOnly
-                variant="light"
-                aria-label="Image précédente"
-                className="absolute left-4 text-white z-10 min-w-[56px] min-h-[56px]"
-                onPress={() => setLightboxIndex(lightboxIndex - 1)}
-              >
-                <ChevronLeft className="w-10 h-10" />
-              </Button>
-            )}
+          <div
+            className="relative w-full h-full max-w-5xl max-h-[80vh] mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={images[lightboxIndex]}
+              alt={`Photo ${lightboxIndex + 1} sur ${images.length}`}
+              fill
+              sizes="100vw"
+              className="object-contain"
+            />
+          </div>
 
-            <motion.div
-              key={lightboxIndex}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              className="relative w-full h-full max-w-5xl max-h-[80vh] mx-4"
-              onClick={(e) => e.stopPropagation()}
+          {lightboxIndex < maxIndex && (
+            <button
+              type="button"
+              aria-label="Image suivante"
+              className={`${LIGHTBOX_BTN_CLASS} absolute right-4 z-10`}
+              onClick={(e) => {
+                e.stopPropagation();
+                setLightboxIndex(lightboxIndex + 1);
+              }}
             >
-              <Image
-                src={images[lightboxIndex]}
-                alt={`Photo ${lightboxIndex + 1}`}
-                fill
-                className="object-contain"
-              />
-            </motion.div>
+              <ChevronRight className="w-6 h-6" aria-hidden="true" />
+            </button>
+          )}
 
-            {lightboxIndex < maxIndex && (
-              <Button
-                isIconOnly
-                variant="light"
-                aria-label="Image suivante"
-                className="absolute right-4 text-white z-10 min-w-[56px] min-h-[56px]"
-                onPress={() => setLightboxIndex(lightboxIndex + 1)}
-              >
-                <ChevronRight className="w-10 h-10" />
-              </Button>
-            )}
-
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white text-sm">
-              {lightboxIndex + 1} / {images.length}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/80 text-sm">
+            {lightboxIndex + 1} / {images.length}
+          </div>
+        </div>
+      )}
     </>
   );
 }

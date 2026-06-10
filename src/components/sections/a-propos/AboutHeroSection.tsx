@@ -4,7 +4,7 @@ export default function AboutHeroSection() {
   return (
     <PageHero
       breadcrumbLabel="À propos"
-      badge="Notre identité"
+      eyebrow="Notre identité"
       title="À propos"
       subtitle="Producteur d'électricité insulaire responsable"
       accentWord="responsable"

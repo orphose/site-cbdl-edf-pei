@@ -55,9 +55,9 @@ export default function ShareButton({ title, excerpt }: ShareButtonProps) {
       <button
         type="button"
         onClick={handleShare}
-        className="inline-flex items-center gap-2 px-4 py-2 min-h-[44px] bg-edf-blanc-bleute hover:bg-edf-gris-clair transition-colors"
+        className="btn btn-secondary"
       >
-        <Share2 className="w-4 h-4" />
+        <Share2 className="w-4 h-4" aria-hidden="true" />
         Partager
       </button>
 

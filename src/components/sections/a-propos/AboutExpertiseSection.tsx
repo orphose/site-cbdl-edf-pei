@@ -1,16 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Card, CardBody } from "@nextui-org/react";
-import {
-  Wind as WindIcon,
-  ChevronRight
-} from "lucide-react";
+import { Wind as WindIcon, ChevronRight } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { fadeInUp } from "@/lib/motion-variants";
+import { fadeInUpDelay, staggerContainer, staggerItem } from "@/lib/motion-variants";
 
 /**
- * Données des centrales et projets
+ * Données des centrales et projets — présentation uniforme,
+ * accent unique camaïeu bleu (charte : une couleur par section).
  */
 const EXPERTISE_ITEMS = [
   {
@@ -22,8 +19,6 @@ const EXPERTISE_ITEMS = [
       { name: "Pointe Jarry", location: "Guadeloupe" },
       { name: "Bellefontaine", location: "Martinique" },
     ],
-    color: "#001A70",
-    gradient: "linear-gradient(120deg, #001A70 0%, #1a3a8c 100%)",
   },
   {
     title: "Projets en construction",
@@ -32,8 +27,6 @@ const EXPERTISE_ITEMS = [
       { name: "Nouvelle centrale", location: "Corse" },
       { name: "Centrale Bioénergie du Larivot", location: "Guyane" },
     ],
-    color: "#FFB210",
-    gradient: "linear-gradient(120deg, #FFB210 0%, #ff9500 100%)",
   },
   {
     title: "Installations EnR",
@@ -42,167 +35,113 @@ const EXPERTISE_ITEMS = [
       { name: "Montjoly", location: "Guyane", type: "Photovoltaïque" },
       { name: "Gress", location: "Martinique", type: "Éolien" },
     ],
-    color: "#88D910",
-    gradient: "linear-gradient(120deg, #88D910 0%, #6bc700 100%)",
   },
 ];
 
 /**
- * Animation variants
- */
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.2 },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, x: -30 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.3, ease: "easeOut" as const },
-  },
-};
-
-/**
- * Section Expertise - Page À propos
- * Un atout pour les territoires
+ * Section Expertise — Page À propos.
+ * Un atout pour les territoires. Fond Blanc Bleuté (alternance),
+ * registre institutionnel bleu.
  */
 export default function AboutExpertiseSection() {
   return (
-    <section aria-labelledby="about-expertise-heading" className="section-padding bg-edf-blanc-bleute relative overflow-hidden">
-      {/* Fond décoratif */}
-      <div className="absolute top-0 left-0 w-full h-full">
-        <div className="absolute top-20 right-10 w-80 h-80 bg-edf-blue/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 left-10 w-64 h-64 bg-edf-orange/5 rounded-full blur-3xl" />
-      </div>
-
-      <div className="container-custom relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
-          {/* Colonne gauche - Texte */}
-          <motion.div
-            {...fadeInUp}
-          >
+    <section aria-labelledby="about-expertise-heading" className="section section-alt">
+      <div className="container-custom">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+          {/* Colonne gauche — Texte */}
+          <div>
             <SectionHeader
-              badge="Expertise"
-              badgeColor="blue"
-              heading={<>Un <span className="text-edf-orange">atout</span> pour les territoires</>}
+              eyebrow="Expertise"
+              heading={
+                <>
+                  Un <span className="text-edf-bleu-action">atout</span> pour les
+                  territoires
+                </>
+              }
               id="about-expertise-heading"
             />
-            <p className="text-edf-gris-fonce text-lg leading-relaxed mb-6">
-              Nos équipes maîtrisent l&apos;ensemble de la chaîne de valeur énergétique : 
-              de la <strong className="text-edf-blue">gestion de projets</strong> à la 
-              <strong className="text-edf-blue"> maîtrise d&apos;ouvrage</strong>, jusqu&apos;à 
-              l&apos;<strong className="text-edf-blue">exploitation</strong> des centrales.
-            </p>
-            <p className="text-edf-gris-fonce text-lg leading-relaxed mb-8">
-              Ce savoir-faire unique est spécifiquement adapté aux systèmes électriques 
-              non interconnectés, garantissant une expertise de pointe au service de la 
-              sécurité énergétique de chaque territoire.
-            </p>
 
-            {/* Bloc partenariat */}
-            <Card className="border-l-4 border-l-edf-green bg-white shadow-sm">
-              <CardBody className="p-6">
+            <motion.div {...fadeInUpDelay(0.08)} className="mt-6">
+              <p className="text-lead text-edf-bleu-nuit/75 mb-6">
+                Nos équipes maîtrisent l&apos;ensemble de la chaîne de valeur
+                énergétique : de la <strong>gestion de projets</strong> à la{" "}
+                <strong>maîtrise d&apos;ouvrage</strong>, jusqu&apos;à{" "}
+                l&apos;<strong>exploitation</strong> des centrales.
+              </p>
+              <p className="text-lead text-edf-bleu-nuit/75 mb-8">
+                Ce savoir-faire unique est spécifiquement adapté aux systèmes
+                électriques non interconnectés, garantissant une expertise de pointe
+                au service de la sécurité énergétique de chaque territoire.
+              </p>
+
+              {/* Bloc partenariat — accent baguette bleu action */}
+              <div className="card-edf border-l-4 border-l-edf-bleu-action p-6">
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-edf-green/10 flex items-center justify-center flex-shrink-0">
-                    <WindIcon className="w-5 h-5 text-edf-green" />
-                  </div>
+                  <span className="icon-square" aria-hidden="true">
+                    <WindIcon className="w-6 h-6" />
+                  </span>
                   <div>
-                    <h4 className="text-edf-bleu-nuit font-semibold mb-2">
+                    <h3 className="heading-4 text-edf-bleu-nuit mb-2">
                       Portefeuille EnR en développement
-                    </h4>
-                    <p className="text-edf-gris-fonce text-sm">
-                      En collaboration avec <strong>EDF Renouvelables</strong>, autre filiale 
-                      du Groupe, nous développons un portefeuille de projets d&apos;énergies 
-                      renouvelables pour accélérer la transition énergétique.
+                    </h3>
+                    <p className="text-edf-bleu-nuit/75 text-sm leading-relaxed">
+                      En collaboration avec <strong>EDF Renouvelables</strong>, autre
+                      filiale du Groupe, nous développons un portefeuille de projets
+                      d&apos;énergies renouvelables pour accélérer la transition
+                      énergétique.
                     </p>
                   </div>
                 </div>
-              </CardBody>
-            </Card>
-          </motion.div>
+              </div>
+            </motion.div>
+          </div>
 
-          {/* Colonne droite - Cartes améliorées */}
+          {/* Colonne droite — Cartes des sites */}
           <motion.div
-            variants={containerVariants}
+            variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true, margin: "-80px" }}
             className="space-y-6"
           >
-            {EXPERTISE_ITEMS.map((item, index) => (
-                <motion.div 
-                  key={index} 
-                  variants={cardVariants}
-                  whileHover={{ x: 8 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <Card className="border-none shadow-xl bg-white overflow-hidden group">
-                    
-                    <CardBody className="p-0">
-                      {/* Header de la carte */}
-                      <div className="px-6 pt-6 pb-4">
-                        <div className="flex items-center justify-between mb-1">
-                          <h3
-                            className="text-xl font-bold"
-                            style={{ color: item.color }}
-                          >
-                            {item.title}
-                          </h3>
-                          {/* Badge compteur */}
-                          <span 
-                            className="px-3 py-1 text-xs font-bold text-white"
-                            style={{ background: item.gradient }}
-                          >
-                            {item.items.length} sites
-                          </span>
-                        </div>
-                        <p className="text-edf-gris-moyen text-sm">
-                          {item.subtitle}
-                        </p>
-                      </div>
+            {EXPERTISE_ITEMS.map((item) => (
+              <motion.div key={item.title} variants={staggerItem}>
+                <article className="card-edf p-6">
+                  {/* En-tête de la carte */}
+                  <div className="flex items-center justify-between gap-4 mb-1">
+                    <h3 className="heading-4 text-edf-blue">{item.title}</h3>
+                    <span className="shrink-0 bg-edf-blue px-3 py-1 text-xs font-bold text-white">
+                      {item.items.length} sites
+                    </span>
+                  </div>
+                  <p className="text-caption mb-4">{item.subtitle}</p>
 
-                      {/* Liste des sites */}
-                      <div className="px-6 pb-6">
-                        <div className="bg-edf-blanc-bleute p-4 space-y-3">
-                          {item.items.map((subItem, idx) => (
-                            <div
-                              key={idx}
-                              className="flex items-center gap-2"
-                            >
-                              <span className="font-semibold text-edf-bleu-nuit">
-                                {subItem.name}
-                              </span>
-                              <ChevronRight 
-                                className="w-4 h-4 text-edf-gris-moyen flex-shrink-0" 
-                              />
-                              <span className="text-edf-gris-moyen text-sm">
-                                {subItem.location}
-                              </span>
-                              {/* Type pour EnR */}
-                              {"type" in subItem && subItem.type && (
-                                <span
-                                  className="px-2 py-0.5 text-xs font-medium flex-shrink-0"
-                                  style={{ 
-                                    backgroundColor: `${item.color}15`,
-                                    color: item.color 
-                                  }}
-                                >
-                                  {subItem.type}
-                                </span>
-                              )}
-                            </div>
-                          ))}
-                        </div>
+                  {/* Liste des sites */}
+                  <div className="bg-edf-blanc-bleute p-4 space-y-3">
+                    {item.items.map((subItem) => (
+                      <div key={subItem.name} className="flex flex-wrap items-center gap-2">
+                        <span className="font-semibold text-edf-bleu-nuit">
+                          {subItem.name}
+                        </span>
+                        <ChevronRight
+                          className="w-4 h-4 text-edf-bleu-nuit/40 flex-shrink-0"
+                          aria-hidden="true"
+                        />
+                        <span className="text-edf-bleu-nuit/75 text-sm">
+                          {subItem.location}
+                        </span>
+                        {/* Type pour EnR */}
+                        {"type" in subItem && subItem.type && (
+                          <span className="px-2 py-0.5 text-xs font-medium bg-white border border-edf-gris-clair text-edf-bleu-nuit flex-shrink-0">
+                            {subItem.type}
+                          </span>
+                        )}
                       </div>
-                    </CardBody>
-                  </Card>
-                </motion.div>
-              ))}
+                    ))}
+                  </div>
+                </article>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </div>

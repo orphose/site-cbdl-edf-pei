@@ -1,7 +1,5 @@
-"use client";
-
+import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { ArrowLeft, Calendar } from "lucide-react";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
@@ -21,63 +19,66 @@ function formatDate(dateString: string | null): string {
   });
 }
 
+/**
+ * Hero d'article — dégradé mono-camaïeu bleu (charte p.19) + motif
+ * baguette subtil (p.44-46). Texte blanc, métadonnées en white/80.
+ */
 export default function ArticleHero({ title, excerpt, publishedAt }: ArticleHeroProps) {
   return (
-    <section className="relative bg-gradient-to-br from-edf-blue via-edf-blue to-[#002855] text-white py-20 md:py-28 overflow-hidden">
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-32 -right-32 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
-        <div className="absolute -bottom-48 -left-24 w-80 h-80 bg-edf-orange/10 rounded-full blur-3xl" />
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-edf-orange to-transparent opacity-50" />
-        <div className="absolute bottom-0 right-0 w-1/2 h-px bg-gradient-to-l from-white/20 to-transparent" />
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-          }}
+    <section className="relative overflow-hidden gradient-bleu pt-16 md:pt-20">
+      {/* Motif baguette — subtil, côté droit */}
+      <div className="absolute inset-0 opacity-[0.07] pointer-events-none" aria-hidden="true">
+        <Image
+          src="/images/charte/motifs/motif-bleu.png"
+          alt=""
+          fill
+          className="object-cover object-right"
+          sizes="100vw"
+          priority
         />
       </div>
 
-      <div className="container-custom relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-4xl"
-        >
+      <div className="container-custom relative z-10 py-14 md:py-20">
+        <div className="max-w-3xl">
           <Breadcrumbs
             items={[{ label: "Actualités", href: "/actualites" }, { label: title }]}
           />
 
           <Link
             href="/actualites"
-            className="inline-flex items-center gap-2 text-white/85 hover:text-white mb-10 transition-colors text-sm font-medium group"
+            className="inline-flex items-center gap-2 min-h-[44px] text-sm font-medium text-white/85 hover:text-white underline-offset-4 hover:underline transition-colors hero-fade-in"
           >
-            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+            <ArrowLeft className="w-4 h-4" aria-hidden="true" />
             Retour aux actualités
           </Link>
 
-          <div className="flex flex-wrap items-center gap-4 mb-6">
-            <span className="px-3 py-1.5 bg-edf-orange text-white text-xs font-bold uppercase tracking-wider">
-              Actualité
-            </span>
-            <div className="flex items-center gap-2 text-white/85 text-sm">
-              <Calendar className="w-4 h-4" />
-              <span>{formatDate(publishedAt)}</span>
-            </div>
+          <div
+            className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-6 mb-5 hero-fade-in"
+            style={{ animationDelay: "0.08s" }}
+          >
+            <p className="eyebrow eyebrow--on-dark">Actualité</p>
+            <p className="flex items-center gap-2 text-sm text-white/80">
+              <Calendar className="w-4 h-4" aria-hidden="true" />
+              <time dateTime={publishedAt ?? undefined}>{formatDate(publishedAt)}</time>
+            </p>
           </div>
 
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-8 leading-tight">
+          <h1
+            className="heading-1 text-white hero-fade-in"
+            style={{ animationDelay: "0.16s" }}
+          >
             {title}
           </h1>
 
           {excerpt && (
-            <div className="relative pl-6 border-l-4 border-edf-orange">
-              <p className="text-white/85 text-lg md:text-xl leading-relaxed">{excerpt}</p>
-            </div>
+            <p
+              className="text-lead text-white/85 border-l-4 border-white/70 pl-5 mt-6 hero-fade-in"
+              style={{ animationDelay: "0.24s" }}
+            >
+              {excerpt}
+            </p>
           )}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
