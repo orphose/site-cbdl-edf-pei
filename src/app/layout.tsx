@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Work_Sans } from "next/font/google";
 import "./globals.css";
 import { NextUIProvider } from "@/providers/NextUIProvider";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import SiteShell from "@/components/SiteShell";
 
 /**
  * Polices de caractères
@@ -59,16 +58,7 @@ export default function RootLayout({
         className={`${workSans.variable} antialiased`}
       >
         <NextUIProvider>
-          <a href="#contenu" className="skip-link">
-            Aller au contenu principal
-          </a>
-          <div className="flex flex-col min-h-screen">
-            <Header />
-            <main id="contenu" className="flex-grow">
-              {children}
-            </main>
-            <Footer />
-          </div>
+          <SiteShell>{children}</SiteShell>
         </NextUIProvider>
       </body>
     </html>
