@@ -23,11 +23,12 @@ export interface NewsFormData {
 }
 
 // Formulaire partenariat
+// (la couleur d'étiquette a été retirée : le carrousel public applique
+// désormais un traitement EDF uniforme, le champ n'était plus consommé)
 export interface PartnershipFormData {
   name: string;
   description: string;
   logo_url: string;
-  color: string;
   is_active: boolean;
 }
 

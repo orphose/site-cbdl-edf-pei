@@ -28,25 +28,6 @@ import type { Partnership, PartnershipFormData, ViewMode } from "@/types/admin";
 import MediaUploader from "@/components/admin/MediaUploader";
 import AIGenerator from "@/components/admin/AIGenerator";
 
-// EDF color palette
-const COLOR_PALETTE = {
-  Orange: [
-    { hex: "#FE5716", name: "Foncé" },
-    { hex: "#FF861D", name: "Moyen" },
-    { hex: "#FFB210", name: "Clair" },
-  ],
-  Bleu: [
-    { hex: "#001A70", name: "Foncé" },
-    { hex: "#1057C8", name: "Moyen" },
-    { hex: "#1089FF", name: "Clair" },
-  ],
-  Vert: [
-    { hex: "#4F9E30", name: "Foncé" },
-    { hex: "#88D910", name: "Moyen" },
-    { hex: "#C0E410", name: "Clair" },
-  ],
-};
-
 interface PartnershipEditorProps {
   partnerships: Partnership[];
   viewMode: ViewMode;
@@ -271,8 +252,8 @@ function PartnershipList({
                       </div>
                     ) : (
                       <div
-                        className="w-10 h-10 flex-shrink-0"
-                        style={{ backgroundColor: `${item.color ?? "#001A70"}1a` }}
+                        className="w-10 h-10 flex-shrink-0 bg-admin-bg border border-edf-gris-clair"
+                        aria-hidden="true"
                       />
                     )}
 
@@ -530,53 +511,6 @@ function PartnershipForm({
                 )}
               </div>
 
-              {/* Color palette */}
-              <div>
-                <label className="block text-sm font-medium text-edf-bleu-nuit mb-3">
-                  Couleur de l&apos;étiquette
-                </label>
-
-                <div className="space-y-3">
-                  {Object.entries(COLOR_PALETTE).map(([groupName, colors]) => (
-                    <div key={groupName} className="flex items-center gap-2">
-                      <span className="text-xs text-edf-bleu-nuit/70 w-16">
-                        {groupName}
-                      </span>
-                      <div className="flex gap-2">
-                        {colors.map((color) => (
-                          <button
-                            key={color.hex}
-                            type="button"
-                            onClick={() =>
-                              setPartnershipForm({
-                                ...partnershipForm,
-                                color: color.hex,
-                              })
-                            }
-                            className={`w-10 h-10 transition-all ${
-                              partnershipForm.color === color.hex
-                                ? "ring-2 ring-offset-2 ring-edf-bleu-nuit scale-110"
-                                : "hover:scale-105"
-                            }`}
-                            style={{ backgroundColor: color.hex }}
-                            title={color.name}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-4 flex items-center gap-3">
-                  <span className="text-xs text-edf-bleu-nuit/70">Aperçu :</span>
-                  <span
-                    className="px-3 py-1.5 text-xs font-medium text-white"
-                    style={{ backgroundColor: partnershipForm.color }}
-                  >
-                    PARTENARIAT LOCAL
-                  </span>
-                </div>
-              </div>
             </div>
 
             {/* Colonne latérale */}

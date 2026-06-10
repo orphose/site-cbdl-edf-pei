@@ -11,7 +11,6 @@ const EMPTY_PARTNERSHIP_FORM: PartnershipFormData = {
   name: "",
   description: "",
   logo_url: "",
-  color: "#001A70",
   is_active: true,
 };
 
@@ -132,7 +131,6 @@ export function usePartnershipManager(
       // Résout les anciens noms de fichiers nus en URL complète pour l'aperçu
       // (getMediaUrl laisse passer les URLs déjà complètes).
       logo_url: item.logo_url ? getMediaUrl(item.logo_url) : "",
-      color: item.color || "#001A70",
       is_active: item.is_active,
     });
     setViewMode("edit");
@@ -155,7 +153,8 @@ export function usePartnershipManager(
         display_order:
           editingPartnership?.display_order ?? partnerships.length,
         is_active: partnershipForm.is_active,
-        color: partnershipForm.color || "#001A70",
+        // color/icon_name : colonnes héritées, plus consommées par le site —
+        // on n'écrase pas les valeurs existantes, on ne les saisit plus.
         icon_name: "zap",
       };
 
