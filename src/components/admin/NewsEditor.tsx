@@ -717,10 +717,8 @@ function NewsForm({
                     className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-edf-blue/20 focus:border-edf-blue"
                   />
                   <p className="text-xs text-gray-400 mt-1">
-                    {newsForm.published_at &&
-                    new Date(newsForm.published_at).getTime() > Date.now()
-                      ? "⏳ Programmée — l'article apparaîtra à cette date."
-                      : "Laissez vide pour publier immédiatement."}
+                    Laissez vide pour publier immédiatement. Une date future
+                    programme l&apos;article : il apparaîtra à cette date.
                   </p>
                 </div>
               )}

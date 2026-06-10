@@ -14,6 +14,7 @@ import type {
   News,
   Partnership,
 } from "@/types/admin";
+import type { AuditEntry, Profile, UserRole } from "@/lib/database.types";
 
 interface PendingUndo {
   kind: "news" | "partnership";
@@ -41,24 +42,54 @@ export default function AdminPage() {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const formInitialized = useRef(false);
 
+  // Journal d'activité + utilisateurs
+  const [auditEntries, setAuditEntries] = useState<AuditEntry[]>([]);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
   // Data loading
   const loadData = async () => {
     try {
-      const { data: newsData } = await auth.supabase
-        .from("news")
-        .select("*")
-        .order("created_at", { ascending: false });
+      setLoadError(null);
+      const [newsRes, partnershipsRes, auditRes, profilesRes] = await Promise.all([
+        auth.supabase.from("news").select("*").order("created_at", { ascending: false }),
+        auth.supabase.from("partnerships").select("*").order("display_order", { ascending: true }),
+        auth.supabase.from("audit_log").select("*").order("created_at", { ascending: false }).limit(200),
+        auth.supabase.from("profiles").select("*").order("email", { ascending: true }),
+      ]);
 
-      const { data: partnershipsData } = await auth.supabase
-        .from("partnerships")
-        .select("*")
-        .order("display_order", { ascending: true });
+      if (newsRes.error || partnershipsRes.error) {
+        throw newsRes.error ?? partnershipsRes.error;
+      }
 
-      newsManager.setNews(newsData || []);
-      partnershipManager.setPartnerships(partnershipsData || []);
+      newsManager.setNews(newsData(newsRes.data));
+      partnershipManager.setPartnerships(partnershipsRes.data || []);
+      setAuditEntries((auditRes.data as AuditEntry[]) || []);
+      setProfiles((profilesRes.data as Profile[]) || []);
     } catch (error) {
       console.error("Erreur chargement données:", error);
+      setLoadError(
+        "Impossible de charger les données. Vérifiez votre connexion puis réessayez."
+      );
     }
+  };
+
+  // Petit utilitaire de typage local (les données arrivent en `any` du client)
+  const newsData = (data: unknown): News[] => (data as News[]) || [];
+
+  // Changement de rôle d'un utilisateur (admin uniquement)
+  const handleChangeRole = async (id: string, role: UserRole) => {
+    const { error } = await auth.supabase
+      .from("profiles")
+      .update({ role })
+      .eq("id", id);
+    if (error) {
+      console.error("Erreur changement de rôle:", error);
+      return;
+    }
+    setProfiles((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, role } : p))
+    );
   };
 
   // Hooks for data management
@@ -191,6 +222,7 @@ export default function AdminPage() {
     <>
       <AdminDashboard
         user={auth.user}
+        isAdmin={auth.isAdmin}
         onLogout={auth.handleLogout}
         activeSection={activeSection}
         setActiveSection={setActiveSection}
@@ -202,7 +234,10 @@ export default function AdminPage() {
         setDeleteConfirm={setDeleteConfirm}
         onBackToList={backToList}
         onConfirmDelete={handleConfirmDelete}
-        supabase={auth.supabase}
+        auditEntries={auditEntries}
+        profiles={profiles}
+        onChangeRole={handleChangeRole}
+        loadError={loadError}
       />
 
       {pendingUndo && (

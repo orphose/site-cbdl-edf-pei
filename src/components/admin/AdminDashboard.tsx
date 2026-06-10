@@ -13,6 +13,9 @@ import {
   Users,
   Eye,
   LogOut,
+  History,
+  UserCog,
+  AlertCircle,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -23,8 +26,11 @@ import type {
   ViewMode,
   DeleteConfirmState,
 } from "@/types/admin";
+import type { AuditEntry, Profile, UserRole } from "@/lib/database.types";
 import NewsEditor from "@/components/admin/NewsEditor";
 import PartnershipEditor from "@/components/admin/PartnershipEditor";
+import AdminActivityLog from "@/components/admin/AdminActivityLog";
+import AdminUsers from "@/components/admin/AdminUsers";
 import type { useNewsManager } from "@/hooks/useNewsManager";
 import type { usePartnershipManager } from "@/hooks/usePartnershipManager";
 
@@ -34,6 +40,7 @@ type PartnershipManagerReturn = ReturnType<typeof usePartnershipManager>;
 
 interface AdminDashboardProps {
   user: User;
+  isAdmin: boolean;
   onLogout: () => void;
   activeSection: ActiveSection;
   setActiveSection: (section: ActiveSection) => void;
@@ -45,12 +52,15 @@ interface AdminDashboardProps {
   setDeleteConfirm: (state: DeleteConfirmState | null) => void;
   onBackToList: () => void;
   onConfirmDelete: () => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  supabase: any;
+  auditEntries: AuditEntry[];
+  profiles: Profile[];
+  onChangeRole: (id: string, role: UserRole) => void;
+  loadError: string | null;
 }
 
 export default function AdminDashboard({
   user,
+  isAdmin,
   onLogout,
   activeSection,
   setActiveSection,
@@ -61,6 +71,10 @@ export default function AdminDashboard({
   setDeleteConfirm,
   onBackToList,
   onConfirmDelete,
+  auditEntries,
+  profiles,
+  onChangeRole,
+  loadError,
 }: AdminDashboardProps) {
   return (
     <div className="min-h-screen bg-gray-50">
@@ -199,7 +213,40 @@ export default function AdminDashboard({
                 </div>
               }
             />
+            <Tab
+              key="activity"
+              title={
+                <div className="flex items-center gap-2">
+                  <History className="w-4 h-4" />
+                  <span>Journal</span>
+                </div>
+              }
+            />
+            {isAdmin ? (
+              <Tab
+                key="users"
+                title={
+                  <div className="flex items-center gap-2">
+                    <UserCog className="w-4 h-4" />
+                    <span>Utilisateurs</span>
+                    <Chip size="sm" variant="flat" className="bg-gray-100">
+                      {profiles.length}
+                    </Chip>
+                  </div>
+                }
+              />
+            ) : null}
           </Tabs>
+        )}
+
+        {loadError && (
+          <div
+            role="alert"
+            className="mt-6 flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm"
+          >
+            <AlertCircle className="w-4 h-4 flex-shrink-0" />
+            <span>{loadError}</span>
+          </div>
         )}
 
         {/* News Section */}
@@ -265,6 +312,20 @@ export default function AdminDashboard({
               partnershipManager.handlePartnershipFileSelect
             }
             onReorder={partnershipManager.reorderPartnerships}
+          />
+        )}
+
+        {/* Journal d'activité */}
+        {activeSection === "activity" && viewMode === "list" && (
+          <AdminActivityLog entries={auditEntries} />
+        )}
+
+        {/* Utilisateurs & rôles (admins uniquement) */}
+        {activeSection === "users" && viewMode === "list" && isAdmin && (
+          <AdminUsers
+            profiles={profiles}
+            currentUserId={user.id}
+            onChangeRole={onChangeRole}
           />
         )}
       </div>
