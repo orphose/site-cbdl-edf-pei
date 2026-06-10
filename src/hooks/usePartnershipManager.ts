@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback } from "react";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { generateSlug } from "@/hooks/useNewsManager";
+import { getMediaUrl } from "@/lib/supabase";
 import type { Partnership, PartnershipFormData, ViewMode } from "@/types/admin";
 
 const EMPTY_PARTNERSHIP_FORM: PartnershipFormData = {
@@ -122,7 +123,9 @@ export function usePartnershipManager(
     setPartnershipForm({
       name: item.name,
       description: item.description || "",
-      logo_url: item.logo_url || "",
+      // Résout les anciens noms de fichiers nus en URL complète pour l'aperçu
+      // (getMediaUrl laisse passer les URLs déjà complètes).
+      logo_url: item.logo_url ? getMediaUrl(item.logo_url) : "",
       color: item.color || "#001A70",
       is_active: item.is_active,
     });
@@ -180,6 +183,34 @@ export function usePartnershipManager(
     }
   };
 
+  // Réordonner les partenaires : persiste display_order selon l'ordre fourni
+  const reorderPartnerships = async (orderedIds: string[]) => {
+    // Mise à jour optimiste de l'affichage local
+    setPartnerships((prev) => {
+      const byId = new Map(prev.map((p) => [p.id, p]));
+      return orderedIds
+        .map((id, index) => {
+          const p = byId.get(id);
+          return p ? { ...p, display_order: index } : null;
+        })
+        .filter((p): p is Partnership => p !== null);
+    });
+
+    try {
+      await Promise.all(
+        orderedIds.map((id, index) =>
+          supabase
+            .from("partnerships")
+            .update({ display_order: index })
+            .eq("id", id)
+        )
+      );
+    } catch (error) {
+      console.error("Erreur réordonnancement partenaires:", error);
+      loadData(); // resynchronise en cas d'échec
+    }
+  };
+
   // Supprimer partenariat
   const deletePartnership = (id: string) => {
     return {
@@ -211,5 +242,6 @@ export function usePartnershipManager(
     openEditPartnership,
     savePartnership,
     deletePartnership,
+    reorderPartnerships,
   };
 }

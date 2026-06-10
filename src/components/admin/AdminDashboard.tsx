@@ -264,6 +264,7 @@ export default function AdminDashboard({
             onPartnershipFileSelect={
               partnershipManager.handlePartnershipFileSelect
             }
+            onReorder={partnershipManager.reorderPartnerships}
           />
         )}
       </div>

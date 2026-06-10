@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   Card,
@@ -7,12 +8,6 @@ import {
   CardHeader,
   Button,
   Input,
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
   Chip,
 } from "@nextui-org/react";
 import {
@@ -24,6 +19,8 @@ import {
   AlertCircle,
   Save,
   Check,
+  GripVertical,
+  Search,
 } from "lucide-react";
 import Image from "next/image";
 import { getMediaUrl } from "@/lib/supabase";
@@ -69,6 +66,7 @@ interface PartnershipEditorProps {
   onSavePartnership: () => void;
   onBackToList: () => void;
   onPartnershipFileSelect: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onReorder: (orderedIds: string[]) => void;
 }
 
 export default function PartnershipEditor({
@@ -90,6 +88,7 @@ export default function PartnershipEditor({
   onSavePartnership,
   onBackToList,
   onPartnershipFileSelect,
+  onReorder,
 }: PartnershipEditorProps) {
   if (viewMode === "list") {
     return (
@@ -98,6 +97,7 @@ export default function PartnershipEditor({
         onCreatePartnership={onCreatePartnership}
         onEditPartnership={onEditPartnership}
         onDeletePartnership={onDeletePartnership}
+        onReorder={onReorder}
       />
     );
   }
@@ -128,12 +128,49 @@ function PartnershipList({
   onCreatePartnership,
   onEditPartnership,
   onDeletePartnership,
+  onReorder,
 }: {
   partnerships: Partnership[];
   onCreatePartnership: () => void;
   onEditPartnership: (item: Partnership) => void;
   onDeletePartnership: (id: string) => void;
+  onReorder: (orderedIds: string[]) => void;
 }) {
+  const [query, setQuery] = useState("");
+  const [dragId, setDragId] = useState<string | null>(null);
+
+  const q = query.trim().toLowerCase();
+  const filtered = useMemo(
+    () =>
+      partnerships.filter(
+        (p) =>
+          !q ||
+          p.name.toLowerCase().includes(q) ||
+          (p.description ?? "").toLowerCase().includes(q)
+      ),
+    [partnerships, q]
+  );
+
+  // Le glisser-déposer n'a de sens que sur la liste complète, dans l'ordre.
+  const canReorder = q === "";
+
+  const handleDrop = (targetId: string) => {
+    if (!dragId || dragId === targetId) {
+      setDragId(null);
+      return;
+    }
+    const ids = partnerships.map((p) => p.id);
+    const from = ids.indexOf(dragId);
+    const to = ids.indexOf(targetId);
+    if (from === -1 || to === -1) {
+      setDragId(null);
+      return;
+    }
+    ids.splice(to, 0, ids.splice(from, 1)[0]);
+    onReorder(ids);
+    setDragId(null);
+  };
+
   return (
     <Card className="mt-6 border border-gray-100 shadow-sm">
       <CardHeader className="flex justify-between items-center px-6 py-4 border-b border-gray-100">
@@ -141,7 +178,9 @@ function PartnershipList({
           <h2 className="text-lg font-bold text-gray-900">
             Gestion des partenariats
           </h2>
-          <p className="text-sm text-gray-500">Gérez vos partenaires</p>
+          <p className="text-sm text-gray-500">
+            Glissez les lignes pour réordonner l&apos;affichage sur le site
+          </p>
         </div>
         <Button
           className="bg-edf-blue text-white font-medium"
@@ -172,60 +211,82 @@ function PartnershipList({
             </Button>
           </div>
         ) : (
-          <Table
-            aria-label="Liste des partenariats"
-            classNames={{
-              th: "bg-gray-50 text-gray-600 font-semibold",
-              td: "py-4",
-            }}
-          >
-            <TableHeader>
-              <TableColumn>NOM</TableColumn>
-              <TableColumn>CATÉGORIE</TableColumn>
-              <TableColumn>STATUT</TableColumn>
-              <TableColumn>ACTIONS</TableColumn>
-            </TableHeader>
-            <TableBody emptyContent="Aucun partenariat">
-              {partnerships.map((item) => (
-                <TableRow key={item.id} className="hover:bg-gray-50">
-                  <TableCell>
-                    <div className="flex items-center gap-3">
-                      {item.logo_url && (
-                        <div className="w-10 h-10 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
-                          <Image
-                            src={getMediaUrl(item.logo_url)}
-                            alt={item.name}
-                            width={40}
-                            height={40}
-                            className="w-full h-full object-contain"
-                          />
-                        </div>
-                      )}
-                      <div>
-                        <p className="font-medium text-gray-900">{item.name}</p>
-                        {item.color && (
-                          <div
-                            className="w-3 h-3 rounded-full mt-1"
-                            style={{ backgroundColor: item.color }}
-                          />
-                        )}
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    {item.category ? (
-                      <Chip
-                        size="sm"
-                        variant="flat"
-                        className="bg-edf-blue/10 text-edf-blue"
+          <div>
+            <div className="px-6 py-4 border-b border-gray-100">
+              <Input
+                aria-label="Rechercher un partenaire"
+                size="sm"
+                placeholder="Rechercher un partenaire…"
+                value={query}
+                onValueChange={setQuery}
+                startContent={<Search className="w-4 h-4 text-gray-400" />}
+                isClearable
+                onClear={() => setQuery("")}
+                classNames={{
+                  inputWrapper: "bg-gray-50 border border-gray-200",
+                  base: "sm:max-w-xs",
+                }}
+              />
+            </div>
+
+            {filtered.length === 0 ? (
+              <div className="text-center py-14 text-gray-500 text-sm">
+                Aucun partenaire ne correspond à cette recherche.
+              </div>
+            ) : (
+              <ul className="divide-y divide-gray-100 list-none">
+                {filtered.map((item) => (
+                  <li
+                    key={item.id}
+                    draggable={canReorder}
+                    onDragStart={() => canReorder && setDragId(item.id)}
+                    onDragOver={(e) => canReorder && e.preventDefault()}
+                    onDrop={() => canReorder && handleDrop(item.id)}
+                    onDragEnd={() => setDragId(null)}
+                    className={`flex items-center gap-3 px-6 py-3 transition-colors ${
+                      dragId === item.id ? "bg-edf-blue/5 opacity-60" : "hover:bg-gray-50"
+                    }`}
+                  >
+                    {canReorder ? (
+                      <span
+                        className="cursor-grab active:cursor-grabbing text-gray-300 hover:text-gray-500 touch-none"
+                        aria-hidden="true"
+                        title="Glisser pour réordonner"
                       >
-                        {item.category}
-                      </Chip>
+                        <GripVertical className="w-5 h-5" />
+                      </span>
                     ) : (
-                      <span className="text-gray-400">-</span>
+                      <span className="w-5" aria-hidden="true" />
                     )}
-                  </TableCell>
-                  <TableCell>
+
+                    {item.logo_url ? (
+                      <div className="w-10 h-10 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                        <Image
+                          src={getMediaUrl(item.logo_url)}
+                          alt={item.name}
+                          width={40}
+                          height={40}
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                    ) : (
+                      <div
+                        className="w-10 h-10 rounded-lg flex-shrink-0"
+                        style={{ backgroundColor: `${item.color ?? "#001A70"}1a` }}
+                      />
+                    )}
+
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-gray-900 truncate">
+                        {item.name}
+                      </p>
+                      {item.description && (
+                        <p className="text-xs text-gray-400 truncate">
+                          {item.description}
+                        </p>
+                      )}
+                    </div>
+
                     {item.is_active ? (
                       <Chip color="success" variant="flat" size="sm">
                         Actif
@@ -235,8 +296,7 @@ function PartnershipList({
                         Inactif
                       </Chip>
                     )}
-                  </TableCell>
-                  <TableCell>
+
                     <div className="flex gap-1">
                       <Button
                         size="sm"
@@ -259,11 +319,11 @@ function PartnershipList({
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         )}
       </CardBody>
     </Card>
@@ -293,6 +353,7 @@ function PartnershipForm({
   | "onCreatePartnership"
   | "onEditPartnership"
   | "onDeletePartnership"
+  | "onReorder"
 >) {
   return (
     <motion.div

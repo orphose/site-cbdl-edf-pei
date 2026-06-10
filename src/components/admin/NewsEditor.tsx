@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   Card,
@@ -14,6 +15,7 @@ import {
   TableRow,
   TableCell,
   Chip,
+  Pagination,
 } from "@nextui-org/react";
 import {
   Newspaper,
@@ -133,6 +135,9 @@ export default function NewsEditor({
 
 // --- News List ---
 
+const NEWS_PAGE_SIZE = 8;
+type NewsStatusFilter = "all" | "published" | "draft";
+
 function NewsList({
   news,
   onCreateNews,
@@ -144,6 +149,35 @@ function NewsList({
   onEditNews: (item: News) => void;
   onDeleteNews: (id: string) => void;
 }) {
+  const [query, setQuery] = useState("");
+  const [status, setStatus] = useState<NewsStatusFilter>("all");
+  const [page, setPage] = useState(1);
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return news.filter((item) => {
+      const matchesQuery =
+        !q ||
+        item.title.toLowerCase().includes(q) ||
+        item.slug.toLowerCase().includes(q) ||
+        (item.tags ?? []).some((t) => t.toLowerCase().includes(q));
+      const matchesStatus =
+        status === "all" ||
+        (status === "published" && item.is_published) ||
+        (status === "draft" && !item.is_published);
+      return matchesQuery && matchesStatus;
+    });
+  }, [news, query, status]);
+
+  const pageCount = Math.max(1, Math.ceil(filtered.length / NEWS_PAGE_SIZE));
+  const safePage = Math.min(page, pageCount);
+  const pageItems = filtered.slice(
+    (safePage - 1) * NEWS_PAGE_SIZE,
+    safePage * NEWS_PAGE_SIZE
+  );
+
+  const resetPage = () => setPage(1);
+
   return (
     <Card className="mt-6 border border-gray-100 shadow-sm">
       <CardHeader className="flex justify-between items-center px-6 py-4 border-b border-gray-100">
@@ -185,13 +219,70 @@ function NewsList({
             </Button>
           </div>
         ) : (
-          <Table
-            aria-label="Liste des actualités"
-            classNames={{
-              th: "bg-gray-50 text-gray-600 font-semibold",
-              td: "py-4",
-            }}
-          >
+          <div>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 px-6 py-4 border-b border-gray-100">
+              <Input
+                aria-label="Rechercher une actualité"
+                size="sm"
+                placeholder="Rechercher (titre, slug, étiquette)…"
+                value={query}
+                onValueChange={(v) => {
+                  setQuery(v);
+                  resetPage();
+                }}
+                startContent={<Search className="w-4 h-4 text-gray-400" />}
+                isClearable
+                onClear={() => {
+                  setQuery("");
+                  resetPage();
+                }}
+                classNames={{
+                  inputWrapper: "bg-gray-50 border border-gray-200",
+                  base: "sm:max-w-xs",
+                }}
+              />
+              <div className="flex gap-1">
+                {(
+                  [
+                    ["all", "Toutes"],
+                    ["published", "Publiées"],
+                    ["draft", "Brouillons"],
+                  ] as const
+                ).map(([key, label]) => (
+                  <button
+                    key={key}
+                    type="button"
+                    aria-pressed={status === key}
+                    onClick={() => {
+                      setStatus(key);
+                      resetPage();
+                    }}
+                    className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
+                      status === key
+                        ? "bg-edf-blue text-white"
+                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+              <span className="text-xs text-gray-400 sm:ml-auto">
+                {filtered.length} résultat{filtered.length > 1 ? "s" : ""}
+              </span>
+            </div>
+            {filtered.length === 0 ? (
+              <div className="text-center py-14 text-gray-500 text-sm">
+                Aucune actualité ne correspond à ces critères.
+              </div>
+            ) : (
+              <Table
+                aria-label="Liste des actualités"
+                classNames={{
+                  th: "bg-gray-50 text-gray-600 font-semibold",
+                  td: "py-4",
+                }}
+              >
             <TableHeader>
               <TableColumn>TITRE</TableColumn>
               <TableColumn>STATUT</TableColumn>
@@ -199,7 +290,7 @@ function NewsList({
               <TableColumn>ACTIONS</TableColumn>
             </TableHeader>
             <TableBody emptyContent="Aucune actualité">
-              {news.map((item) => (
+              {pageItems.map((item) => (
                 <TableRow key={item.id} className="hover:bg-gray-50">
                   <TableCell>
                     <div className="flex items-center gap-3">
@@ -278,8 +369,21 @@ function NewsList({
                   </TableCell>
                 </TableRow>
               ))}
-            </TableBody>
-          </Table>
+              </TableBody>
+              </Table>
+            )}
+            {pageCount > 1 && (
+              <div className="flex justify-center py-4 border-t border-gray-100">
+                <Pagination
+                  total={pageCount}
+                  page={safePage}
+                  onChange={setPage}
+                  size="sm"
+                  classNames={{ cursor: "bg-edf-blue" }}
+                />
+              </div>
+            )}
+          </div>
         )}
       </CardBody>
     </Card>
