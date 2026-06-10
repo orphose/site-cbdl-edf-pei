@@ -413,11 +413,8 @@ body {
 }
 
 /* ------------------------------------------------------------
-   Carte signature EDF — deux ornements de marque, zéro bordure :
-   1. .card-pop : l'icône carrée chevauche le bord supérieur de la
-      carte (écho du cartouche, 1/3 hors / 2/3 dans la composition).
-   2. .card-motif : motif baguette officiel en filigrane dans
-      l'angle bas-droit (charte p.44-46).
+   Carte signature EDF — l'icône carrée chevauche le bord de la
+   carte (écho du cartouche, 1/3 hors / 2/3 dans la composition).
    ------------------------------------------------------------ */
 
 /* Réserve l'espace du débordement de l'icône (moitié de 3rem) */
@@ -459,41 +456,6 @@ body {
   box-shadow: var(--shadow-2);
 }
 
-/* Motif baguette en filigrane — angle bas-droit, fondu en diagonale */
-.card-motif {
-  position: relative;
-  isolation: isolate;
-}
-
-.card-motif::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 55%;
-  height: 70%;
-  z-index: -1;
-  background-image: var(--motif, url("/images/charte/motifs/motif-bleu.png"));
-  background-size: cover;
-  background-position: right bottom;
-  opacity: 0.05;
-  pointer-events: none;
-  -webkit-mask-image: linear-gradient(225deg, #000 0%, transparent 78%);
-  mask-image: linear-gradient(225deg, #000 0%, transparent 78%);
-  transition: opacity 0.25s ease;
-}
-
-.card-motif:hover::after {
-  opacity: 0.1;
-}
-
-.card-motif--vert {
-  --motif: url("/images/charte/motifs/motif-vert.png");
-}
-
-.card-motif--orange {
-  --motif: url("/images/charte/motifs/motif-orange.png");
-}
 
 /* Grand chiffre clé — "data" EDF : grands chiffres en couleur de marque */
 .stat-value {

@@ -59,7 +59,6 @@ export default function BeneficesWaterSection() {
               {...fadeInUpDelay(0.1)}
               className="mt-auto bg-white border border-edf-gris-clair p-8"
             >
-              <span className="block w-2.5 h-2.5 bg-edf-green-dark mb-3" aria-hidden="true" />
               <dd className="flex items-baseline gap-1">
                 <span className="stat-value">40</span>
                 <span className="text-xl font-semibold text-edf-green-text">x</span>

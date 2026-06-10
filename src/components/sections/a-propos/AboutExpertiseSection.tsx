@@ -76,7 +76,7 @@ export default function AboutExpertiseSection() {
 
               {/* Bloc partenariat */}
               <div className="card-pop-left-wrap">
-                <div className="card-edf card-pop-left card-motif p-6 pl-10">
+                <div className="card-edf card-pop-left p-6 pl-10">
                   <span className="icon-square" aria-hidden="true">
                     <WindIcon className="w-6 h-6" />
                   </span>

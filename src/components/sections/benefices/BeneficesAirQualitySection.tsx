@@ -97,7 +97,7 @@ export default function BeneficesAirQualitySection() {
             const IconComponent = card.icon;
             return (
               <motion.div key={card.title} variants={staggerItem} className="card-pop-wrap">
-                <article className="card-edf card-pop card-motif card-motif--vert h-full px-7 pb-7 pt-6">
+                <article className="card-edf card-pop h-full px-7 pb-7 pt-6">
                   <span className="icon-square icon-square--green" aria-hidden="true">
                     <IconComponent className="w-6 h-6" />
                   </span>
@@ -130,7 +130,6 @@ export default function BeneficesAirQualitySection() {
               key={stat.label}
               className="bg-white border border-edf-gris-clair p-6"
             >
-              <span className="block w-2.5 h-2.5 bg-edf-green-dark mb-3" aria-hidden="true" />
               <dd className="flex items-baseline gap-1">
                 <span className="stat-value">{stat.value}</span>
                 {stat.unit && (

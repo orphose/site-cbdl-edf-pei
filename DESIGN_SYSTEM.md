@@ -91,11 +91,9 @@ Longueur de ligne : `max-w-prose` / `max-w-3xl` (45–75 caractères).
     chevauche le bord supérieur de la carte — écho du cartouche EDF ;
   - `.card-pop-left` (+ `.card-pop-left-wrap`) : idem sur le bord gauche,
     pour les cartes en liste ;
-  - `.card-motif` (`--vert`, `--orange`, bleu par défaut) : motif baguette
-    officiel en filigrane dans l'angle bas-droit, intensifié au hover ;
-  - numéro géant en filigrane (piliers numérotés) ;
-  - petit carré camaïeu (`w-2.5 h-2.5`) au-dessus des chiffres clés
-    (sauf cartes statistiques de la section Préservation, volontairement nues).
+  - numéro géant en filigrane (piliers numérotés).
+  Pas de motif baguette ni de carrés décoratifs dans les cartes : le motif
+  est réservé aux heros (PageHero), les cartes restent sobres.
 - Pas de `backdrop-blur` décoratif, pas de blobs flous colorés hors `.glow-effect`.
 
 ---

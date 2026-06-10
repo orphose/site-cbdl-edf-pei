@@ -133,7 +133,7 @@ export default function CentraleBirthSection() {
             const IconComponent = item.icon;
             return (
               <motion.div key={item.title} variants={staggerItem} className="card-pop-wrap">
-                <article className="card-edf card-pop card-motif h-full px-6 pb-6 pt-12">
+                <article className="card-edf card-pop h-full px-6 pb-6 pt-12">
                   <span className="icon-square" aria-hidden="true">
                     <IconComponent className="w-6 h-6" />
                   </span>

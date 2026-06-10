@@ -69,7 +69,6 @@ export default function ChantierEconomicSection() {
               variants={staggerItem}
               className="bg-white border border-edf-gris-clair p-6"
             >
-              <span className="block w-2.5 h-2.5 bg-edf-bleu-action mb-3" aria-hidden="true" />
               <dd className="flex items-baseline gap-1">
                 <span className="stat-value">{stat.value}</span>
                 {stat.unit && (

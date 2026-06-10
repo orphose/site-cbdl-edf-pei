@@ -76,7 +76,7 @@ export default function BenefitsSection() {
             const IconComponent = benefit.icon;
             return (
               <motion.div key={benefit.title} variants={staggerItem} className="card-pop-wrap">
-                <article className="card-edf card-pop card-motif h-full px-7 pb-7 pt-6">
+                <article className="card-edf card-pop h-full px-7 pb-7 pt-6">
                   <span className="icon-square" aria-hidden="true">
                     <IconComponent className="w-6 h-6" />
                   </span>

@@ -76,7 +76,7 @@ export default function AboutTransitionSection() {
         {/* Bloc d'engagement — aplat teinté */}
         <motion.div
           {...fadeInUpDelay(0.1)}
-          className="card-motif mb-14 bg-edf-blanc-bleute p-8 md:p-10"
+          className="mb-14 bg-edf-blanc-bleute p-8 md:p-10"
         >
           <p className="text-lead text-edf-bleu-nuit">
             Notre engagement se concrétise par la <strong>conversion à la
