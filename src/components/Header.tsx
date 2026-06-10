@@ -216,10 +216,10 @@ export default function Header() {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className={`flex items-center min-h-12 px-5 py-3 text-base border-l-4 transition-colors ${
+                    className={`flex items-center min-h-12 px-5 py-3 text-base transition-colors ${
                       active
-                        ? "border-edf-bleu-action bg-edf-blanc-bleute text-edf-bleu-action font-semibold"
-                        : "border-transparent text-edf-bleu-nuit font-medium hover:bg-edf-blanc-bleute"
+                        ? "bg-edf-blanc-bleute text-edf-bleu-action font-semibold"
+                        : "text-edf-bleu-nuit font-medium hover:bg-edf-blanc-bleute"
                     }`}
                     onClick={() => setIsMenuOpen(false)}
                     aria-current={active ? "page" : undefined}

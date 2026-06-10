@@ -84,7 +84,7 @@ const markdownComponents: Components = {
   ),
   li: ({ children }) => <li className="leading-relaxed">{children}</li>,
   blockquote: ({ children }) => (
-    <blockquote className="border-l-4 border-edf-bleu-action bg-edf-blanc-bleute px-5 py-4 mb-5 text-edf-bleu-nuit">
+    <blockquote className="bg-edf-blanc-bleute px-6 py-5 mb-5 text-edf-bleu-nuit font-medium">
       {children}
     </blockquote>
   ),

@@ -61,7 +61,7 @@ export default function ChantierEnvironmentSection() {
             const IconComponent = item.icon;
             return (
               <motion.div key={item.title} variants={staggerItem} className="h-full">
-                <article className="card-edf h-full p-8 border-t-4 border-t-edf-green-dark">
+                <article className="card-edf h-full p-8">
                   <span className="icon-square icon-square--green mb-6" aria-hidden="true">
                     <IconComponent className="w-6 h-6" />
                   </span>
@@ -84,11 +84,10 @@ export default function ChantierEnvironmentSection() {
 
         {/* Message de transparence */}
         <motion.div {...fadeInUpDelay(0.2)} className="mt-12">
-          <div className="flex items-center gap-4 bg-edf-blanc-bleute border-l-4 border-l-edf-green-dark px-6 py-5 max-w-3xl">
-            <ShieldCheck
-              className="w-6 h-6 text-edf-green-dark shrink-0"
-              aria-hidden="true"
-            />
+          <div className="flex items-center gap-4 bg-edf-blanc-bleute px-6 py-5 max-w-3xl">
+            <span className="icon-square icon-square--green shrink-0" aria-hidden="true">
+              <ShieldCheck className="w-6 h-6" />
+            </span>
             <p className="text-edf-bleu-nuit/75 text-sm leading-relaxed">
               Une démarche guidée par la{" "}
               <strong className="font-semibold">transparence</strong>, la{" "}

@@ -72,7 +72,7 @@ export default function ArticleHero({ title, excerpt, publishedAt }: ArticleHero
 
           {excerpt && (
             <p
-              className="text-lead text-white/85 border-l-4 border-white/70 pl-5 mt-6 hero-fade-in"
+              className="text-lead text-white/85 max-w-2xl mt-6 hero-fade-in"
               style={{ animationDelay: "0.24s" }}
             >
               {excerpt}

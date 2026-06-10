@@ -73,10 +73,10 @@ export default function AboutTransitionSection() {
           className="mb-14"
         />
 
-        {/* Bloc d'engagement — accent baguette bleu action */}
+        {/* Bloc d'engagement — aplat teinté */}
         <motion.div
           {...fadeInUpDelay(0.1)}
-          className="mb-14 border-l-4 border-edf-bleu-action bg-edf-blanc-bleute p-8"
+          className="mb-14 bg-edf-blanc-bleute p-8 md:p-10"
         >
           <p className="text-lead text-edf-bleu-nuit">
             Notre engagement se concrétise par la <strong>conversion à la

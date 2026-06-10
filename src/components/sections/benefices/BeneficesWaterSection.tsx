@@ -57,7 +57,7 @@ export default function BeneficesWaterSection() {
             {/* Chiffre clé — accent border verte (signature baguette) */}
             <motion.dl
               {...fadeInUpDelay(0.1)}
-              className="mt-auto bg-white border border-edf-gris-clair border-l-4 border-l-edf-green-dark p-8"
+              className="mt-auto bg-white border border-edf-gris-clair p-8"
             >
               <dd className="flex items-baseline gap-1">
                 <span className="stat-value">40</span>

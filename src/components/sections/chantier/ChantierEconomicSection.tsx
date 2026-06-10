@@ -67,7 +67,7 @@ export default function ChantierEconomicSection() {
             <motion.div
               key={stat.label}
               variants={staggerItem}
-              className="bg-white border border-edf-gris-clair border-t-4 border-t-edf-bleu-action p-6"
+              className="bg-white border border-edf-gris-clair p-6"
             >
               <dd className="flex items-baseline gap-1">
                 <span className="stat-value">{stat.value}</span>

@@ -76,7 +76,7 @@ export default function BenefitsSection() {
             const IconComponent = benefit.icon;
             return (
               <motion.div key={benefit.title} variants={staggerItem} className="h-full">
-                <article className="card-edf h-full p-7 border-l-4 border-l-edf-bleu-action">
+                <article className="card-edf h-full p-7">
                   <div className="flex items-start justify-between gap-4 mb-5">
                     <span className="icon-square" aria-hidden="true">
                       <IconComponent className="w-6 h-6" />

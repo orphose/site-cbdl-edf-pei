@@ -80,7 +80,7 @@ export default function CentraleWhySection() {
                 const IconComponent = item.icon;
                 return (
                   <motion.div key={item.title} variants={staggerItem}>
-                    <article className="card-edf p-6 border-l-4 border-l-edf-bleu-action">
+                    <article className="card-edf p-6">
                       <div className="flex gap-4">
                         <span className="icon-square" aria-hidden="true">
                           <IconComponent className="w-6 h-6" />
@@ -116,7 +116,7 @@ export default function CentraleWhySection() {
             {/* Chiffre clé — cartouche factuel en angle */}
             <motion.div
               {...fadeInUpDelay(0.25)}
-              className="mt-4 lg:mt-0 lg:absolute lg:-bottom-6 lg:-left-6 inline-block bg-white p-5 lg:p-6 shadow-3 border-t-4 border-t-edf-bleu-action"
+              className="mt-4 lg:mt-0 lg:absolute lg:-bottom-6 lg:-left-6 inline-block bg-white p-5 lg:p-6 shadow-3"
             >
               <p className="flex items-baseline">
                 <span className="stat-value">50</span>

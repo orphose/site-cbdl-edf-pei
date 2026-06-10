@@ -121,7 +121,7 @@ export default function CentraleEmpriseSection() {
               const IconComponent = item.icon;
               return (
                 <motion.div key={item.title} variants={staggerItem}>
-                  <article className="card-edf p-5 border-l-4 border-l-edf-green-dark">
+                  <article className="card-edf p-5">
                     <div className="flex gap-4">
                       <span className="icon-square icon-square--green" aria-hidden="true">
                         <IconComponent className="w-6 h-6" />

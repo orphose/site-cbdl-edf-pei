@@ -95,7 +95,7 @@ export default function ChantierConsortiumSection() {
               const IconComponent = item.icon;
               return (
                 <motion.li key={item.title} variants={staggerItem}>
-                  <article className="card-edf p-6 border-l-4 border-l-edf-bleu-action">
+                  <article className="card-edf p-6">
                     <div className="flex gap-4">
                       <span className="icon-square" aria-hidden="true">
                         <IconComponent className="w-6 h-6" />

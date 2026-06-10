@@ -81,8 +81,11 @@ Longueur de ligne : `max-w-prose` / `max-w-3xl` (45–75 caractères).
   signature EDF (cartouche). Seule exception : scrollbar/skeletons (2px).
 - Ombres teintées bleu nuit, 5 niveaux : utilities `shadow-1` … `shadow-5`.
   Cards au repos : `shadow-1` ou bordure. Hover : `shadow-3` + `-translate-y-0.5`.
-- **Accent borders** (signature « baguette ») : `border-l-4` ou `border-t-4` en
-  `border-edf-bleu-action` ou `border-edf-green-dark` sur les cards à accentuer.
+- **⛔ Aucune bordure colorée sur les blocs** (ni latérale, ni supérieure, ni
+  inférieure) : c'est le tic visuel des templates génériques. La couleur est
+  portée par les `icon-square`, les grands chiffres (`stat-value`), les fonds
+  teintés (`bg-edf-blanc-bleute`) et l'eyebrow. Les cards reposent sur la
+  bordure neutre `border-edf-gris-clair` + l'élévation au hover.
 - Pas de `backdrop-blur` décoratif, pas de blobs flous colorés hors `.glow-effect`.
 
 ---

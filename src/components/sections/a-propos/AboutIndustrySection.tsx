@@ -92,7 +92,7 @@ export default function AboutIndustrySection() {
           <div className="space-y-6">
             {EXCELLENCE_PILLARS.map((pillar, index) => (
               <motion.div key={pillar.number} {...fadeInUpDelay(index * 0.1)}>
-                <article className="card-edf border-l-4 border-l-edf-bleu-action p-6 flex gap-6">
+                <article className="card-edf p-6 flex gap-6">
                   {/* Numéro décoratif */}
                   <span
                     className="text-4xl font-bold leading-none text-edf-bleu-action/25 flex-shrink-0"

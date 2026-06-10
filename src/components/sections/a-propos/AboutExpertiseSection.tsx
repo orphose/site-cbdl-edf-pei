@@ -74,8 +74,8 @@ export default function AboutExpertiseSection() {
                 au service de la sécurité énergétique de chaque territoire.
               </p>
 
-              {/* Bloc partenariat — accent baguette bleu action */}
-              <div className="card-edf border-l-4 border-l-edf-bleu-action p-6">
+              {/* Bloc partenariat */}
+              <div className="card-edf p-6">
                 <div className="flex items-start gap-4">
                   <span className="icon-square" aria-hidden="true">
                     <WindIcon className="w-6 h-6" />

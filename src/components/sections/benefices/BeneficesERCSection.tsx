@@ -137,7 +137,7 @@ export default function BeneficesERCSection() {
                 >
                   {/* Contenu texte */}
                   <div className={!isEven ? "lg:col-start-2" : ""}>
-                    <article className="card-edf h-full p-8 border-l-4 border-l-edf-green-dark">
+                    <article className="card-edf h-full p-8">
                       <div className="flex items-start justify-between gap-4 mb-6">
                         <span className="icon-square icon-square--green" aria-hidden="true">
                           <IconComponent className="w-6 h-6" />
@@ -186,7 +186,7 @@ export default function BeneficesERCSection() {
         {/* Bandeau partenariat */}
         <motion.div
           {...fadeInUp}
-          className="mt-16 lg:mt-20 bg-edf-blanc-bleute border-l-4 border-l-edf-green-dark p-8 md:p-12"
+          className="mt-16 lg:mt-20 bg-edf-blanc-bleute p-8 md:p-12"
         >
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
@@ -205,7 +205,7 @@ export default function BeneficesERCSection() {
                 { value: "150 ha", label: "Zones protégées" },
                 { value: "EDF PEI", label: "Porteur du projet" },
               ].map((item) => (
-                <div key={item.label} className="px-6 py-4 bg-white border-l-4 border-l-edf-green-dark">
+                <div key={item.label} className="px-6 py-4 bg-white">
                   <dd className="text-2xl md:text-3xl font-bold text-edf-blue">
                     {item.value}
                   </dd>

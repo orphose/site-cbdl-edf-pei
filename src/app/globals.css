@@ -129,7 +129,7 @@ body {
    COMPOSANTS DU DESIGN SYSTEM
    Déclarés dans @layer components afin que les utilitaires
    Tailwind (layer utilities) puissent les surcharger
-   (ex. border-l-4 sur .card-edf, w-10 sur .icon-square).
+   (ex. p-8 sur .card-edf, w-10 sur .icon-square).
    ============================================================ */
 
 @layer components {
