@@ -130,7 +130,7 @@ export default async function ActualiteDetailPage({ params }: PageProps) {
               <div className="relative aspect-video mb-12 overflow-hidden shadow-3">
                 <Image
                   src={article.image_url}
-                  alt={article.title}
+                  alt={article.image_alt || article.title}
                   fill
                   className="object-cover"
                   priority

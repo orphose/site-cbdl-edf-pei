@@ -17,6 +17,7 @@ export interface Database {
           excerpt: string | null;
           content: string | null;
           image_url: string | null;
+          image_alt: string | null;
           gallery: string[];
           tags: string[];
           seo_title: string | null;
@@ -34,6 +35,7 @@ export interface Database {
           excerpt?: string | null;
           content?: string | null;
           image_url?: string | null;
+          image_alt?: string | null;
           gallery?: string[];
           tags?: string[];
           seo_title?: string | null;
@@ -51,6 +53,7 @@ export interface Database {
           excerpt?: string | null;
           content?: string | null;
           image_url?: string | null;
+          image_alt?: string | null;
           gallery?: string[];
           tags?: string[];
           seo_title?: string | null;

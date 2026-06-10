@@ -4,6 +4,7 @@ import { useState, useRef, useCallback } from "react";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { generateSlug } from "@/hooks/useNewsManager";
 import { getMediaUrl } from "@/lib/supabase";
+import { compressImage } from "@/lib/imageCompression";
 import type { Partnership, PartnershipFormData, ViewMode } from "@/types/admin";
 
 const EMPTY_PARTNERSHIP_FORM: PartnershipFormData = {
@@ -46,11 +47,6 @@ export function usePartnershipManager(
       setUploadError("");
 
       try {
-        const maxSize = 5 * 1024 * 1024;
-        if (file.size > maxSize) {
-          throw new Error("Le fichier est trop volumineux (max 5MB)");
-        }
-
         const allowedTypes = [
           "image/jpeg",
           "image/png",
@@ -63,14 +59,24 @@ export function usePartnershipManager(
           );
         }
 
-        const ext = file.name.split(".").pop();
-        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${ext}`;
+        // Accepte de gros originaux : ils sont compressés avant l'envoi.
+        const maxSize = 15 * 1024 * 1024;
+        if (file.size > maxSize) {
+          throw new Error("Le fichier est trop volumineux (max 15MB)");
+        }
 
-        setUploadProgress(30);
+        // Phase 1 — compression côté client
+        setUploadProgress(20);
+        const { file: optimized } = await compressImage(file);
+
+        // Phase 2 — envoi
+        setUploadProgress(60);
+        const ext = optimized.name.split(".").pop();
+        const fileName = `${Date.now()}-${crypto.randomUUID()}.${ext}`;
 
         const { data, error } = await supabase.storage
           .from("media")
-          .upload(fileName, file, {
+          .upload(fileName, optimized, {
             cacheControl: "3600",
             upsert: false,
           });

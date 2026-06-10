@@ -627,7 +627,7 @@ function NewsForm({
               <MediaUploader
                 imageUrl={newsForm.image_url}
                 onClear={() =>
-                  setNewsForm({ ...newsForm, image_url: "" })
+                  setNewsForm({ ...newsForm, image_url: "", image_alt: "" })
                 }
                 fileInputRef={fileInputRef}
                 onFileSelect={onNewsFileSelect}
@@ -635,6 +635,10 @@ function NewsForm({
                 uploadProgress={uploadProgress}
                 uploadError={uploadError}
                 label="Image de couverture"
+                altValue={newsForm.image_alt}
+                onAltChange={(image_alt) =>
+                  setNewsForm({ ...newsForm, image_alt })
+                }
               />
 
               <GalleryUploader

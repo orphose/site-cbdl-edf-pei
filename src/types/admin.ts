@@ -11,6 +11,7 @@ export interface NewsFormData {
   excerpt: string;
   content: string;
   image_url: string;
+  image_alt: string;
   gallery: string[];
   tags: string[];
   seo_title: string;

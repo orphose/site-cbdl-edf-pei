@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback } from "react";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { compressImage } from "@/lib/imageCompression";
 import type {
   News,
   NewsFormData,
@@ -15,6 +16,7 @@ const EMPTY_NEWS_FORM: NewsFormData = {
   excerpt: "",
   content: "",
   image_url: "",
+  image_alt: "",
   gallery: [],
   tags: [],
   seo_title: "",
@@ -84,11 +86,6 @@ export function useNewsManager(
       setUploadError("");
 
       try {
-        const maxSize = 5 * 1024 * 1024;
-        if (file.size > maxSize) {
-          throw new Error("Le fichier est trop volumineux (max 5MB)");
-        }
-
         const allowedTypes = [
           "image/jpeg",
           "image/png",
@@ -101,14 +98,24 @@ export function useNewsManager(
           );
         }
 
-        const ext = file.name.split(".").pop();
-        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${ext}`;
+        // Accepte de gros originaux : ils sont compressés avant l'envoi.
+        const maxSize = 15 * 1024 * 1024;
+        if (file.size > maxSize) {
+          throw new Error("Le fichier est trop volumineux (max 15MB)");
+        }
 
-        setUploadProgress(30);
+        // Phase 1 — compression côté client
+        setUploadProgress(20);
+        const { file: optimized } = await compressImage(file);
+
+        // Phase 2 — envoi
+        setUploadProgress(60);
+        const ext = optimized.name.split(".").pop();
+        const fileName = `${Date.now()}-${crypto.randomUUID()}.${ext}`;
 
         const { data, error } = await supabase.storage
           .from(bucket)
-          .upload(fileName, file, {
+          .upload(fileName, optimized, {
             cacheControl: "3600",
             upsert: false,
           });
@@ -208,6 +215,7 @@ export function useNewsManager(
       excerpt: item.excerpt || "",
       content: item.content || "",
       image_url: item.image_url || "",
+      image_alt: item.image_alt || "",
       gallery: item.gallery || [],
       tags: item.tags || [],
       seo_title: item.seo_title || "",
@@ -291,6 +299,7 @@ export function useNewsManager(
         excerpt: newsForm.excerpt || null,
         content: newsForm.content || null,
         image_url: newsForm.image_url || null,
+        image_alt: newsForm.image_alt || null,
         gallery: newsForm.gallery || [],
         tags: newsForm.tags || [],
         seo_title: newsForm.seo_title || null,

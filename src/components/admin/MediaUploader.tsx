@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Progress, Button } from "@nextui-org/react";
 import {
   X,
@@ -8,6 +9,11 @@ import {
   Plus,
 } from "lucide-react";
 import Image from "next/image";
+
+/** Transmet des fichiers déposés au gestionnaire attendant un ChangeEvent. */
+function filesToChangeEvent(files: FileList) {
+  return { target: { files } } as unknown as React.ChangeEvent<HTMLInputElement>;
+}
 
 interface MediaUploaderProps {
   /** Current image URL */
@@ -30,6 +36,9 @@ interface MediaUploaderProps {
   objectFit?: "cover" | "contain";
   /** Icon to show when empty */
   emptyIcon?: "image" | "upload";
+  /** Texte alternatif (accessibilité/SEO) — affiché si onAltChange fourni */
+  altValue?: string;
+  onAltChange?: (value: string) => void;
 }
 
 export default function MediaUploader({
@@ -43,15 +52,38 @@ export default function MediaUploader({
   label,
   objectFit = "cover",
   emptyIcon = "image",
+  altValue,
+  onAltChange,
 }: MediaUploaderProps) {
   const EmptyIcon = emptyIcon === "upload" ? Upload : ImageIcon;
+  const [dragOver, setDragOver] = useState(false);
+
+  const openPicker = () => fileInputRef.current?.click();
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+    if (e.dataTransfer.files?.length) {
+      onFileSelect(filesToChangeEvent(e.dataTransfer.files));
+    }
+  };
 
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-2">
         {label}
       </label>
-      <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 hover:border-edf-blue/50 transition-colors">
+      <div
+        onDragOver={(e) => {
+          e.preventDefault();
+          setDragOver(true);
+        }}
+        onDragLeave={() => setDragOver(false)}
+        onDrop={handleDrop}
+        className={`border-2 border-dashed rounded-xl p-4 transition-colors ${
+          dragOver ? "border-edf-blue bg-edf-blue/5" : "border-gray-200 hover:border-edf-blue/50"
+        }`}
+      >
         {imageUrl ? (
           <div className="relative">
             <Image
@@ -72,20 +104,21 @@ export default function MediaUploader({
             </Button>
           </div>
         ) : (
-          <div
-            className="flex flex-col items-center justify-center py-8 cursor-pointer"
-            onClick={() => fileInputRef.current?.click()}
+          <button
+            type="button"
+            onClick={openPicker}
+            className="w-full flex flex-col items-center justify-center py-8 cursor-pointer"
           >
             <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
               <EmptyIcon className="w-6 h-6 text-gray-400" />
             </div>
             <p className="text-sm font-medium text-gray-700">
-              Cliquez pour uploader
+              Glissez une image ou cliquez pour choisir
             </p>
             <p className="text-xs text-gray-400 mt-1">
-              JPG, PNG, WebP (max 5MB)
+              JPG, PNG, WebP — compressée automatiquement
             </p>
-          </div>
+          </button>
         )}
         <input
           ref={fileInputRef}
@@ -95,17 +128,43 @@ export default function MediaUploader({
           className="hidden"
         />
         {uploading && (
-          <Progress
-            value={uploadProgress}
-            className="mt-3"
-            color="primary"
-            size="sm"
-          />
+          <div className="mt-3">
+            <Progress
+              value={uploadProgress}
+              aria-label="Progression de l'envoi"
+              color="primary"
+              size="sm"
+            />
+            <p className="text-xs text-gray-400 mt-1">
+              {uploadProgress < 60 ? "Optimisation…" : "Envoi…"}
+            </p>
+          </div>
         )}
         {uploadError && (
           <p className="text-xs text-red-500 mt-2">{uploadError}</p>
         )}
       </div>
+
+      {/* Texte alternatif (si géré par le parent) */}
+      {onAltChange && imageUrl && (
+        <div className="mt-2">
+          <label
+            htmlFor="media-alt"
+            className="block text-xs font-medium text-gray-600 mb-1"
+          >
+            Texte alternatif{" "}
+            <span className="text-gray-400">— décrit l&apos;image (accessibilité, SEO)</span>
+          </label>
+          <input
+            id="media-alt"
+            type="text"
+            value={altValue ?? ""}
+            onChange={(e) => onAltChange(e.target.value)}
+            placeholder="Ex : vue aérienne du chantier de la centrale"
+            className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-edf-blue/20 focus:border-edf-blue"
+          />
+        </div>
+      )}
     </div>
   );
 }
@@ -158,9 +217,17 @@ export function GalleryUploader({
 
       {/* Bouton ajouter si moins de 8 photos */}
       {gallery.length < 8 && (
-        <div
-          className="border-2 border-dashed border-gray-200 rounded-xl p-4 hover:border-edf-blue/50 transition-colors cursor-pointer"
+        <button
+          type="button"
           onClick={() => galleryInputRef.current?.click()}
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={(e) => {
+            e.preventDefault();
+            if (e.dataTransfer.files?.length) {
+              onFileSelect(filesToChangeEvent(e.dataTransfer.files));
+            }
+          }}
+          className="w-full border-2 border-dashed border-gray-200 rounded-xl p-4 hover:border-edf-blue/50 transition-colors cursor-pointer"
         >
           <div className="flex flex-col items-center justify-center py-2">
             <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mb-2">
@@ -175,7 +242,7 @@ export function GalleryUploader({
               {gallery.length < 7 ? "s" : ""}
             </p>
           </div>
-        </div>
+        </button>
       )}
 
       <input
