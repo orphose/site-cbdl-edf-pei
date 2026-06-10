@@ -185,7 +185,7 @@ function NewsList({
           <h2 className="text-lg font-bold text-edf-bleu-nuit">
             Gestion des actualités
           </h2>
-          <p className="text-sm text-edf-bleu-nuit/60">
+          <p className="text-sm text-edf-bleu-nuit/70">
             Créez et gérez vos actualités
           </p>
         </div>
@@ -201,13 +201,13 @@ function NewsList({
       <CardBody className="p-0">
         {news.length === 0 ? (
           <div className="text-center py-16">
-            <div className="w-16 h-16 bg-edf-blanc-bleute flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-admin-bg flex items-center justify-center mx-auto mb-4">
               <Newspaper className="w-8 h-8 text-edf-blue" />
             </div>
             <h3 className="text-lg font-bold text-edf-bleu-nuit mb-2">
               Publiez votre première actualité
             </h3>
-            <p className="text-edf-bleu-nuit/60 text-sm mb-6 max-w-md mx-auto">
+            <p className="text-edf-bleu-nuit/70 text-sm mb-6 max-w-md mx-auto">
               Les actualités apparaîtront sur la page d&apos;accueil et la
               section Actualités du site.
             </p>
@@ -261,19 +261,19 @@ function NewsList({
                     className={`px-3 py-1.5 text-sm transition-colors ${
                       status === key
                         ? "bg-edf-blue text-white font-medium"
-                        : "bg-edf-blanc-bleute text-edf-bleu-nuit/70 hover:bg-edf-gris-clair"
+                        : "bg-admin-bg text-edf-bleu-nuit/70 hover:bg-edf-gris-clair"
                     }`}
                   >
                     {label}
                   </button>
                 ))}
               </div>
-              <span className="text-xs text-edf-bleu-nuit/50 sm:ml-auto">
+              <span className="text-xs text-edf-bleu-nuit/70 sm:ml-auto">
                 {filtered.length} résultat{filtered.length > 1 ? "s" : ""}
               </span>
             </div>
             {filtered.length === 0 ? (
-              <div className="text-center py-14 text-edf-bleu-nuit/60 text-sm">
+              <div className="text-center py-14 text-edf-bleu-nuit/70 text-sm">
                 Aucune actualité ne correspond à ces critères.
               </div>
             ) : (
@@ -281,7 +281,7 @@ function NewsList({
                 aria-label="Liste des actualités"
                 classNames={{
                   wrapper: "rounded-none shadow-none",
-                  th: "bg-edf-blanc-bleute text-edf-bleu-nuit/70 font-semibold first:rounded-none last:rounded-none",
+                  th: "bg-admin-bg text-edf-bleu-nuit/70 font-semibold first:rounded-none last:rounded-none",
                   td: "py-4",
                 }}
               >
@@ -293,11 +293,11 @@ function NewsList({
             </TableHeader>
             <TableBody emptyContent="Aucune actualité">
               {pageItems.map((item) => (
-                <TableRow key={item.id} className="hover:bg-edf-blanc-bleute/60">
+                <TableRow key={item.id} className="hover:bg-admin-bg">
                   <TableCell>
                     <div className="flex items-center gap-3">
                       {item.image_url && (
-                        <div className="w-12 h-12 overflow-hidden bg-edf-blanc-bleute flex-shrink-0">
+                        <div className="w-12 h-12 overflow-hidden bg-admin-bg flex-shrink-0">
                           <Image
                             src={item.image_url}
                             alt={item.title}
@@ -311,7 +311,7 @@ function NewsList({
                         <p className="font-medium text-edf-bleu-nuit truncate">
                           {item.title}
                         </p>
-                        <p className="text-xs text-edf-bleu-nuit/50 truncate">
+                        <p className="text-xs text-edf-bleu-nuit/70 truncate">
                           /actualites/{item.slug}
                         </p>
                       </div>
@@ -340,7 +340,7 @@ function NewsList({
                       </Chip>
                     )}
                   </TableCell>
-                  <TableCell className="text-sm text-edf-bleu-nuit/60">
+                  <TableCell className="text-sm text-edf-bleu-nuit/70">
                     {new Date(item.created_at).toLocaleDateString("fr-FR", {
                       day: "numeric",
                       month: "short",
@@ -356,7 +356,7 @@ function NewsList({
                         aria-label={`Modifier ${item.title}`}
                         onPress={() => onEditNews(item)}
                         radius="none"
-                        className="text-edf-bleu-nuit/60 hover:text-edf-bleu-action"
+                        className="text-edf-bleu-nuit/70 hover:text-edf-bleu-action"
                       >
                         <Edit className="w-4 h-4" />
                       </Button>
@@ -367,7 +367,7 @@ function NewsList({
                         aria-label={`Supprimer ${item.title}`}
                         onPress={() => onDeleteNews(item.id)}
                         radius="none"
-                        className="text-edf-bleu-nuit/60 hover:text-red-600"
+                        className="text-edf-bleu-nuit/70 hover:text-red-600"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -435,7 +435,7 @@ function NewsForm({
               isIconOnly
               onPress={onBackToList}
               radius="none"
-              className="text-edf-bleu-nuit/60"
+              className="text-edf-bleu-nuit/70"
             >
               <ArrowLeft className="w-5 h-5" />
             </Button>
@@ -445,7 +445,7 @@ function NewsForm({
                   ? "Modifier l'actualité"
                   : "Nouvelle actualité"}
               </h2>
-              <p className="text-sm text-edf-bleu-nuit/60">
+              <p className="text-sm text-edf-bleu-nuit/70">
                 {editingNews
                   ? "Modifiez les informations"
                   : "Créez une nouvelle actualité"}
@@ -571,7 +571,7 @@ function NewsForm({
                     inputWrapper: "bg-white border border-edf-gris-clair rounded-none",
                   }}
                 />
-                <p className="text-xs text-edf-bleu-nuit/50 mt-1">
+                <p className="text-xs text-edf-bleu-nuit/70 mt-1">
                   URL : /actualites/{newsForm.slug || "..."}
                 </p>
               </div>
@@ -599,7 +599,7 @@ function NewsForm({
                   className={`text-xs mt-1 ${
                     newsForm.excerpt.length > 260
                       ? "text-edf-orange-text"
-                      : "text-edf-bleu-nuit/50"
+                      : "text-edf-bleu-nuit/70"
                   }`}
                 >
                   {newsForm.excerpt.length}/300 caractères
@@ -670,7 +670,7 @@ function NewsForm({
                 role="switch"
                 aria-checked={newsForm.is_published}
                 tabIndex={0}
-                className="p-4 bg-edf-blanc-bleute cursor-pointer hover:bg-edf-gris-clair/50 transition-colors"
+                className="p-4 bg-admin-bg cursor-pointer hover:bg-edf-gris-clair/50 transition-colors"
                 onClick={() =>
                   setNewsForm({
                     ...newsForm,
@@ -690,7 +690,7 @@ function NewsForm({
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium text-edf-bleu-nuit">Publier</p>
-                    <p className="text-sm text-edf-bleu-nuit/60">Visible sur le site</p>
+                    <p className="text-sm text-edf-bleu-nuit/70">Visible sur le site</p>
                   </div>
                   <div
                     aria-hidden="true"
@@ -716,7 +716,7 @@ function NewsForm({
                     htmlFor="news-published-at"
                     className="text-sm font-medium text-edf-bleu-nuit mb-2 flex items-center gap-1.5"
                   >
-                    <CalendarClock className="w-4 h-4 text-edf-bleu-nuit/50" />
+                    <CalendarClock className="w-4 h-4 text-edf-bleu-nuit/70" />
                     Date de publication
                   </label>
                   <input
@@ -728,7 +728,7 @@ function NewsForm({
                     }
                     className="w-full px-4 py-2.5 bg-white border border-edf-gris-clair text-sm text-edf-bleu-nuit focus:outline-none focus:ring-2 focus:ring-edf-bleu-action/20 focus:border-edf-bleu-action"
                   />
-                  <p className="text-xs text-edf-bleu-nuit/50 mt-1">
+                  <p className="text-xs text-edf-bleu-nuit/70 mt-1">
                     Laissez vide pour publier immédiatement. Une date future
                     programme l&apos;article : il apparaîtra à cette date.
                   </p>
@@ -773,7 +773,7 @@ function TagsField({
         htmlFor="news-tag-input"
         className="text-sm font-medium text-edf-bleu-nuit mb-2 flex items-center gap-1.5"
       >
-        <Tag className="w-4 h-4 text-edf-bleu-nuit/50" />
+        <Tag className="w-4 h-4 text-edf-bleu-nuit/70" />
         Étiquettes
       </label>
       {tags.length > 0 && (
@@ -830,8 +830,8 @@ function SeoFields({
 }) {
   return (
     <div className="border border-edf-gris-clair">
-      <div className="flex items-center gap-2 px-4 py-3 bg-edf-blanc-bleute border-b border-edf-gris-clair">
-        <Search className="w-4 h-4 text-edf-bleu-nuit/60" />
+      <div className="flex items-center gap-2 px-4 py-3 bg-admin-bg border-b border-edf-gris-clair">
+        <Search className="w-4 h-4 text-edf-bleu-nuit/70" />
         <h4 className="text-sm font-semibold text-edf-bleu-nuit">Référencement (SEO)</h4>
       </div>
       <div className="p-4 space-y-4">
@@ -841,7 +841,7 @@ function SeoFields({
             className="block text-xs font-medium text-edf-bleu-nuit/70 mb-1.5"
           >
             Titre SEO{" "}
-            <span className="text-edf-bleu-nuit/50">— défaut : le titre de l&apos;article</span>
+            <span className="text-edf-bleu-nuit/70">— défaut : le titre de l&apos;article</span>
           </label>
           <Input
             id="news-seo-title"
@@ -860,7 +860,7 @@ function SeoFields({
             className="block text-xs font-medium text-edf-bleu-nuit/70 mb-1.5"
           >
             Méta-description{" "}
-            <span className="text-edf-bleu-nuit/50">— défaut : l&apos;extrait</span>
+            <span className="text-edf-bleu-nuit/70">— défaut : l&apos;extrait</span>
           </label>
           <textarea
             id="news-seo-desc"
@@ -874,7 +874,7 @@ function SeoFields({
             maxLength={160}
             className="w-full px-3 py-2 bg-white border border-edf-gris-clair text-sm text-edf-bleu-nuit focus:outline-none focus:ring-2 focus:ring-edf-bleu-action/20 focus:border-edf-bleu-action resize-none"
           />
-          <p className="text-xs text-edf-bleu-nuit/50 mt-1">
+          <p className="text-xs text-edf-bleu-nuit/70 mt-1">
             {newsForm.seo_description.length}/160 caractères
           </p>
         </div>
@@ -884,7 +884,7 @@ function SeoFields({
             className="block text-xs font-medium text-edf-bleu-nuit/70 mb-1.5"
           >
             Image de partage (OpenGraph){" "}
-            <span className="text-edf-bleu-nuit/50">— défaut : l&apos;image de couverture</span>
+            <span className="text-edf-bleu-nuit/70">— défaut : l&apos;image de couverture</span>
           </label>
           <Input
             id="news-og-image"
@@ -926,7 +926,7 @@ function LinkedInSharePanel({
         className={`p-4 cursor-pointer transition-colors ${
           linkedInShare.enabled
             ? "bg-[#0A66C2]/10"
-            : "bg-edf-blanc-bleute hover:bg-edf-gris-clair/50"
+            : "bg-admin-bg hover:bg-edf-gris-clair/50"
         }`}
         onClick={() =>
           setLinkedInShare({
@@ -953,7 +953,7 @@ function LinkedInSharePanel({
             >
               <Linkedin
                 className={`w-4 h-4 ${
-                  linkedInShare.enabled ? "text-white" : "text-edf-bleu-nuit/50"
+                  linkedInShare.enabled ? "text-white" : "text-edf-bleu-nuit/70"
                 }`}
               />
             </div>
@@ -961,7 +961,7 @@ function LinkedInSharePanel({
               <p className="font-medium text-edf-bleu-nuit">
                 Partager sur LinkedIn
               </p>
-              <p className="text-xs text-edf-bleu-nuit/60">
+              <p className="text-xs text-edf-bleu-nuit/70">
                 Ouvre une fenêtre pré-remplie
               </p>
             </div>
@@ -1064,8 +1064,8 @@ function LinkedInSharePanel({
             )}
           </div>
 
-          <div className="p-3 bg-edf-blanc-bleute max-h-48 overflow-y-auto">
-            <p className="text-xs font-medium text-edf-bleu-nuit/60 mb-2 flex items-center gap-1">
+          <div className="p-3 bg-admin-bg max-h-48 overflow-y-auto">
+            <p className="text-xs font-medium text-edf-bleu-nuit/70 mb-2 flex items-center gap-1">
               <Eye className="w-3 h-3" />
               Aperçu du post
             </p>
@@ -1084,7 +1084,7 @@ function LinkedInSharePanel({
             </p>
           </div>
 
-          <p className="text-xs text-edf-bleu-nuit/50 flex items-center gap-1">
+          <p className="text-xs text-edf-bleu-nuit/70 flex items-center gap-1">
             <ExternalLink className="w-3 h-3" />
             Ouvrira LinkedIn dans un nouvel onglet
           </p>

@@ -40,6 +40,12 @@
   --background: #ffffff;
   --foreground: var(--edf-bleu-nuit);
 
+  /* --- Back-office --- */
+  /* Fond NEUTRE (non bleuté) : sur un outil d'édition utilisé longuement,
+     un grand aplat teinté fatigue et nuit à la lisibilité ; le neutre
+     maximise aussi le contraste perçu des cartes blanches. */
+  --admin-bg: #F4F5F7;
+
   /* --- Dégradés charte : clair (haut-gauche) → foncé (bas-droite) --- */
   --gradient-bleu: linear-gradient(120deg, #1089FF 0%, #001A70 100%);
   --gradient-vert: linear-gradient(120deg, #88D910 0%, #4F9E30 100%);
@@ -67,6 +73,7 @@
   --color-edf-bleu-nuit: var(--edf-bleu-nuit);
   --color-edf-bleu-action: var(--edf-bleu-action);
   --color-edf-blanc-bleute: var(--edf-blanc-bleute);
+  --color-admin-bg: var(--admin-bg);
 
   /* Touches de Vert */
   --color-edf-green: var(--edf-green);

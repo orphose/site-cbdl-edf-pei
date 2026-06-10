@@ -214,7 +214,7 @@ export default function AdminPage() {
         role="status"
         aria-busy="true"
         aria-live="polite"
-        className="min-h-screen flex items-center justify-center bg-edf-blanc-bleute"
+        className="min-h-screen flex items-center justify-center bg-admin-bg"
       >
         <div
           className="animate-spin rounded-full h-12 w-12 border-b-2 border-edf-blue"

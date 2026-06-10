@@ -178,7 +178,7 @@ function PartnershipList({
           <h2 className="text-lg font-bold text-edf-bleu-nuit">
             Gestion des partenariats
           </h2>
-          <p className="text-sm text-edf-bleu-nuit/60">
+          <p className="text-sm text-edf-bleu-nuit/70">
             Glissez les lignes pour réordonner l&apos;affichage sur le site
           </p>
         </div>
@@ -193,13 +193,13 @@ function PartnershipList({
       <CardBody className="p-0">
         {partnerships.length === 0 ? (
           <div className="text-center py-16">
-            <div className="w-16 h-16 bg-edf-blanc-bleute flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-admin-bg flex items-center justify-center mx-auto mb-4">
               <Users className="w-8 h-8 text-edf-blue" />
             </div>
             <h3 className="text-lg font-bold text-edf-bleu-nuit mb-2">
               Ajoutez votre premier partenaire
             </h3>
-            <p className="text-edf-bleu-nuit/60 text-sm mb-6 max-w-md mx-auto">
+            <p className="text-edf-bleu-nuit/70 text-sm mb-6 max-w-md mx-auto">
               Les partenariats apparaîtront sur la page dédiée du site.
             </p>
             <Button
@@ -230,7 +230,7 @@ function PartnershipList({
             </div>
 
             {filtered.length === 0 ? (
-              <div className="text-center py-14 text-edf-bleu-nuit/60 text-sm">
+              <div className="text-center py-14 text-edf-bleu-nuit/70 text-sm">
                 Aucun partenaire ne correspond à cette recherche.
               </div>
             ) : (
@@ -244,12 +244,12 @@ function PartnershipList({
                     onDrop={() => canReorder && handleDrop(item.id)}
                     onDragEnd={() => setDragId(null)}
                     className={`flex items-center gap-3 px-6 py-3 transition-colors ${
-                      dragId === item.id ? "bg-edf-bleu-action/5 opacity-60" : "hover:bg-edf-blanc-bleute/60"
+                      dragId === item.id ? "bg-edf-bleu-action/5 opacity-60" : "hover:bg-admin-bg"
                     }`}
                   >
                     {canReorder ? (
                       <span
-                        className="cursor-grab active:cursor-grabbing text-edf-gris-clair hover:text-edf-bleu-nuit/60 touch-none"
+                        className="cursor-grab active:cursor-grabbing text-edf-gris-clair hover:text-edf-bleu-nuit/70 touch-none"
                         aria-hidden="true"
                         title="Glisser pour réordonner"
                       >
@@ -260,7 +260,7 @@ function PartnershipList({
                     )}
 
                     {item.logo_url ? (
-                      <div className="w-10 h-10 overflow-hidden bg-edf-blanc-bleute flex-shrink-0">
+                      <div className="w-10 h-10 overflow-hidden bg-admin-bg flex-shrink-0">
                         <Image
                           src={getMediaUrl(item.logo_url)}
                           alt={item.name}
@@ -281,7 +281,7 @@ function PartnershipList({
                         {item.name}
                       </p>
                       {item.description && (
-                        <p className="text-xs text-edf-bleu-nuit/50 truncate">
+                        <p className="text-xs text-edf-bleu-nuit/70 truncate">
                           {item.description}
                         </p>
                       )}
@@ -304,7 +304,7 @@ function PartnershipList({
                         isIconOnly
                         aria-label={`Modifier ${item.name}`}
                         onPress={() => onEditPartnership(item)}
-                        radius="none" className="text-edf-bleu-nuit/60 hover:text-edf-bleu-action"
+                        radius="none" className="text-edf-bleu-nuit/70 hover:text-edf-bleu-action"
                       >
                         <Edit className="w-4 h-4" />
                       </Button>
@@ -314,7 +314,7 @@ function PartnershipList({
                         isIconOnly
                         aria-label={`Supprimer ${item.name}`}
                         onPress={() => onDeletePartnership(item.id)}
-                        radius="none" className="text-edf-bleu-nuit/60 hover:text-red-600"
+                        radius="none" className="text-edf-bleu-nuit/70 hover:text-red-600"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -369,7 +369,7 @@ function PartnershipForm({
               variant="light"
               isIconOnly
               onPress={onBackToList}
-              radius="none" className="text-edf-bleu-nuit/60"
+              radius="none" className="text-edf-bleu-nuit/70"
             >
               <ArrowLeft className="w-5 h-5" />
             </Button>
@@ -379,7 +379,7 @@ function PartnershipForm({
                   ? "Modifier le partenaire"
                   : "Nouveau partenaire"}
               </h2>
-              <p className="text-sm text-edf-bleu-nuit/60">
+              <p className="text-sm text-edf-bleu-nuit/70">
                 {editingPartnership
                   ? "Modifiez les informations"
                   : "Ajoutez un partenaire"}
@@ -450,7 +450,7 @@ function PartnershipForm({
                     className={`text-xs ${
                       partnershipForm.name.length > 80
                         ? "text-red-600 font-medium"
-                        : "text-edf-bleu-nuit/50"
+                        : "text-edf-bleu-nuit/70"
                     }`}
                   >
                     {partnershipForm.name.length}/80
@@ -496,7 +496,7 @@ function PartnershipForm({
                     className={`text-xs ${
                       partnershipForm.description.length > 280
                         ? "text-red-600 font-medium"
-                        : "text-edf-bleu-nuit/50"
+                        : "text-edf-bleu-nuit/70"
                     }`}
                   >
                     {partnershipForm.description.length}/280
@@ -539,7 +539,7 @@ function PartnershipForm({
                 <div className="space-y-3">
                   {Object.entries(COLOR_PALETTE).map(([groupName, colors]) => (
                     <div key={groupName} className="flex items-center gap-2">
-                      <span className="text-xs text-edf-bleu-nuit/60 w-16">
+                      <span className="text-xs text-edf-bleu-nuit/70 w-16">
                         {groupName}
                       </span>
                       <div className="flex gap-2">
@@ -568,7 +568,7 @@ function PartnershipForm({
                 </div>
 
                 <div className="mt-4 flex items-center gap-3">
-                  <span className="text-xs text-edf-bleu-nuit/60">Aperçu :</span>
+                  <span className="text-xs text-edf-bleu-nuit/70">Aperçu :</span>
                   <span
                     className="px-3 py-1.5 text-xs font-medium text-white"
                     style={{ backgroundColor: partnershipForm.color }}
@@ -604,7 +604,7 @@ function PartnershipForm({
                 role="switch"
                 aria-checked={partnershipForm.is_active}
                 tabIndex={0}
-                className="p-4 bg-edf-blanc-bleute cursor-pointer hover:bg-edf-gris-clair/50 transition-colors"
+                className="p-4 bg-admin-bg cursor-pointer hover:bg-edf-gris-clair/50 transition-colors"
                 onClick={() =>
                   setPartnershipForm({
                     ...partnershipForm,
@@ -624,7 +624,7 @@ function PartnershipForm({
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium text-edf-bleu-nuit">Actif</p>
-                    <p className="text-sm text-edf-bleu-nuit/60">Visible sur le site</p>
+                    <p className="text-sm text-edf-bleu-nuit/70">Visible sur le site</p>
                   </div>
                   <div
                     aria-hidden="true"

@@ -36,7 +36,7 @@ export default function AdminUsers({
             <h2 className="text-lg font-bold text-edf-bleu-nuit">
               Utilisateurs &amp; rôles
             </h2>
-            <p className="text-sm text-edf-bleu-nuit/60">
+            <p className="text-sm text-edf-bleu-nuit/70">
               Gérez les accès au back-office
             </p>
           </div>
@@ -61,11 +61,11 @@ export default function AdminUsers({
                   <p className="font-medium text-edf-bleu-nuit truncate">
                     {profile.full_name || profile.email || "Sans nom"}
                     {isSelf && (
-                      <span className="ml-2 text-xs text-edf-bleu-nuit/50">(vous)</span>
+                      <span className="ml-2 text-xs text-edf-bleu-nuit/70">(vous)</span>
                     )}
                   </p>
                   {profile.full_name && (
-                    <p className="text-xs text-edf-bleu-nuit/50 truncate">
+                    <p className="text-xs text-edf-bleu-nuit/70 truncate">
                       {profile.email}
                     </p>
                   )}
@@ -101,7 +101,7 @@ export default function AdminUsers({
             );
           })}
         </ul>
-        <p className="px-6 py-4 text-xs text-edf-bleu-nuit/50 border-t border-edf-gris-clair">
+        <p className="px-6 py-4 text-xs text-edf-bleu-nuit/70 border-t border-edf-gris-clair">
           Pour ajouter un compte : Supabase → Authentication → Users. Le profil
           est créé automatiquement et apparaît ici.
         </p>

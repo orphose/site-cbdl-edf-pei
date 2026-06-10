@@ -60,7 +60,7 @@ export default function AdminActivityLog({
             <h2 className="text-lg font-bold text-edf-bleu-nuit">
               Journal d&apos;activité
             </h2>
-            <p className="text-sm text-edf-bleu-nuit/60">
+            <p className="text-sm text-edf-bleu-nuit/70">
               Historique des créations, modifications et suppressions
             </p>
           </div>
@@ -68,7 +68,7 @@ export default function AdminActivityLog({
       </CardHeader>
       <CardBody className="p-0">
         {entries.length === 0 ? (
-          <div className="text-center py-14 text-edf-bleu-nuit/60 text-sm">
+          <div className="text-center py-14 text-edf-bleu-nuit/70 text-sm">
             Aucune activité enregistrée pour le moment.
           </div>
         ) : (
@@ -93,18 +93,18 @@ export default function AdminActivityLog({
                     </Chip>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm text-edf-bleu-nuit truncate">
-                        <span className="text-edf-bleu-nuit/60">
+                        <span className="text-edf-bleu-nuit/70">
                           {ENTITY_LABEL[entry.entity] ?? entry.entity} :
                         </span>{" "}
                         <span className="font-medium">
                           {entry.entity_label ?? "—"}
                         </span>
                       </p>
-                      <p className="text-xs text-edf-bleu-nuit/50 truncate">
+                      <p className="text-xs text-edf-bleu-nuit/70 truncate">
                         {entry.actor_email ?? "Système"}
                       </p>
                     </div>
-                    <time className="text-xs text-edf-bleu-nuit/50 whitespace-nowrap">
+                    <time className="text-xs text-edf-bleu-nuit/70 whitespace-nowrap">
                       {formatDate(entry.created_at)}
                     </time>
                   </li>

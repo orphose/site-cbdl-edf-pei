@@ -105,7 +105,7 @@ export default function AdminDashboard({
   const publishedCount = newsManager.news.filter((n) => n.is_published).length;
 
   return (
-    <div className="min-h-screen bg-edf-blanc-bleute">
+    <div className="min-h-screen bg-admin-bg">
       {/* En-tête — reprend le langage de la nav publique (fond blanc,
           logo à gauche, état actif = barre Bleu Action sous le lien) */}
       <header className="bg-white sticky top-0 z-50 border-b border-edf-gris-clair shadow-1">
@@ -160,7 +160,7 @@ export default function AdminDashboard({
                         className={`px-1.5 py-0.5 text-xs font-semibold leading-none ${
                           active
                             ? "bg-edf-bleu-action/10 text-edf-bleu-action"
-                            : "bg-edf-blanc-bleute text-edf-bleu-nuit/70"
+                            : "bg-admin-bg text-edf-bleu-nuit/70"
                         }`}
                       >
                         {item.count}
@@ -370,7 +370,7 @@ export default function AdminDashboard({
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setDeleteConfirm(null)}
-                className="px-4 py-2 min-h-11 text-edf-bleu-nuit bg-edf-blanc-bleute hover:bg-edf-gris-clair transition-colors font-medium"
+                className="px-4 py-2 min-h-11 text-edf-bleu-nuit bg-admin-bg hover:bg-edf-gris-clair transition-colors font-medium"
                 autoFocus
               >
                 Garder

@@ -44,7 +44,7 @@ export default function MarkdownEditor({
         Contenu (Markdown)
       </label>
       {/* Toolbar Markdown */}
-      <div className="flex items-center gap-1 p-2 bg-edf-blanc-bleute border border-edf-gris-clair border-b-0">
+      <div className="flex items-center gap-1 p-2 bg-admin-bg border border-edf-gris-clair border-b-0">
         <button
           type="button"
           onClick={() => insertMarkdown("**", "**")}

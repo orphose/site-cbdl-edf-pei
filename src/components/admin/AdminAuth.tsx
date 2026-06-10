@@ -35,7 +35,7 @@ export default function AdminAuth({
   handleLogin,
 }: AdminAuthProps) {
   return (
-    <div className="min-h-screen bg-edf-blanc-bleute flex flex-col">
+    <div className="min-h-screen bg-admin-bg flex flex-col">
       {/* Liseré de marque */}
       <div className="h-1 bg-edf-blue" aria-hidden="true" />
 
@@ -104,7 +104,7 @@ export default function AdminAuth({
                     placeholder="prenom.nom@exemple.fr"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full h-13 pl-11 pr-4 bg-edf-blanc-bleute/60 border border-edf-gris-clair text-base text-edf-bleu-nuit placeholder:text-edf-bleu-nuit/40 focus:outline-none focus:border-edf-bleu-action focus:ring-2 focus:ring-edf-bleu-action/20 transition-colors"
+                    className="w-full h-13 pl-11 pr-4 bg-admin-bg border border-edf-gris-clair text-base text-edf-bleu-nuit placeholder:text-edf-bleu-nuit/50 focus:outline-none focus:border-edf-bleu-action focus:ring-2 focus:ring-edf-bleu-action/20 transition-colors"
                   />
                 </div>
               </div>
@@ -128,7 +128,7 @@ export default function AdminAuth({
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full h-13 pl-11 pr-4 bg-edf-blanc-bleute/60 border border-edf-gris-clair text-base text-edf-bleu-nuit placeholder:text-edf-bleu-nuit/40 focus:outline-none focus:border-edf-bleu-action focus:ring-2 focus:ring-edf-bleu-action/20 transition-colors"
+                    className="w-full h-13 pl-11 pr-4 bg-admin-bg border border-edf-gris-clair text-base text-edf-bleu-nuit placeholder:text-edf-bleu-nuit/50 focus:outline-none focus:border-edf-bleu-action focus:ring-2 focus:ring-edf-bleu-action/20 transition-colors"
                   />
                 </div>
               </div>
@@ -149,13 +149,13 @@ export default function AdminAuth({
                 {authLoading ? "Connexion…" : "Accéder au tableau de bord"}
               </button>
 
-              <p className="text-center text-xs text-edf-bleu-nuit/50">
+              <p className="text-center text-xs text-edf-bleu-nuit/70">
                 Accès réservé aux administrateurs autorisés
               </p>
             </div>
           </form>
 
-          <p className="text-center text-xs text-edf-bleu-nuit/50 mt-8">
+          <p className="text-center text-xs text-edf-bleu-nuit/70 mt-8">
             © {new Date().getFullYear()} EDF PEI — Tous droits réservés
           </p>
         </div>

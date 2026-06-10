@@ -99,7 +99,7 @@ export default function AIGenerator({
       </button>
 
       {aiMode && (
-        <div className="mt-4 p-5 bg-edf-blanc-bleute border border-edf-gris-clair">
+        <div className="mt-4 p-5 bg-admin-bg border border-edf-gris-clair">
           <p className="text-sm text-edf-bleu-nuit mb-3 flex items-center gap-2">
             <Wand2 className="w-4 h-4 text-edf-bleu-action" aria-hidden="true" />
             {description}

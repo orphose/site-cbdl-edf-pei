@@ -110,13 +110,13 @@ export default function MediaUploader({
             onClick={openPicker}
             className="w-full flex flex-col items-center justify-center py-8 cursor-pointer"
           >
-            <div className="w-12 h-12 bg-edf-blanc-bleute flex items-center justify-center mb-3">
+            <div className="w-12 h-12 bg-admin-bg flex items-center justify-center mb-3">
               <EmptyIcon className="w-6 h-6 text-edf-bleu-nuit/40" />
             </div>
             <p className="text-sm font-medium text-edf-bleu-nuit">
               Glissez une image ou cliquez pour choisir
             </p>
-            <p className="text-xs text-edf-bleu-nuit/50 mt-1">
+            <p className="text-xs text-edf-bleu-nuit/70 mt-1">
               JPG, PNG, WebP — compressée automatiquement
             </p>
           </button>
@@ -136,7 +136,7 @@ export default function MediaUploader({
               color="primary"
               size="sm"
             />
-            <p className="text-xs text-edf-bleu-nuit/50 mt-1">
+            <p className="text-xs text-edf-bleu-nuit/70 mt-1">
               {uploadProgress < 60 ? "Optimisation…" : "Envoi…"}
             </p>
           </div>
@@ -154,7 +154,7 @@ export default function MediaUploader({
             className="block text-xs font-medium text-edf-bleu-nuit/70 mb-1"
           >
             Texte alternatif{" "}
-            <span className="text-edf-bleu-nuit/50">— décrit l&apos;image (accessibilité, SEO)</span>
+            <span className="text-edf-bleu-nuit/70">— décrit l&apos;image (accessibilité, SEO)</span>
           </label>
           <input
             id="media-alt"
@@ -190,7 +190,7 @@ export function GalleryUploader({
         <label className="block text-sm font-medium text-edf-bleu-nuit">
           Galerie photos
         </label>
-        <span className="text-xs text-edf-bleu-nuit/50">{gallery.length}/8</span>
+        <span className="text-xs text-edf-bleu-nuit/70">{gallery.length}/8</span>
       </div>
 
       {/* Grille des photos de la galerie */}
@@ -232,13 +232,13 @@ export function GalleryUploader({
           className="w-full border-2 border-dashed border-edf-gris-clair p-4 hover:border-edf-bleu-action/50 transition-colors cursor-pointer"
         >
           <div className="flex flex-col items-center justify-center py-2">
-            <div className="w-10 h-10 bg-edf-blanc-bleute flex items-center justify-center mb-2">
+            <div className="w-10 h-10 bg-admin-bg flex items-center justify-center mb-2">
               <Plus className="w-5 h-5 text-edf-bleu-nuit/40" />
             </div>
             <p className="text-sm font-medium text-edf-bleu-nuit">
               Ajouter des photos
             </p>
-            <p className="text-xs text-edf-bleu-nuit/50 mt-1">
+            <p className="text-xs text-edf-bleu-nuit/70 mt-1">
               {8 - gallery.length} emplacement
               {gallery.length < 7 ? "s" : ""} disponible
               {gallery.length < 7 ? "s" : ""}
