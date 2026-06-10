@@ -72,8 +72,6 @@ export interface Database {
           slug: string;
           description: string | null;
           logo_url: string | null;
-          website_url: string | null;
-          category: string | null;
           display_order: number;
           is_active: boolean;
           color: string | null;
@@ -87,8 +85,6 @@ export interface Database {
           slug: string;
           description?: string | null;
           logo_url?: string | null;
-          website_url?: string | null;
-          category?: string | null;
           display_order?: number;
           is_active?: boolean;
           color?: string | null;
@@ -102,8 +98,6 @@ export interface Database {
           slug?: string;
           description?: string | null;
           logo_url?: string | null;
-          website_url?: string | null;
-          category?: string | null;
           display_order?: number;
           is_active?: boolean;
           color?: string | null;

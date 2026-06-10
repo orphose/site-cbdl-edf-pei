@@ -143,19 +143,17 @@ export function usePartnershipManager(
     setSaveError(null);
 
     try {
+      // color et icon_name ne sont volontairement pas écrits : non éditables
+      // ici, et les valeurs existantes (icônes de repli du carrousel) doivent
+      // être préservées à l'édition.
       const partnershipData = {
         name: partnershipForm.name,
         slug: generateSlug(partnershipForm.name),
         description: partnershipForm.description || null,
         logo_url: partnershipForm.logo_url || null,
-        website_url: null,
-        category: "local",
         display_order:
           editingPartnership?.display_order ?? partnerships.length,
         is_active: partnershipForm.is_active,
-        // color/icon_name : colonnes héritées, plus consommées par le site —
-        // on n'écrase pas les valeurs existantes, on ne les saisit plus.
-        icon_name: "zap",
       };
 
       if (editingPartnership) {

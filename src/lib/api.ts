@@ -81,32 +81,19 @@ export async function getNewsBySlug(slug: string): Promise<News | null> {
 /**
  * Récupère tous les partenaires actifs
  * Triés par ordre d'affichage
- * @param category - Catégorie optionnelle pour filtrer
  */
-export async function getActivePartnerships(category?: string): Promise<Partnership[]> {
-  // Assertions de validation (category peut être undefined)
-  console.assert(
-    category === undefined || category.trim().length > 0,
-    'La catégorie ne peut pas être vide si fournie'
-  );
-
+export async function getActivePartnerships(): Promise<Partnership[]> {
   const supabase = getSupabase();
   if (!supabase) {
     console.warn('Supabase non configuré, retour liste vide');
     return [];
   }
 
-  let query = supabase
+  const { data, error } = await supabase
     .from('partnerships')
     .select('*')
     .eq('is_active', true)
     .order('display_order', { ascending: true });
-
-  if (category) {
-    query = query.eq('category', category);
-  }
-
-  const { data, error } = await query;
 
   // Vérification du retour
   if (error) {
@@ -150,24 +137,4 @@ export async function getPartnershipBySlug(slug: string): Promise<Partnership | 
   return data;
 }
 
-/**
- * Récupère les catégories de partenaires disponibles
- */
-export async function getPartnershipCategories(): Promise<string[]> {
-  // Assertions de validation
-  const partnerships = await getActivePartnerships();
-  
-  if (partnerships.length === 0) {
-    return [];
-  }
-
-  // Extraire les catégories uniques non nulles
-  const categories = [...new Set(
-    partnerships
-      .map(p => p.category)
-      .filter((cat): cat is string => cat !== null && cat !== undefined)
-  )];
-  
-  return categories;
-}
 
