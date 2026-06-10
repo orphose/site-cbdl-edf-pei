@@ -94,9 +94,8 @@ Longueur de ligne : `max-w-prose` / `max-w-3xl` (45–75 caractères).
   - `.card-motif` (`--vert`, `--orange`, bleu par défaut) : motif baguette
     officiel en filigrane dans l'angle bas-droit, intensifié au hover ;
   - numéro géant en filigrane (piliers numérotés) ;
-  - petit carré camaïeu (`w-2.5 h-2.5`) au-dessus des chiffres clés.
-  - Exception validée : les cartes statistiques de la section Préservation
-    (accueil) conservent leur `border-t-4 border-t-edf-green-dark` d'origine.
+  - petit carré camaïeu (`w-2.5 h-2.5`) au-dessus des chiffres clés
+    (sauf cartes statistiques de la section Préservation, volontairement nues).
 - Pas de `backdrop-blur` décoratif, pas de blobs flous colorés hors `.glow-effect`.
 
 ---
