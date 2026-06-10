@@ -1,88 +1,84 @@
 "use client";
 
-import { IMAGES, VIDEOS } from "@/lib/media";
-
 import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { fadeInUp, fadeInUpDelay } from "@/lib/motion-variants";
+import { fadeInLeft, fadeInRight, fadeInUpDelay } from "@/lib/motion-variants";
+import { VIDEOS } from "@/lib/media";
 
 /**
- * Section ÉCONOMIE D'EAU - Une gestion responsable de l'eau
+ * Section ÉCONOMIE D'EAU — une gestion responsable de l'eau.
+ * Fond blanc, registre environnemental : eyebrow verte, accent border
+ * vert foncé, exergue verte ≥ 24px uniquement (charte EDF 2021).
  */
 export default function BeneficesWaterSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Force la lecture de la vidéo au montage
   useEffect(() => {
-    const playVideo = async () => {
-      if (videoRef.current) {
-        try {
-          videoRef.current.muted = true;
-          await videoRef.current.play();
-        } catch (error) {
-          console.log("Autoplay bloqué par le navigateur");
-        }
-      }
-    };
-
-    playVideo();
+    const video = videoRef.current;
+    if (video) {
+      video.muted = true;
+      video.play().catch(() => {});
+    }
   }, []);
 
   return (
-    <section aria-labelledby="benefices-water-heading" className="section-padding bg-white relative overflow-hidden">
-      {/* Fond décoratif */}
-      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-blue-50/50 to-transparent pointer-events-none" />
-
-      <div className="container-custom relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-stretch">
-          {/* Colonne gauche - Contenu */}
-          <div className="flex flex-col">
-            {/* En-tête */}
+    <section className="section bg-white" aria-labelledby="benefices-water-heading">
+      <div className="container-custom">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-stretch">
+          {/* Colonne gauche — contenu */}
+          <motion.div {...fadeInLeft} className="flex flex-col">
             <SectionHeader
-              badge="Économie d'eau"
-              badgeColor="blue"
-              heading={<>Une gestion{" "}<span className="text-edf-blue">responsable</span>{" "}de l&apos;eau</>}
-              className="mb-12"
+              eyebrow="Économie d'eau"
+              tone="green"
+              heading={
+                <>
+                  Une gestion <span className="text-edf-green-dark">responsable</span>{" "}
+                  de l&apos;eau
+                </>
+              }
               id="benefices-water-heading"
+              className="mb-8"
             />
-            <motion.div {...fadeInUp} className="mb-12 -mt-6">
-              <p className="text-edf-gris-fonce text-lg leading-relaxed mb-4">
-                La consommation en eau de la future Centrale Bioénergie du
-                Larivot sera{" "}
-                <strong className="text-edf-blue">40 fois inférieure</strong>{" "}
-                à celle de l&apos;ancienne centrale de Dégrad-des-Cannes.
-              </p>
-              <p className="text-edf-gris-moyen text-base leading-relaxed">
-                Elle traduit un progrès significatif dans la préservation
-                des ressources en eau. Cette avancée a été rendue possible
-                grâce à l&apos;utilisation d&apos;aéroréfrigérants secs, une
-                innovation qui ne génère aucun ruissellement d&apos;eau et
-                évite la dispersion de l&apos;humidité dans l&apos;air.
-              </p>
-            </motion.div>
 
-            {/* Statistique principale */}
-            <motion.div
+            <div className="mb-10 space-y-4">
+              <p className="text-lead text-edf-bleu-nuit/75">
+                La consommation en eau de la future Centrale Bioénergie du Larivot
+                sera <strong className="font-semibold">40 fois inférieure</strong> à
+                celle de l&apos;ancienne centrale de Dégrad-des-Cannes.
+              </p>
+              <p className="text-edf-bleu-nuit/75 leading-relaxed">
+                Elle traduit un progrès significatif dans la préservation des
+                ressources en eau. Cette avancée a été rendue possible grâce à
+                l&apos;utilisation d&apos;aéroréfrigérants secs, une innovation qui
+                ne génère aucun ruissellement d&apos;eau et évite la dispersion de
+                l&apos;humidité dans l&apos;air.
+              </p>
+            </div>
+
+            {/* Chiffre clé — accent border verte (signature baguette) */}
+            <motion.dl
               {...fadeInUpDelay(0.1)}
-              className="bg-edf-blue text-white p-8"
+              className="mt-auto bg-white border border-edf-gris-clair border-l-4 border-l-edf-green-dark p-8"
             >
-              <div className="flex items-center gap-6">
-                <div className="text-6xl font-bold">40x</div>
-                <div>
-                  <div className="text-xl font-semibold">moins de consommation</div>
-                  <div className="text-blue-200">par rapport à Dégrad-des-Cannes</div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
+              <dd className="flex items-baseline gap-1">
+                <span className="stat-value">40</span>
+                <span className="text-xl font-semibold text-edf-green-text">x</span>
+              </dd>
+              <dt className="mt-2">
+                <span className="block font-semibold text-edf-bleu-nuit">
+                  moins de consommation
+                </span>
+                <span className="block text-caption mt-0.5">
+                  par rapport à Dégrad-des-Cannes
+                </span>
+              </dt>
+            </motion.dl>
+          </motion.div>
 
-          {/* Colonne droite - Vidéo */}
-          <motion.div
-            {...fadeInUpDelay(0.15)}
-            className="relative h-full"
-          >
-            <div className="relative h-full min-h-[400px] overflow-hidden shadow-xl">
+          {/* Colonne droite — vidéo */}
+          <motion.div {...fadeInRight} className="relative h-full">
+            <div className="relative h-full min-h-[400px] overflow-hidden shadow-3">
               <video
                 ref={videoRef}
                 autoPlay
@@ -94,9 +90,9 @@ export default function BeneficesWaterSection() {
               >
                 <source src={VIDEOS.ressourceEau2} type="video/mp4" />
               </video>
-
-              {/* Bordure */}
-              <div className="absolute inset-0 border-2 border-edf-blue/20 pointer-events-none" />
+              <p className="sr-only">
+                Vue aérienne de la ressource en eau autour du site du Larivot
+              </p>
             </div>
           </motion.div>
         </div>
@@ -104,4 +100,3 @@ export default function BeneficesWaterSection() {
     </section>
   );
 }
-

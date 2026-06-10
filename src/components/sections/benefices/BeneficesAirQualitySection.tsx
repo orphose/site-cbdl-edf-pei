@@ -1,13 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Wind, Leaf, Factory, Settings, Eye, ArrowRight } from "lucide-react";
-import { Card, CardBody } from "@nextui-org/react";
+import { Leaf, Factory, Settings, Eye } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { fadeInUp, fadeInUpDelay } from "@/lib/motion-variants";
+import { fadeInUpDelay, staggerContainer, staggerItem } from "@/lib/motion-variants";
 
 /**
- * Données des sous-sections qualité de l'air
+ * Données des sous-sections qualité de l'air — registre environnemental :
+ * une seule couleur d'icône (vert foncé), titres et textes en Bleu Nuit.
  */
 const AIR_QUALITY_ITEMS = [
   {
@@ -15,7 +15,6 @@ const AIR_QUALITY_ITEMS = [
     title: "Biocombustible neutre",
     description:
       "La biomasse, en tant que source d'énergie renouvelable, présente un bilan carbone neutre en termes d'émissions directes (« scope 1 » selon les normes internationales). Cette neutralité carbone est atteinte grâce à l'équilibre entre le dioxyde de carbone (CO2) émis lors de la combustion des bioénergies et la quantité de CO2 absorbée pendant la croissance des plantes utilisées comme biomasse. Ce cycle naturel permet une réabsorption du carbone libéré, minimisant de ce fait l'impact sur le changement climatique.",
-    color: "#88D910",
     highlight: "Neutre",
     highlightLabel: "bilan carbone",
   },
@@ -24,7 +23,6 @@ const AIR_QUALITY_ITEMS = [
     title: "Traitement des fumées",
     description:
       "L'installation d'un système de traitement additionnel des fumées, grâce à la technologie de réduction catalytique sélective (SCR), constitue une avancée significative dans la maîtrise des émissions polluantes. Ce procédé, qui s'appuie sur des méthodes rigoureuses, permet de minimiser efficacement la libération de substances nocives dans l'atmosphère, notamment les oxydes d'azote (NOx), reconnus pour leur impact négatif sur la qualité de l'air et la santé humaine.",
-    color: "#001A70",
     highlight: "SCR",
     highlightLabel: "technologie",
   },
@@ -33,7 +31,6 @@ const AIR_QUALITY_ITEMS = [
     title: "Conception adaptée",
     description:
       "Une analyse environnementale rigoureuse a conduit à une conception parfaitement adaptée aux spécificités du site d'implantation de la centrale. De l'ajustement précis de la taille des cheminées à l'optimisation minutieuse des procédures opérationnelles, chaque élément a été finement calibré. Cette démarche garantit une amélioration durable et significative de la qualité de l'air.",
-    color: "#FFB210",
     highlight: "100%",
     highlightLabel: "adapté au site",
   },
@@ -42,169 +39,113 @@ const AIR_QUALITY_ITEMS = [
     title: "Surveillance de la qualité de l'air",
     description:
       "Une surveillance systématique de la qualité de l'air sera instaurée, à l'instar des mesures déjà mises en place dans les quatre autres centrales opérées par EDF PEI. Cette initiative souligne un engagement soutenu en faveur d'une exploitation énergétique responsable et respectueuse de l'environnement.",
-    color: "#00d4ff",
     highlight: "24/7",
     highlightLabel: "surveillance",
   },
 ];
 
 /**
- * Animation variants
+ * Chiffres clés du bandeau — unité verte autorisée sur la page Bénéfices.
  */
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.3, ease: "easeOut" as const },
-  },
-};
+const AIR_QUALITY_STATS = [
+  { value: "0", unit: "%", label: "Soufre dans le biocombustible" },
+  { value: "0", unit: "%", label: "Métaux lourds" },
+  { value: "-90", unit: "%", label: "Réduction NOx (SCR)" },
+  { value: "5", unit: "", label: "Centrales EDF PEI surveillées" },
+];
 
 /**
- * Section QUALITÉ DE L'AIR - Améliorer la qualité de l'air
+ * Section QUALITÉ DE L'AIR — améliorer la qualité de l'air.
+ * Fond blanc bleuté, touches de vert (registre environnemental).
  */
 export default function BeneficesAirQualitySection() {
-  // Assertions de validation
-  console.assert(AIR_QUALITY_ITEMS.length === 4, "4 éléments attendus pour la qualité de l'air");
-  console.assert(AIR_QUALITY_ITEMS.every(item => typeof item.icon === 'function' && item.title.length > 0), "Données complètes requises");
-
   return (
-    <section aria-labelledby="benefices-air-quality-heading" className="section-padding bg-edf-blanc-bleute relative overflow-hidden">
-      {/* Motif de fond */}
-      <div className="absolute inset-0 opacity-[0.02]">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, #001A70 1px, transparent 0)`,
-            backgroundSize: "40px 40px",
-          }}
-        />
-      </div>
-
-      <div className="container-custom relative z-10">
-        {/* En-tête de section */}
+    <section className="section section-alt" aria-labelledby="benefices-air-quality-heading">
+      <div className="container-custom">
         <SectionHeader
-          badge="Qualité de l'air"
-          badgeColor="green"
-          heading={<>Améliorer la qualité de l&apos;air :{" "}<span className="text-edf-green">un enjeu prioritaire</span>{" "}pour la Guyane</>}
-          description={<>La centrale bioénergie du Larivot utilise des techniques{" "}<strong className="text-edf-green">avancées et innovantes</strong>{" "}afin de minimiser son impact sur la qualité de l&apos;air environnant. L&apos;emploi de la biomasse liquide, caractérisée par une absence de soufre et de métaux, contribue efficacement à la réduction des émissions de particules fines.</>}
-          className="max-w-4xl mb-16"
+          eyebrow="Qualité de l'air"
+          tone="green"
+          heading={
+            <>
+              Améliorer la qualité de l&apos;air :{" "}
+              <span className="text-edf-green-dark">un enjeu prioritaire</span> pour
+              la Guyane
+            </>
+          }
+          description={
+            <>
+              La centrale bioénergie du Larivot utilise des techniques{" "}
+              <strong className="font-semibold">avancées et innovantes</strong> afin
+              de minimiser son impact sur la qualité de l&apos;air environnant.
+              L&apos;emploi de la biomasse liquide, caractérisée par une absence de
+              soufre et de métaux, contribue efficacement à la réduction des
+              émissions de particules fines.
+            </>
+          }
           id="benefices-air-quality-heading"
+          className="mb-14"
         />
 
-        {/* Grille de cartes */}
+        {/* Grille de cartes — accent border verte, icône unique verte */}
         <motion.div
-          variants={containerVariants}
+          variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-80px" }}
           className="grid md:grid-cols-2 gap-6"
         >
-          {AIR_QUALITY_ITEMS.map((card, index) => {
+          {AIR_QUALITY_ITEMS.map((card) => {
             const IconComponent = card.icon;
             return (
-              <motion.div key={index} variants={cardVariants}>
-                <Card
-                  className="h-full card-hover border-none shadow-lg bg-white"
-                  radius="none"
-                >
-                  <CardBody className="p-6">
-                    {/* Header avec icône et stat */}
-                    <div className="flex items-start justify-between mb-4">
-                      {/* Icône */}
-                      <div
-                        className="w-14 h-14 flex items-center justify-center shadow-md"
-                        style={{
-                          background: `linear-gradient(120deg, ${card.color} 0%, ${card.color}cc 100%)`,
-                        }}
-                      >
-                        <IconComponent className="w-7 h-7 text-white" />
-                      </div>
-
-                      {/* Stat */}
-                      <div className="text-right">
-                        <div
-                          className="text-xl font-bold"
-                          style={{ color: card.color }}
-                        >
-                          {card.highlight}
-                        </div>
-                        <div className="text-[10px] text-edf-gris-moyen uppercase tracking-wide">
-                          {card.highlightLabel}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Titre */}
-                    <h3
-                      className="text-lg font-bold mb-3"
-                      style={{ color: card.color }}
-                    >
-                      {card.title}
-                    </h3>
-
-                    {/* Description */}
-                    <p className="text-edf-gris-fonce text-sm leading-relaxed">
-                      {card.description}
+              <motion.div key={card.title} variants={staggerItem} className="h-full">
+                <article className="card-edf h-full p-7 border-t-4 border-t-edf-green-dark">
+                  <div className="flex items-start justify-between gap-4 mb-5">
+                    <span className="icon-square icon-square--green" aria-hidden="true">
+                      <IconComponent className="w-6 h-6" />
+                    </span>
+                    <p className="text-right">
+                      <span className="block text-2xl font-bold text-edf-blue leading-tight">
+                        {card.highlight}
+                      </span>
+                      <span className="block text-caption mt-0.5">
+                        {card.highlightLabel}
+                      </span>
                     </p>
+                  </div>
 
-                    {/* Barre décorative */}
-                    <div
-                      className="mt-5 h-1 w-16"
-                      style={{ backgroundColor: card.color }}
-                    />
-
-                    {/* Numéro décoratif */}
-                    <div
-                      className="absolute top-4 right-4 text-7xl font-bold leading-none opacity-[0.03] select-none"
-                      style={{ color: card.color }}
-                    >
-                      0{index + 1}
-                    </div>
-                  </CardBody>
-                </Card>
+                  <h3 className="heading-4 text-edf-bleu-nuit mb-3">{card.title}</h3>
+                  <p className="text-edf-bleu-nuit/75 leading-relaxed text-[0.9375rem]">
+                    {card.description}
+                  </p>
+                </article>
               </motion.div>
             );
           })}
         </motion.div>
 
-        {/* Bandeau statistiques */}
-        <motion.div
+        {/* Chiffres clés — grands chiffres en couleur de marque (charte) */}
+        <motion.dl
           {...fadeInUpDelay(0.15)}
-          className="mt-16 bg-edf-green text-white overflow-hidden"
+          className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-4"
         >
-          <div className="grid md:grid-cols-4">
-            {[
-              { value: "0%", label: "Soufre dans le biocombustible" },
-              { value: "0%", label: "Métaux lourds" },
-              { value: "-90%", label: "Réduction NOx (SCR)" },
-              { value: "5", label: "Centrales EDF PEI surveillées" },
-            ].map((stat, index) => (
-              <motion.div
-                key={index}
-                {...fadeInUpDelay(0.2 + index * 0.1)}
-                className={`p-8 text-center ${index > 0 ? "border-l border-white/20" : ""}`}
-              >
-                <div className="text-3xl md:text-4xl font-bold mb-2">
-                  {stat.value}
-                </div>
-                <div className="text-white/80 text-sm">
-                  {stat.label}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+          {AIR_QUALITY_STATS.map((stat) => (
+            <div
+              key={stat.label}
+              className="bg-white border border-edf-gris-clair border-t-4 border-t-edf-green-dark p-6"
+            >
+              <dd className="flex items-baseline gap-1">
+                <span className="stat-value">{stat.value}</span>
+                {stat.unit && (
+                  <span className="text-xl font-semibold text-edf-green-text">
+                    {stat.unit}
+                  </span>
+                )}
+              </dd>
+              <dt className="text-sm text-edf-bleu-nuit/75 mt-2">{stat.label}</dt>
+            </div>
+          ))}
+        </motion.dl>
       </div>
     </section>
   );
 }
-

@@ -1,12 +1,12 @@
 /**
- * Page Chantier - Centrale Bioénergie du Larivot
- * 
- * Structure:
- * 1. ChantierHeroSection - Hero "LE CHANTIER"
- * 2. ChantierConsortiumSection - CONSORTIUM - Partenariat local
- * 3. ChantierEconomicSection - RETOMBÉES ÉCONOMIQUES
- * 4. ChantierEnvironmentSection - ENVIRONNEMENT - Chantier écoresponsable
- * 5. ChantierSecuritySection - SÉCURITÉ - Priorité absolue
+ * Page Chantier — registre industriel/institutionnel (camaïeu bleu).
+ *
+ * Structure et alternance des fonds :
+ * 1. ChantierHeroSection — hero "LE CHANTIER" (dégradé bleu)
+ * 2. ChantierConsortiumSection — CONSORTIUM, partenariat local (blanc)
+ * 3. ChantierEconomicSection — RETOMBÉES ÉCONOMIQUES (blanc bleuté)
+ * 4. ChantierEnvironmentSection — ENVIRONNEMENT, touches de vert (blanc)
+ * 5. ChantierSecuritySection — SÉCURITÉ, moment fort (bleu foncé + glow)
  */
 
 import {
@@ -37,4 +37,3 @@ export default function ChantierPage() {
     </>
   );
 }
-

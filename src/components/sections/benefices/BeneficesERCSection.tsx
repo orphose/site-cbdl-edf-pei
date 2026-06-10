@@ -5,10 +5,11 @@ import { TreePine, Waves, MapPin } from "lucide-react";
 import Image from "next/image";
 import { getMediaUrl } from "@/lib/supabase";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { fadeInUp, fadeInUpDelay } from "@/lib/motion-variants";
+import { fadeInUp, fadeInUpDelay, staggerContainer, staggerItem } from "@/lib/motion-variants";
 
 /**
- * Données des mesures ERC
+ * Données des mesures ERC — registre environnemental : une seule
+ * couleur d'icône (vert foncé), titres et textes en Bleu Nuit.
  */
 const ERC_MEASURES = [
   {
@@ -16,7 +17,6 @@ const ERC_MEASURES = [
     title: "Protéger la flore locale",
     description:
       "La localisation de la centrale a été choisie pour éviter toute interférence avec la flore protégée, dans le cadre d'une démarche engagée pour la préservation du patrimoine naturel guyanais. Des actions concrètes sont menées, comme la restauration de la population de palmiers Murumuru via la semence sélective et le transplant de jeunes plants. La zone fait l'objet d'une surveillance soutenue pour garantir la pérennité de cette espèce.",
-    color: "#88D910",
     highlight: "Murumuru",
     highlightLabel: "Palmier protégé",
     image: getMediaUrl("murumuru_1.jpg"),
@@ -26,7 +26,6 @@ const ERC_MEASURES = [
     title: "Sauvegarder la mangrove",
     description:
       "Un engagement fort est pris pour préserver la mangrove présente sur le site, garantissant qu'aucune portion ne soit affectée par l'implantation de la centrale. L'élaboration actuelle d'un plan de gestion rigoureux traduit la volonté de protéger et préserver durablement cet écosystème vital. Il s'agit d'une démarche cruciale démontrant notre détermination à maintenir l'équilibre de cette zone essentielle.",
-    color: "#00d4ff",
     highlight: "100%",
     highlightLabel: "Mangrove préservée",
     image: getMediaUrl("mangrove_1.png"),
@@ -36,226 +35,146 @@ const ERC_MEASURES = [
     title: "Limiter et compenser les impacts",
     description:
       "150 hectares de zones naturelles à haute valeur patrimoniale seront sanctuarisés et préservés. Un plan de gestion minutieux sera élaboré avec le Parc Naturel Régional de Guyane. Initiée et financée par EDF PEI avec le soutien de la CTG, cette démarche traduit un engagement concret pour la protection de l'environnement.",
-    color: "#FFB210",
     highlight: "150 ha",
     highlightLabel: "Zones sanctuarisées",
     image: getMediaUrl("resp_approch.jpg"),
   },
 ];
 
-/**
- * Animation variants
- */
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.2 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, x: -30 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.3, ease: "easeOut" as const },
-  },
-};
+/** Démarche ERC — Éviter, Réduire, Compenser */
+const ERC_STEPS = [
+  { letter: "E", word: "Éviter" },
+  { letter: "R", word: "Réduire" },
+  { letter: "C", word: "Compenser" },
+];
 
 /**
- * Section NOS MESURES ERC - Éviter, Réduire, Compenser
+ * Section NOS MESURES ERC — Éviter, Réduire, Compenser.
+ * Fond blanc, touches de vert (registre environnemental).
  */
 export default function BeneficesERCSection() {
-  // Assertions de validation
-  console.assert(ERC_MEASURES.length === 3, "3 mesures ERC attendues");
-  console.assert(ERC_MEASURES.every(m => m.title && m.description), "Données complètes requises");
-
   return (
-    <section aria-labelledby="benefices-erc-heading" className="section-padding bg-white relative overflow-hidden">
-      {/* Fond décoratif */}
-      <div className="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-green-50/50 to-transparent pointer-events-none" />
-
-      <div className="container-custom relative z-10">
+    <section className="section bg-white" aria-labelledby="benefices-erc-heading">
+      <div className="container-custom">
         {/* En-tête */}
         <SectionHeader
-          badge="Nos Mesures ERC"
-          badgeColor="orange"
-          heading={<>Éviter, réduire, compenser :{" "}<span className="text-edf-orange">une approche environnementale</span>{" "}responsable</>}
-          description={<>EDF PEI fait de la préservation de l&apos;environnement et de la biodiversité une priorité durant toute la phase de construction et de fonctionnement de la centrale bioénergie du Larivot. Ainsi, nous nous sommes engagés à limiter l&apos;impact environnemental à travers une série de mesures compensatoires.</>}
-          className="max-w-4xl mb-16"
+          eyebrow="Nos Mesures ERC"
+          tone="green"
+          heading={
+            <>
+              Éviter, réduire, compenser :{" "}
+              <span className="text-edf-green-dark">une approche environnementale</span>{" "}
+              responsable
+            </>
+          }
+          description="EDF PEI fait de la préservation de l'environnement et de la biodiversité une priorité durant toute la phase de construction et de fonctionnement de la centrale bioénergie du Larivot. Ainsi, nous nous sommes engagés à limiter l'impact environnemental à travers une série de mesures compensatoires."
           id="benefices-erc-heading"
+          className="mb-14"
         />
 
         {/* Introduction ERC */}
-        <motion.div
-          {...fadeInUpDelay(0.1)}
-          className="mb-20"
-        >
-          {/* Texte explicatif */}
-          <div className="max-w-3xl space-y-6">
-            <h3 className="text-2xl font-bold text-edf-blue">
-              Une approche responsable
-            </h3>
-            <p className="text-edf-gris-fonce leading-relaxed">
-              Construite sur l&apos;Île de Cayenne, une zone où la pression 
-              anthropique et urbanistique est très forte, la future centrale 
-              bioénergie du Larivot incarne notre engagement à respecter et 
+        <motion.div {...fadeInUpDelay(0.1)} className="mb-16 lg:mb-20">
+          <div className="max-w-3xl space-y-5">
+            <h3 className="heading-3 text-edf-bleu-nuit">Une approche responsable</h3>
+            <p className="text-edf-bleu-nuit/75 leading-relaxed">
+              Construite sur l&apos;Île de Cayenne, une zone où la pression
+              anthropique et urbanistique est très forte, la future centrale
+              bioénergie du Larivot incarne notre engagement à respecter et
               protéger l&apos;environnement.
             </p>
-            <p className="text-edf-gris-fonce leading-relaxed">
+            <p className="text-edf-bleu-nuit/75 leading-relaxed">
               Pour cela, nous adoptons l&apos;approche{" "}
-              <strong className="text-edf-green">ERC</strong> pour{" "}
-              <strong className="text-edf-blue">« Éviter, Réduire, Compenser »</strong>{" "}
+              <strong className="font-semibold">ERC</strong> pour{" "}
+              <strong className="font-semibold">« Éviter, Réduire, Compenser »</strong>{" "}
               afin de minimiser l&apos;impact résiduel sur la biodiversité locale.
             </p>
 
-            {/* Badges ERC */}
-            <div className="flex flex-wrap gap-3 pt-4">
-              {[
-                { letter: "E", word: "Éviter", color: "#88D910" },
-                { letter: "R", word: "Réduire", color: "#FFB210" },
-                { letter: "C", word: "Compenser", color: "#001A70" },
-              ].map((item, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.2 + index * 0.1 }}
-                  className="flex items-center gap-2 px-4 py-2 bg-white shadow-md border border-edf-gris-clair"
+            {/* Démarche ERC — cartouches carrés (signature EDF) */}
+            <motion.ul
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="flex flex-wrap gap-3 pt-4 list-none"
+            >
+              {ERC_STEPS.map((step) => (
+                <motion.li
+                  key={step.letter}
+                  variants={staggerItem}
+                  className="flex items-center gap-3 bg-white border border-edf-gris-clair pr-5"
                 >
                   <span
-                    className="w-8 h-8 rounded flex items-center justify-center text-white font-bold"
-                    style={{ backgroundColor: item.color }}
+                    className="icon-square icon-square--green text-xl font-bold"
+                    aria-hidden="true"
                   >
-                    {item.letter}
+                    {step.letter}
                   </span>
-                  <span className="font-medium text-edf-bleu-nuit">{item.word}</span>
-                </motion.div>
+                  <span className="font-medium text-edf-bleu-nuit">{step.word}</span>
+                </motion.li>
               ))}
-            </div>
+            </motion.ul>
           </div>
         </motion.div>
 
-        {/* Grille des mesures */}
+        {/* Grille des mesures — alternance texte / image */}
         <motion.div
-          variants={containerVariants}
+          variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="space-y-8"
+          viewport={{ once: true, margin: "-80px" }}
+          className="space-y-8 lg:space-y-12"
         >
           {ERC_MEASURES.map((measure, index) => {
             const IconComponent = measure.icon;
             const isEven = index % 2 === 0;
-            
+
             return (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                className="group"
-              >
+              <motion.div key={measure.title} variants={staggerItem}>
                 <div
                   className={`grid lg:grid-cols-2 gap-8 items-center ${
                     !isEven ? "lg:grid-flow-dense" : ""
                   }`}
                 >
                   {/* Contenu texte */}
-                  <div className={`${!isEven ? "lg:col-start-2" : ""}`}>
-                    <div
-                      className="relative bg-white border border-edf-gris-clair p-8 shadow-lg transition-all duration-500 hover:shadow-xl"
-                      style={{
-                        borderLeft: `4px solid ${measure.color}`,
-                      }}
-                    >
-                      {/* Fond au hover */}
-                      <div
-                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                        style={{
-                          background: `linear-gradient(120deg, ${measure.color}05 0%, transparent 50%)`,
-                        }}
-                      />
-
-                      <div className="relative">
-                        {/* Header */}
-                        <div className="flex items-start justify-between mb-6">
-                          <div
-                            className="w-14 h-14 flex items-center justify-center shadow-md"
-                            style={{
-                              background: `linear-gradient(120deg, ${measure.color} 0%, ${measure.color}cc 100%)`,
-                            }}
-                          >
-                            <IconComponent className="w-7 h-7 text-white" />
-                          </div>
-
-                          <div className="text-right">
-                            <div
-                              className="text-xl font-bold"
-                              style={{ color: measure.color }}
-                            >
-                              {measure.highlight}
-                            </div>
-                            <div className="text-[10px] text-edf-gris-moyen uppercase tracking-wide">
-                              {measure.highlightLabel}
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Titre */}
-                        <h3
-                          className="text-xl font-bold mb-4"
-                          style={{ color: measure.color }}
-                        >
-                          {measure.title}
-                        </h3>
-
-                        {/* Description */}
-                        <p className="text-edf-gris-fonce leading-relaxed">
-                          {measure.description}
+                  <div className={!isEven ? "lg:col-start-2" : ""}>
+                    <article className="card-edf h-full p-8 border-l-4 border-l-edf-green-dark">
+                      <div className="flex items-start justify-between gap-4 mb-6">
+                        <span className="icon-square icon-square--green" aria-hidden="true">
+                          <IconComponent className="w-6 h-6" />
+                        </span>
+                        <p className="text-right">
+                          <span className="block text-2xl font-bold text-edf-blue leading-tight">
+                            {measure.highlight}
+                          </span>
+                          <span className="block text-caption mt-0.5">
+                            {measure.highlightLabel}
+                          </span>
                         </p>
-
-                        {/* Barre décorative */}
-                        <div
-                          className="mt-6 h-1 w-20"
-                          style={{ backgroundColor: measure.color }}
-                        />
                       </div>
 
-                      {/* Numéro décoratif */}
-                      <div
-                        className="absolute top-4 right-6 text-7xl font-bold leading-none opacity-[0.03] select-none"
-                        style={{ color: measure.color }}
-                      >
-                        0{index + 1}
-                      </div>
-                    </div>
+                      <h3 className="heading-4 text-edf-bleu-nuit mb-3">
+                        {measure.title}
+                      </h3>
+                      <p className="text-edf-bleu-nuit/75 leading-relaxed">
+                        {measure.description}
+                      </p>
+                    </article>
                   </div>
 
                   {/* Photo */}
-                  <div className={`${!isEven ? "lg:col-start-1" : ""}`}>
-                    <div className="relative aspect-[4/3] overflow-hidden group">
+                  <div className={!isEven ? "lg:col-start-1" : ""}>
+                    <div className="group relative aspect-[4/3] overflow-hidden shadow-2">
                       <Image
                         src={measure.image}
                         alt={measure.title}
                         fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(min-width: 1024px) 50vw, 100vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                       />
-                      {/* Étiquette */}
-                      <div className="absolute bottom-4 left-4">
-                        <div className="flex items-center bg-white shadow-lg">
-                          <div
-                            className="w-1.5 h-full absolute left-0 top-0 bottom-0"
-                            style={{ backgroundColor: measure.color }}
-                          />
-                          <span
-                            className="font-bold text-sm uppercase tracking-wide px-4 py-2 pl-5"
-                            style={{ color: measure.color }}
-                          >
-                            {measure.title}
-                          </span>
-                        </div>
-                      </div>
+                      {/* Étiquette factuelle — angle bas-gauche */}
+                      <p className="absolute bottom-4 left-4 bg-edf-green-dark text-white px-4 py-2 shadow-2 text-sm font-semibold uppercase tracking-wide">
+                        {measure.title}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -267,44 +186,36 @@ export default function BeneficesERCSection() {
         {/* Bandeau partenariat */}
         <motion.div
           {...fadeInUp}
-          className="mt-20 bg-white border border-edf-gris-clair shadow-lg p-8 md:p-12"
+          className="mt-16 lg:mt-20 bg-edf-blanc-bleute border-l-4 border-l-edf-green-dark p-8 md:p-12"
         >
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
-              <h3 className="text-2xl font-bold text-edf-blue mb-4">
+              <h3 className="heading-3 text-edf-bleu-nuit mb-4">
                 Un engagement partagé pour l&apos;environnement
               </h3>
-              <p className="text-edf-gris-fonce leading-relaxed">
-                En partenariat avec le Parc Naturel Régional de Guyane et avec 
-                le soutien de la Collectivité Territoriale de Guyane (CTG), 
-                EDF PEI s&apos;engage concrètement pour la préservation de 
+              <p className="text-edf-bleu-nuit/75 leading-relaxed">
+                En partenariat avec le Parc Naturel Régional de Guyane et avec
+                le soutien de la Collectivité Territoriale de Guyane (CTG),
+                EDF PEI s&apos;engage concrètement pour la préservation de
                 l&apos;environnement guyanais.
               </p>
             </div>
-            <div className="flex flex-wrap gap-6 justify-center md:justify-end">
+            <dl className="flex flex-wrap gap-6 justify-center md:justify-end">
               {[
-                { value: "150 ha", label: "Zones protégées", color: "#88D910" },
-                { value: "EDF PEI", label: "Porteur du projet", color: "#001A70" },
-              ].map((item, index) => (
-                <div
-                  key={index}
-                  className="text-center px-6 py-4 border-l-4"
-                  style={{ borderColor: item.color }}
-                >
-                  <div
-                    className="text-2xl md:text-3xl font-bold"
-                    style={{ color: item.color }}
-                  >
+                { value: "150 ha", label: "Zones protégées" },
+                { value: "EDF PEI", label: "Porteur du projet" },
+              ].map((item) => (
+                <div key={item.label} className="px-6 py-4 bg-white border-l-4 border-l-edf-green-dark">
+                  <dd className="text-2xl md:text-3xl font-bold text-edf-blue">
                     {item.value}
-                  </div>
-                  <div className="text-edf-gris-moyen text-sm">{item.label}</div>
+                  </dd>
+                  <dt className="text-caption mt-1">{item.label}</dt>
                 </div>
               ))}
-            </div>
+            </dl>
           </div>
         </motion.div>
       </div>
     </section>
   );
 }
-

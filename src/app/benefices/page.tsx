@@ -6,8 +6,8 @@ import {
 } from "@/components/sections/benefices";
 
 /**
- * Page Bénéfices
- * Présente les avantages environnementaux de la centrale
+ * Page Bénéfices — registre environnemental (camaïeu vert en touches).
+ * Alternance des fonds : hero (dégradé vert) → blanc → blanc bleuté → blanc.
  */
 export default function BeneficesPage() {
   return (
@@ -19,4 +19,3 @@ export default function BeneficesPage() {
     </>
   );
 }
-

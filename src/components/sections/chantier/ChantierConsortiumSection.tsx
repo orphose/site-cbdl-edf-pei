@@ -1,181 +1,121 @@
 "use client";
 
-import { IMAGES, VIDEOS } from "@/lib/media";
-
 import { motion } from "framer-motion";
 import { Handshake, Building2, Users2 } from "lucide-react";
 import Image from "next/image";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { fadeInUp } from "@/lib/motion-variants";
+import { fadeInLeft, fadeInUpDelay, staggerContainer, staggerItem } from "@/lib/motion-variants";
+import { IMAGES } from "@/lib/media";
 
 /**
- * Données des points clés du consortium
+ * Points clés du consortium — registre institutionnel :
+ * mono-camaïeu bleu, une seule couleur d'icône par section.
  */
 const CONSORTIUM_POINTS = [
   {
     icon: Handshake,
     title: "Partenariat local",
-    description: "Une alliance stratégique avec des entreprises guyanaises solidement ancrées dans le tissu économique local.",
-    color: "#001A70",
+    description:
+      "Une alliance stratégique avec des entreprises guyanaises solidement ancrées dans le tissu économique local.",
   },
   {
     icon: Building2,
     title: "600M€ d'investissement",
-    description: "Un projet d'envergure répondant aux besoins de l'économie et de la société guyanaise.",
-    color: "#FFB210",
+    description:
+      "Un projet d'envergure répondant aux besoins de l'économie et de la société guyanaise.",
   },
   {
     icon: Users2,
     title: "Valorisation locale",
-    description: "Une stratégie de valorisation du savoir-faire local et d'implication dans le tissu économique du territoire.",
-    color: "#88D910",
+    description:
+      "Une stratégie de valorisation du savoir-faire local et d'implication dans le tissu économique du territoire.",
   },
 ];
 
 /**
- * Animation variants
- */
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: "easeOut" as const },
-  },
-};
-
-/**
- * Section CONSORTIUM - Un engagement aux côtés des entreprises guyanaises
+ * Section CONSORTIUM — un engagement aux côtés des entreprises guyanaises.
+ * Fond blanc, cards à accent border Bleu Action (signature baguette).
  */
 export default function ChantierConsortiumSection() {
   return (
-    <section aria-labelledby="chantier-consortium-heading" className="section-padding bg-white relative overflow-hidden">
-      {/* Fond décoratif */}
-      <div className="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-edf-blanc-bleute to-transparent pointer-events-none" />
-
-      <div className="container-custom relative z-10">
+    <section className="section bg-white" aria-labelledby="chantier-consortium-heading">
+      <div className="container-custom">
         {/* En-tête de section */}
         <SectionHeader
-          badge="Consortium"
-          badgeColor="blue"
-          heading={<>Un engagement aux côtés des{" "}<span className="text-edf-blue">entreprises guyanaises</span></>}
-          description={<>Un partenariat local pour un projet phare. La construction de cette centrale bioénergie met en lumière l&apos;agilité, la performance et les savoir-faire complexes d&apos;entreprises locales engagées pour le développement du territoire.</>}
-          className="mb-12"
+          eyebrow="Consortium"
+          heading={
+            <>
+              Un engagement aux côtés des{" "}
+              <span className="text-edf-bleu-action">entreprises guyanaises</span>
+            </>
+          }
+          description="Un partenariat local pour un projet phare. La construction de cette centrale bioénergie met en lumière l'agilité, la performance et les savoir-faire complexes d'entreprises locales engagées pour le développement du territoire."
           id="chantier-consortium-heading"
+          className="mb-14"
         />
 
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Colonne gauche - Image */}
-          <motion.div
-            {...fadeInUp}
-            className="relative"
-          >
-            <div className="relative aspect-[4/3] overflow-hidden shadow-xl">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          {/* Colonne gauche — image + chiffre clé */}
+          <motion.div {...fadeInLeft} className="relative">
+            <div className="relative aspect-[4/3] overflow-hidden shadow-3">
               <Image
                 src={IMAGES.centrale.modelisation}
                 alt="Modélisation de la Centrale Bioénergie du Larivot"
                 fill
+                sizes="(min-width: 1024px) 50vw, 100vw"
                 className="object-cover"
               />
-              {/* Overlay subtil */}
-              <div className="absolute inset-0 bg-gradient-to-t from-edf-blue/20 to-transparent" />
+              <div
+                className="absolute inset-0 bg-gradient-to-t from-edf-blue/20 to-transparent"
+                aria-hidden="true"
+              />
             </div>
 
-            {/* Badge statistique */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="absolute -bottom-6 -right-6 bg-edf-orange text-white shadow-xl p-6"
+            {/* Étiquette chiffre clé — angle bas-droite */}
+            <motion.p
+              {...fadeInUpDelay(0.2)}
+              className="absolute -bottom-6 right-4 bg-edf-bleu-action text-white shadow-3 p-6"
             >
-              <div className="text-4xl font-bold">600M€</div>
-              <div className="text-sm text-white/80 mt-1">
+              <span className="block text-4xl font-bold leading-none">600M€</span>
+              <span className="block text-sm text-white/80 mt-2">
                 d&apos;investissement
-              </div>
-            </motion.div>
+              </span>
+            </motion.p>
           </motion.div>
 
-          {/* Colonne droite - Points clés */}
-          <div>
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              className="space-y-6"
-            >
-              {CONSORTIUM_POINTS.map((item, index) => {
-                const IconComponent = item.icon;
-                return (
-                  <motion.div
-                    key={index}
-                    variants={itemVariants}
-                    className="group"
-                  >
-                    <div
-                      className="relative bg-white border border-edf-gris-clair p-6 transition-all duration-500 hover:shadow-xl hover:translate-x-1"
-                      style={{
-                        borderLeft: `4px solid ${item.color}`,
-                      }}
-                    >
-                      {/* Fond au hover */}
-                      <div
-                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                        style={{
-                          background: `linear-gradient(120deg, ${item.color}05 0%, transparent 50%)`,
-                        }}
-                      />
-
-                      <div className="relative flex gap-4">
-                        {/* Icône */}
-                        <div
-                          className="w-12 h-12 flex items-center justify-center shrink-0 shadow-md"
-                          style={{
-                            background: `linear-gradient(120deg, ${item.color} 0%, ${item.color}cc 100%)`,
-                          }}
-                        >
-                          <IconComponent className="w-6 h-6 text-white" />
-                        </div>
-
-                        {/* Contenu */}
-                        <div className="flex-1">
-                          <h3
-                            className="text-lg font-bold mb-2"
-                            style={{ color: item.color }}
-                          >
-                            {item.title}
-                          </h3>
-                          <p className="text-edf-gris-fonce text-sm leading-relaxed">
-                            {item.description}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Numéro décoratif */}
-                      <div
-                        className="absolute top-2 right-4 text-6xl font-bold leading-none opacity-[0.05] select-none"
-                        style={{ color: item.color }}
-                      >
-                        0{index + 1}
+          {/* Colonne droite — points clés */}
+          <motion.ul
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            className="space-y-6 list-none"
+          >
+            {CONSORTIUM_POINTS.map((item) => {
+              const IconComponent = item.icon;
+              return (
+                <motion.li key={item.title} variants={staggerItem}>
+                  <article className="card-edf p-6 border-l-4 border-l-edf-bleu-action">
+                    <div className="flex gap-4">
+                      <span className="icon-square" aria-hidden="true">
+                        <IconComponent className="w-6 h-6" />
+                      </span>
+                      <div className="flex-1">
+                        <h3 className="heading-4 text-edf-bleu-nuit mb-2">
+                          {item.title}
+                        </h3>
+                        <p className="text-edf-bleu-nuit/75 leading-relaxed text-[0.9375rem]">
+                          {item.description}
+                        </p>
                       </div>
                     </div>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          </div>
+                  </article>
+                </motion.li>
+              );
+            })}
+          </motion.ul>
         </div>
       </div>
     </section>
   );
 }
-
