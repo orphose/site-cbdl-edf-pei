@@ -39,16 +39,16 @@ export default function MarkdownEditor({
     <div>
       <label
         htmlFor="news-content"
-        className="block text-sm font-medium text-gray-700 mb-2"
+        className="block text-sm font-medium text-edf-bleu-nuit mb-2"
       >
         Contenu (Markdown)
       </label>
       {/* Toolbar Markdown */}
-      <div className="flex items-center gap-1 mb-2 p-2 bg-gray-100 rounded-t-xl border border-gray-200 border-b-0">
+      <div className="flex items-center gap-1 p-2 bg-edf-blanc-bleute border border-edf-gris-clair border-b-0">
         <button
           type="button"
           onClick={() => insertMarkdown("**", "**")}
-          className="px-2 py-1 text-xs font-bold text-gray-700 hover:bg-gray-200 rounded"
+          className="px-2 py-1 text-xs font-bold text-edf-bleu-nuit hover:bg-edf-gris-clair"
           title="Gras"
         >
           G
@@ -56,7 +56,7 @@ export default function MarkdownEditor({
         <button
           type="button"
           onClick={() => insertMarkdown("*", "*")}
-          className="px-2 py-1 text-xs italic text-gray-700 hover:bg-gray-200 rounded"
+          className="px-2 py-1 text-xs italic text-edf-bleu-nuit hover:bg-edf-gris-clair"
           title="Italique"
         >
           I
@@ -64,7 +64,7 @@ export default function MarkdownEditor({
         <button
           type="button"
           onClick={() => insertMarkdown("## ")}
-          className="px-2 py-1 text-xs font-bold text-gray-700 hover:bg-gray-200 rounded"
+          className="px-2 py-1 text-xs font-bold text-edf-bleu-nuit hover:bg-edf-gris-clair"
           title="Titre"
         >
           H2
@@ -72,7 +72,7 @@ export default function MarkdownEditor({
         <button
           type="button"
           onClick={() => insertMarkdown("- ")}
-          className="px-2 py-1 text-xs text-gray-700 hover:bg-gray-200 rounded"
+          className="px-2 py-1 text-xs text-edf-bleu-nuit hover:bg-edf-gris-clair"
           title="Liste"
         >
           Liste
@@ -80,7 +80,7 @@ export default function MarkdownEditor({
         <button
           type="button"
           onClick={() => insertMarkdown("[", "](url)")}
-          className="px-2 py-1 text-xs text-gray-700 hover:bg-gray-200 rounded"
+          className="px-2 py-1 text-xs text-edf-bleu-nuit hover:bg-edf-gris-clair"
           title="Lien"
         >
           Lien
@@ -89,21 +89,21 @@ export default function MarkdownEditor({
         <button
           type="button"
           onClick={() => setContentPreview(!contentPreview)}
-          className={`px-3 py-1 text-xs rounded ${
+          className={`px-3 py-1 text-xs ${
             contentPreview
               ? "bg-edf-blue text-white"
-              : "text-gray-700 hover:bg-gray-200"
+              : "text-edf-bleu-nuit hover:bg-edf-gris-clair"
           }`}
         >
           {contentPreview ? "Éditer" : "Aperçu"}
         </button>
       </div>
       {contentPreview ? (
-        <div className="w-full px-4 py-3 bg-white border border-gray-200 rounded-b-xl text-sm min-h-[288px] prose prose-sm max-w-none">
+        <div className="w-full px-4 py-3 bg-white border border-edf-gris-clair text-sm min-h-[288px] prose prose-sm max-w-none">
           {content ? (
             <ReactMarkdown>{content}</ReactMarkdown>
           ) : (
-            <p className="text-gray-400 italic">Aucun contenu à afficher</p>
+            <p className="text-edf-bleu-nuit/40 italic">Aucun contenu à afficher</p>
           )}
         </div>
       ) : (
@@ -114,7 +114,7 @@ export default function MarkdownEditor({
           value={content}
           onChange={(e) => onChange(e.target.value)}
           rows={12}
-          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-b-xl text-sm focus:outline-none focus:ring-2 focus:ring-edf-blue/20 focus:border-edf-blue resize-y font-mono"
+          className="w-full px-4 py-3 bg-white border border-edf-gris-clair text-sm text-edf-bleu-nuit focus:outline-none focus:ring-2 focus:ring-edf-bleu-action/20 focus:border-edf-bleu-action resize-y font-mono"
         />
       )}
     </div>

@@ -28,22 +28,22 @@ export default function AdminUsers({
   onChangeRole: (id: string, role: UserRole) => void;
 }) {
   return (
-    <Card className="mt-6 border border-gray-100 shadow-sm">
-      <CardHeader className="px-6 py-4 border-b border-gray-100">
+    <Card radius="none" shadow="none" className="mt-6 border border-edf-gris-clair">
+      <CardHeader className="px-6 py-4 border-b border-edf-gris-clair">
         <div className="flex items-center gap-2">
           <UserCog className="w-5 h-5 text-edf-blue" />
           <div>
-            <h2 className="text-lg font-bold text-gray-900">
+            <h2 className="text-lg font-bold text-edf-bleu-nuit">
               Utilisateurs &amp; rôles
             </h2>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-edf-bleu-nuit/60">
               Gérez les accès au back-office
             </p>
           </div>
         </div>
       </CardHeader>
       <CardBody className="p-0">
-        <ul className="divide-y divide-gray-100 list-none">
+        <ul className="divide-y divide-edf-gris-clair/70 list-none">
           {profiles.map((profile) => {
             const isSelf = profile.id === currentUserId;
             return (
@@ -51,21 +51,21 @@ export default function AdminUsers({
                 key={profile.id}
                 className="flex flex-wrap items-center gap-3 px-6 py-4"
               >
-                <div className="w-10 h-10 rounded-full bg-edf-blue/10 flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 bg-edf-blue/10 flex items-center justify-center flex-shrink-0">
                   <span className="text-sm font-semibold text-edf-blue uppercase">
                     {(profile.email ?? "?").charAt(0)}
                   </span>
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-gray-900 truncate">
+                  <p className="font-medium text-edf-bleu-nuit truncate">
                     {profile.full_name || profile.email || "Sans nom"}
                     {isSelf && (
-                      <span className="ml-2 text-xs text-gray-400">(vous)</span>
+                      <span className="ml-2 text-xs text-edf-bleu-nuit/50">(vous)</span>
                     )}
                   </p>
                   {profile.full_name && (
-                    <p className="text-xs text-gray-400 truncate">
+                    <p className="text-xs text-edf-bleu-nuit/50 truncate">
                       {profile.email}
                     </p>
                   )}
@@ -75,6 +75,7 @@ export default function AdminUsers({
                   <Chip
                     size="sm"
                     variant="flat"
+                    radius="none"
                     color="primary"
                     startContent={<Shield className="w-3 h-3" />}
                   >
@@ -91,7 +92,7 @@ export default function AdminUsers({
                   onChange={(e) =>
                     onChangeRole(profile.id, e.target.value as UserRole)
                   }
-                  className="px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-edf-blue/20 focus:border-edf-blue disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-3 py-2 text-sm bg-white border border-edf-gris-clair text-edf-bleu-nuit focus:outline-none focus:ring-2 focus:ring-edf-bleu-action/20 focus:border-edf-bleu-action disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <option value="admin">{ROLE_LABEL.admin}</option>
                   <option value="editor">{ROLE_LABEL.editor}</option>
@@ -100,7 +101,7 @@ export default function AdminUsers({
             );
           })}
         </ul>
-        <p className="px-6 py-4 text-xs text-gray-400 border-t border-gray-100">
+        <p className="px-6 py-4 text-xs text-edf-bleu-nuit/50 border-t border-edf-gris-clair">
           Pour ajouter un compte : Supabase → Authentication → Users. Le profil
           est créé automatiquement et apparaît ici.
         </p>

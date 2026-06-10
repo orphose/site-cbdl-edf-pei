@@ -52,15 +52,15 @@ export default function AdminActivityLog({
   );
 
   return (
-    <Card className="mt-6 border border-gray-100 shadow-sm">
-      <CardHeader className="px-6 py-4 border-b border-gray-100">
+    <Card radius="none" shadow="none" className="mt-6 border border-edf-gris-clair">
+      <CardHeader className="px-6 py-4 border-b border-edf-gris-clair">
         <div className="flex items-center gap-2">
           <History className="w-5 h-5 text-edf-blue" />
           <div>
-            <h2 className="text-lg font-bold text-gray-900">
+            <h2 className="text-lg font-bold text-edf-bleu-nuit">
               Journal d&apos;activité
             </h2>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-edf-bleu-nuit/60">
               Historique des créations, modifications et suppressions
             </p>
           </div>
@@ -68,12 +68,12 @@ export default function AdminActivityLog({
       </CardHeader>
       <CardBody className="p-0">
         {entries.length === 0 ? (
-          <div className="text-center py-14 text-gray-500 text-sm">
+          <div className="text-center py-14 text-edf-bleu-nuit/60 text-sm">
             Aucune activité enregistrée pour le moment.
           </div>
         ) : (
           <>
-            <ul className="divide-y divide-gray-100 list-none">
+            <ul className="divide-y divide-edf-gris-clair/70 list-none">
               {pageItems.map((entry) => {
                 const meta = ACTION_META[entry.action];
                 const Icon = meta.Icon;
@@ -85,25 +85,26 @@ export default function AdminActivityLog({
                     <Chip
                       size="sm"
                       variant="flat"
+                      radius="none"
                       color={meta.color}
                       startContent={<Icon className="w-3 h-3" />}
                     >
                       {meta.label}
                     </Chip>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm text-gray-900 truncate">
-                        <span className="text-gray-500">
+                      <p className="text-sm text-edf-bleu-nuit truncate">
+                        <span className="text-edf-bleu-nuit/60">
                           {ENTITY_LABEL[entry.entity] ?? entry.entity} :
                         </span>{" "}
                         <span className="font-medium">
                           {entry.entity_label ?? "—"}
                         </span>
                       </p>
-                      <p className="text-xs text-gray-400 truncate">
+                      <p className="text-xs text-edf-bleu-nuit/50 truncate">
                         {entry.actor_email ?? "Système"}
                       </p>
                     </div>
-                    <time className="text-xs text-gray-400 whitespace-nowrap">
+                    <time className="text-xs text-edf-bleu-nuit/50 whitespace-nowrap">
                       {formatDate(entry.created_at)}
                     </time>
                   </li>
@@ -111,13 +112,13 @@ export default function AdminActivityLog({
               })}
             </ul>
             {pageCount > 1 && (
-              <div className="flex justify-center py-4 border-t border-gray-100">
+              <div className="flex justify-center py-4 border-t border-edf-gris-clair">
                 <Pagination
                   total={pageCount}
                   page={safePage}
                   onChange={setPage}
                   size="sm"
-                  classNames={{ cursor: "bg-edf-blue" }}
+                  classNames={{ cursor: "bg-edf-blue rounded-none", item: "rounded-none" }}
                 />
               </div>
             )}

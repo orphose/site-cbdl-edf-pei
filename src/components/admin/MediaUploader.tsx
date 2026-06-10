@@ -70,7 +70,7 @@ export default function MediaUploader({
 
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-2">
+      <label className="block text-sm font-medium text-edf-bleu-nuit mb-2">
         {label}
       </label>
       <div
@@ -80,8 +80,8 @@ export default function MediaUploader({
         }}
         onDragLeave={() => setDragOver(false)}
         onDrop={handleDrop}
-        className={`border-2 border-dashed rounded-xl p-4 transition-colors ${
-          dragOver ? "border-edf-blue bg-edf-blue/5" : "border-gray-200 hover:border-edf-blue/50"
+        className={`border-2 border-dashed p-4 transition-colors ${
+          dragOver ? "border-edf-bleu-action bg-edf-bleu-action/5" : "border-edf-gris-clair hover:border-edf-bleu-action/50"
         }`}
       >
         {imageUrl ? (
@@ -91,12 +91,13 @@ export default function MediaUploader({
               alt="Aperçu"
               width={300}
               height={200}
-              className={`w-full ${objectFit === "contain" ? "h-32 object-contain bg-white" : "h-40 object-cover"} rounded-lg`}
+              className={`w-full ${objectFit === "contain" ? "h-32 object-contain bg-white" : "h-40 object-cover"}`}
             />
             <Button
               size="sm"
               isIconOnly
               variant="flat"
+              radius="none"
               className="absolute top-2 right-2 bg-white/90"
               onPress={onClear}
             >
@@ -109,13 +110,13 @@ export default function MediaUploader({
             onClick={openPicker}
             className="w-full flex flex-col items-center justify-center py-8 cursor-pointer"
           >
-            <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
-              <EmptyIcon className="w-6 h-6 text-gray-400" />
+            <div className="w-12 h-12 bg-edf-blanc-bleute flex items-center justify-center mb-3">
+              <EmptyIcon className="w-6 h-6 text-edf-bleu-nuit/40" />
             </div>
-            <p className="text-sm font-medium text-gray-700">
+            <p className="text-sm font-medium text-edf-bleu-nuit">
               Glissez une image ou cliquez pour choisir
             </p>
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-xs text-edf-bleu-nuit/50 mt-1">
               JPG, PNG, WebP — compressée automatiquement
             </p>
           </button>
@@ -135,7 +136,7 @@ export default function MediaUploader({
               color="primary"
               size="sm"
             />
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-xs text-edf-bleu-nuit/50 mt-1">
               {uploadProgress < 60 ? "Optimisation…" : "Envoi…"}
             </p>
           </div>
@@ -150,10 +151,10 @@ export default function MediaUploader({
         <div className="mt-2">
           <label
             htmlFor="media-alt"
-            className="block text-xs font-medium text-gray-600 mb-1"
+            className="block text-xs font-medium text-edf-bleu-nuit/70 mb-1"
           >
             Texte alternatif{" "}
-            <span className="text-gray-400">— décrit l&apos;image (accessibilité, SEO)</span>
+            <span className="text-edf-bleu-nuit/50">— décrit l&apos;image (accessibilité, SEO)</span>
           </label>
           <input
             id="media-alt"
@@ -161,7 +162,7 @@ export default function MediaUploader({
             value={altValue ?? ""}
             onChange={(e) => onAltChange(e.target.value)}
             placeholder="Ex : vue aérienne du chantier de la centrale"
-            className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-edf-blue/20 focus:border-edf-blue"
+            className="w-full px-3 py-2 bg-white border border-edf-gris-clair text-sm text-edf-bleu-nuit focus:outline-none focus:ring-2 focus:ring-edf-bleu-action/20 focus:border-edf-bleu-action"
           />
         </div>
       )}
@@ -186,10 +187,10 @@ export function GalleryUploader({
   return (
     <div>
       <div className="flex justify-between items-center mb-2">
-        <label className="block text-sm font-medium text-gray-700">
+        <label className="block text-sm font-medium text-edf-bleu-nuit">
           Galerie photos
         </label>
-        <span className="text-xs text-gray-400">{gallery.length}/8</span>
+        <span className="text-xs text-edf-bleu-nuit/50">{gallery.length}/8</span>
       </div>
 
       {/* Grille des photos de la galerie */}
@@ -200,12 +201,13 @@ export function GalleryUploader({
               src={url}
               alt={`Galerie ${index + 1}`}
               fill
-              className="object-cover rounded-lg"
+              className="object-cover"
             />
             <Button
               size="sm"
               isIconOnly
               variant="flat"
+              radius="none"
               className="absolute top-1 right-1 bg-white/90 min-w-6 w-6 h-6"
               onPress={() => onRemove(index)}
             >
@@ -227,16 +229,16 @@ export function GalleryUploader({
               onFileSelect(filesToChangeEvent(e.dataTransfer.files));
             }
           }}
-          className="w-full border-2 border-dashed border-gray-200 rounded-xl p-4 hover:border-edf-blue/50 transition-colors cursor-pointer"
+          className="w-full border-2 border-dashed border-edf-gris-clair p-4 hover:border-edf-bleu-action/50 transition-colors cursor-pointer"
         >
           <div className="flex flex-col items-center justify-center py-2">
-            <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mb-2">
-              <Plus className="w-5 h-5 text-gray-400" />
+            <div className="w-10 h-10 bg-edf-blanc-bleute flex items-center justify-center mb-2">
+              <Plus className="w-5 h-5 text-edf-bleu-nuit/40" />
             </div>
-            <p className="text-sm font-medium text-gray-700">
+            <p className="text-sm font-medium text-edf-bleu-nuit">
               Ajouter des photos
             </p>
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-xs text-edf-bleu-nuit/50 mt-1">
               {8 - gallery.length} emplacement
               {gallery.length < 7 ? "s" : ""} disponible
               {gallery.length < 7 ? "s" : ""}

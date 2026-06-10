@@ -179,17 +179,18 @@ function NewsList({
   const resetPage = () => setPage(1);
 
   return (
-    <Card className="mt-6 border border-gray-100 shadow-sm">
-      <CardHeader className="flex justify-between items-center px-6 py-4 border-b border-gray-100">
+    <Card radius="none" shadow="none" className="mt-6 border border-edf-gris-clair">
+      <CardHeader className="flex justify-between items-center px-6 py-4 border-b border-edf-gris-clair">
         <div>
-          <h2 className="text-lg font-bold text-gray-900">
+          <h2 className="text-lg font-bold text-edf-bleu-nuit">
             Gestion des actualités
           </h2>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-edf-bleu-nuit/60">
             Créez et gérez vos actualités
           </p>
         </div>
         <Button
+          radius="none"
           className="bg-edf-blue text-white font-medium"
           startContent={<Plus className="w-4 h-4" />}
           onPress={onCreateNews}
@@ -200,13 +201,13 @@ function NewsList({
       <CardBody className="p-0">
         {news.length === 0 ? (
           <div className="text-center py-16">
-            <div className="w-16 h-16 bg-edf-blue/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-edf-blanc-bleute flex items-center justify-center mx-auto mb-4">
               <Newspaper className="w-8 h-8 text-edf-blue" />
             </div>
-            <h3 className="text-lg font-bold text-gray-800 mb-2">
+            <h3 className="text-lg font-bold text-edf-bleu-nuit mb-2">
               Publiez votre première actualité
             </h3>
-            <p className="text-gray-500 text-sm mb-6 max-w-md mx-auto">
+            <p className="text-edf-bleu-nuit/60 text-sm mb-6 max-w-md mx-auto">
               Les actualités apparaîtront sur la page d&apos;accueil et la
               section Actualités du site.
             </p>
@@ -220,7 +221,7 @@ function NewsList({
           </div>
         ) : (
           <div>
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 px-6 py-4 border-b border-gray-100">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 px-6 py-4 border-b border-edf-gris-clair">
               <Input
                 aria-label="Rechercher une actualité"
                 size="sm"
@@ -230,14 +231,14 @@ function NewsList({
                   setQuery(v);
                   resetPage();
                 }}
-                startContent={<Search className="w-4 h-4 text-gray-400" />}
+                startContent={<Search className="w-4 h-4 text-edf-bleu-nuit/40" />}
                 isClearable
                 onClear={() => {
                   setQuery("");
                   resetPage();
                 }}
                 classNames={{
-                  inputWrapper: "bg-gray-50 border border-gray-200",
+                  inputWrapper: "bg-white border border-edf-gris-clair rounded-none",
                   base: "sm:max-w-xs",
                 }}
               />
@@ -257,29 +258,30 @@ function NewsList({
                       setStatus(key);
                       resetPage();
                     }}
-                    className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
+                    className={`px-3 py-1.5 text-sm transition-colors ${
                       status === key
-                        ? "bg-edf-blue text-white"
-                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                        ? "bg-edf-blue text-white font-medium"
+                        : "bg-edf-blanc-bleute text-edf-bleu-nuit/70 hover:bg-edf-gris-clair"
                     }`}
                   >
                     {label}
                   </button>
                 ))}
               </div>
-              <span className="text-xs text-gray-400 sm:ml-auto">
+              <span className="text-xs text-edf-bleu-nuit/50 sm:ml-auto">
                 {filtered.length} résultat{filtered.length > 1 ? "s" : ""}
               </span>
             </div>
             {filtered.length === 0 ? (
-              <div className="text-center py-14 text-gray-500 text-sm">
+              <div className="text-center py-14 text-edf-bleu-nuit/60 text-sm">
                 Aucune actualité ne correspond à ces critères.
               </div>
             ) : (
               <Table
                 aria-label="Liste des actualités"
                 classNames={{
-                  th: "bg-gray-50 text-gray-600 font-semibold",
+                  wrapper: "rounded-none shadow-none",
+                  th: "bg-edf-blanc-bleute text-edf-bleu-nuit/70 font-semibold first:rounded-none last:rounded-none",
                   td: "py-4",
                 }}
               >
@@ -291,11 +293,11 @@ function NewsList({
             </TableHeader>
             <TableBody emptyContent="Aucune actualité">
               {pageItems.map((item) => (
-                <TableRow key={item.id} className="hover:bg-gray-50">
+                <TableRow key={item.id} className="hover:bg-edf-blanc-bleute/60">
                   <TableCell>
                     <div className="flex items-center gap-3">
                       {item.image_url && (
-                        <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                        <div className="w-12 h-12 overflow-hidden bg-edf-blanc-bleute flex-shrink-0">
                           <Image
                             src={item.image_url}
                             alt={item.title}
@@ -306,10 +308,10 @@ function NewsList({
                         </div>
                       )}
                       <div className="max-w-sm">
-                        <p className="font-medium text-gray-900 truncate">
+                        <p className="font-medium text-edf-bleu-nuit truncate">
                           {item.title}
                         </p>
-                        <p className="text-xs text-gray-400 truncate">
+                        <p className="text-xs text-edf-bleu-nuit/50 truncate">
                           /actualites/{item.slug}
                         </p>
                       </div>
@@ -321,6 +323,7 @@ function NewsList({
                         color="success"
                         variant="flat"
                         size="sm"
+                        radius="none"
                         startContent={<Eye className="w-3 h-3" />}
                       >
                         Publié
@@ -330,13 +333,14 @@ function NewsList({
                         color="default"
                         variant="flat"
                         size="sm"
+                        radius="none"
                         startContent={<EyeOff className="w-3 h-3" />}
                       >
                         Brouillon
                       </Chip>
                     )}
                   </TableCell>
-                  <TableCell className="text-sm text-gray-500">
+                  <TableCell className="text-sm text-edf-bleu-nuit/60">
                     {new Date(item.created_at).toLocaleDateString("fr-FR", {
                       day: "numeric",
                       month: "short",
@@ -351,7 +355,8 @@ function NewsList({
                         isIconOnly
                         aria-label={`Modifier ${item.title}`}
                         onPress={() => onEditNews(item)}
-                        className="text-gray-600 hover:text-edf-blue"
+                        radius="none"
+                        className="text-edf-bleu-nuit/60 hover:text-edf-bleu-action"
                       >
                         <Edit className="w-4 h-4" />
                       </Button>
@@ -361,7 +366,8 @@ function NewsList({
                         isIconOnly
                         aria-label={`Supprimer ${item.title}`}
                         onPress={() => onDeleteNews(item.id)}
-                        className="text-gray-600 hover:text-red-500"
+                        radius="none"
+                        className="text-edf-bleu-nuit/60 hover:text-red-600"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -373,13 +379,13 @@ function NewsList({
               </Table>
             )}
             {pageCount > 1 && (
-              <div className="flex justify-center py-4 border-t border-gray-100">
+              <div className="flex justify-center py-4 border-t border-edf-gris-clair">
                 <Pagination
                   total={pageCount}
                   page={safePage}
                   onChange={setPage}
                   size="sm"
-                  classNames={{ cursor: "bg-edf-blue" }}
+                  classNames={{ cursor: "bg-edf-blue rounded-none", item: "rounded-none" }}
                 />
               </div>
             )}
@@ -421,24 +427,25 @@ function NewsForm({
       transition={{ duration: 0.3 }}
       className="mt-6"
     >
-      <Card className="border border-gray-100 shadow-sm">
-        <CardHeader className="flex justify-between items-center px-6 py-4 border-b border-gray-100">
+      <Card radius="none" shadow="none" className="border border-edf-gris-clair">
+        <CardHeader className="flex justify-between items-center px-6 py-4 border-b border-edf-gris-clair">
           <div className="flex items-center gap-4">
             <Button
               variant="light"
               isIconOnly
               onPress={onBackToList}
-              className="text-gray-500"
+              radius="none"
+              className="text-edf-bleu-nuit/60"
             >
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <div>
-              <h2 className="text-lg font-bold text-gray-900">
+              <h2 className="text-lg font-bold text-edf-bleu-nuit">
                 {editingNews
                   ? "Modifier l'actualité"
                   : "Nouvelle actualité"}
               </h2>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-edf-bleu-nuit/60">
                 {editingNews
                   ? "Modifiez les informations"
                   : "Créez une nouvelle actualité"}
@@ -465,6 +472,7 @@ function NewsForm({
               </Chip>
             )}
             <Button
+              radius="none"
               className="bg-edf-blue text-white font-medium"
               startContent={saving ? null : <Save className="w-4 h-4" />}
               onPress={onSaveNews}
@@ -478,15 +486,15 @@ function NewsForm({
         <CardBody className="p-6">
           {/* Mini navigation par section */}
           <div className="flex gap-4 mb-6 text-sm">
-            <a href="#section-contenu" className="text-edf-blue hover:underline">
+            <a href="#section-contenu" className="text-edf-bleu-action hover:underline">
               Contenu
             </a>
-            <a href="#section-medias" className="text-edf-blue hover:underline">
+            <a href="#section-medias" className="text-edf-bleu-action hover:underline">
               Médias
             </a>
             <a
               href="#section-publication"
-              className="text-edf-blue hover:underline"
+              className="text-edf-bleu-action hover:underline"
             >
               Publication
             </a>
@@ -515,15 +523,15 @@ function NewsForm({
             <div className="lg:col-span-2 space-y-6">
               <div
                 id="section-contenu"
-                className="border-b border-gray-200 pb-2 mb-6"
+                className="border-b border-edf-gris-clair pb-2 mb-6"
               >
-                <h3 className="text-lg font-semibold text-gray-800">Contenu</h3>
+                <h3 className="text-lg font-semibold text-edf-bleu-nuit">Contenu</h3>
               </div>
 
               <div>
                 <label
                   htmlFor="news-title"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-sm font-medium text-edf-bleu-nuit mb-2"
                 >
                   Titre <span className="text-red-500">*</span>
                 </label>
@@ -540,7 +548,7 @@ function NewsForm({
                   }}
                   size="lg"
                   classNames={{
-                    inputWrapper: "bg-gray-50 border border-gray-200",
+                    inputWrapper: "bg-white border border-edf-gris-clair rounded-none",
                   }}
                 />
               </div>
@@ -548,7 +556,7 @@ function NewsForm({
               <div>
                 <label
                   htmlFor="news-slug"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-sm font-medium text-edf-bleu-nuit mb-2"
                 >
                   Slug (URL)
                 </label>
@@ -560,10 +568,10 @@ function NewsForm({
                     setNewsForm({ ...newsForm, slug: e.target.value })
                   }
                   classNames={{
-                    inputWrapper: "bg-gray-50 border border-gray-200",
+                    inputWrapper: "bg-white border border-edf-gris-clair rounded-none",
                   }}
                 />
-                <p className="text-xs text-gray-400 mt-1">
+                <p className="text-xs text-edf-bleu-nuit/50 mt-1">
                   URL : /actualites/{newsForm.slug || "..."}
                 </p>
               </div>
@@ -571,7 +579,7 @@ function NewsForm({
               <div>
                 <label
                   htmlFor="news-excerpt"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-sm font-medium text-edf-bleu-nuit mb-2"
                 >
                   Extrait
                 </label>
@@ -585,13 +593,13 @@ function NewsForm({
                   }}
                   rows={3}
                   maxLength={300}
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-edf-blue/20 focus:border-edf-blue resize-y"
+                  className="w-full px-4 py-3 bg-white border border-edf-gris-clair text-sm text-edf-bleu-nuit focus:outline-none focus:ring-2 focus:ring-edf-bleu-action/20 focus:border-edf-bleu-action resize-y"
                 />
                 <p
                   className={`text-xs mt-1 ${
                     newsForm.excerpt.length > 260
-                      ? "text-orange-500"
-                      : "text-gray-400"
+                      ? "text-edf-orange-text"
+                      : "text-edf-bleu-nuit/50"
                   }`}
                 >
                   {newsForm.excerpt.length}/300 caractères
@@ -619,9 +627,9 @@ function NewsForm({
             <div className="space-y-6">
               <div
                 id="section-medias"
-                className="border-b border-gray-200 pb-2 mb-6 mt-8"
+                className="border-b border-edf-gris-clair pb-2 mb-6 mt-8"
               >
-                <h3 className="text-lg font-semibold text-gray-800">Médias</h3>
+                <h3 className="text-lg font-semibold text-edf-bleu-nuit">Médias</h3>
               </div>
 
               <MediaUploader
@@ -650,9 +658,9 @@ function NewsForm({
 
               <div
                 id="section-publication"
-                className="border-b border-gray-200 pb-2 mb-6 mt-8"
+                className="border-b border-edf-gris-clair pb-2 mb-6 mt-8"
               >
-                <h3 className="text-lg font-semibold text-gray-800">
+                <h3 className="text-lg font-semibold text-edf-bleu-nuit">
                   Publication & Partage
                 </h3>
               </div>
@@ -662,7 +670,7 @@ function NewsForm({
                 role="switch"
                 aria-checked={newsForm.is_published}
                 tabIndex={0}
-                className="p-4 bg-gray-50 rounded-xl cursor-pointer hover:bg-gray-100 transition-colors"
+                className="p-4 bg-edf-blanc-bleute cursor-pointer hover:bg-edf-gris-clair/50 transition-colors"
                 onClick={() =>
                   setNewsForm({
                     ...newsForm,
@@ -681,13 +689,13 @@ function NewsForm({
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-gray-900">Publier</p>
-                    <p className="text-sm text-gray-500">Visible sur le site</p>
+                    <p className="font-medium text-edf-bleu-nuit">Publier</p>
+                    <p className="text-sm text-edf-bleu-nuit/60">Visible sur le site</p>
                   </div>
                   <div
                     aria-hidden="true"
                     className={`w-12 h-7 rounded-full transition-colors flex items-center px-1 ${
-                      newsForm.is_published ? "bg-green-500" : "bg-gray-300"
+                      newsForm.is_published ? "bg-edf-green-dark" : "bg-edf-gris-clair"
                     }`}
                   >
                     <div
@@ -706,9 +714,9 @@ function NewsForm({
                 <div>
                   <label
                     htmlFor="news-published-at"
-                    className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-1.5"
+                    className="text-sm font-medium text-edf-bleu-nuit mb-2 flex items-center gap-1.5"
                   >
-                    <CalendarClock className="w-4 h-4 text-gray-400" />
+                    <CalendarClock className="w-4 h-4 text-edf-bleu-nuit/50" />
                     Date de publication
                   </label>
                   <input
@@ -718,9 +726,9 @@ function NewsForm({
                     onChange={(e) =>
                       setNewsForm({ ...newsForm, published_at: e.target.value })
                     }
-                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-edf-blue/20 focus:border-edf-blue"
+                    className="w-full px-4 py-2.5 bg-white border border-edf-gris-clair text-sm text-edf-bleu-nuit focus:outline-none focus:ring-2 focus:ring-edf-bleu-action/20 focus:border-edf-bleu-action"
                   />
-                  <p className="text-xs text-gray-400 mt-1">
+                  <p className="text-xs text-edf-bleu-nuit/50 mt-1">
                     Laissez vide pour publier immédiatement. Une date future
                     programme l&apos;article : il apparaîtra à cette date.
                   </p>
@@ -763,9 +771,9 @@ function TagsField({
     <div>
       <label
         htmlFor="news-tag-input"
-        className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-1.5"
+        className="text-sm font-medium text-edf-bleu-nuit mb-2 flex items-center gap-1.5"
       >
-        <Tag className="w-4 h-4 text-gray-400" />
+        <Tag className="w-4 h-4 text-edf-bleu-nuit/50" />
         Étiquettes
       </label>
       {tags.length > 0 && (
@@ -773,7 +781,7 @@ function TagsField({
           {tags.map((tag) => (
             <span
               key={tag}
-              className="inline-flex items-center gap-1 px-2 py-1 bg-edf-blue/10 text-edf-blue text-xs rounded-full"
+              className="inline-flex items-center gap-1 px-2 py-1 bg-edf-blue/10 text-edf-blue text-xs font-medium"
             >
               #{tag}
               <button
@@ -793,7 +801,7 @@ function TagsField({
           id="news-tag-input"
           size="sm"
           placeholder="Ajouter une étiquette, puis Entrée"
-          startContent={<Hash className="w-3 h-3 text-gray-400" />}
+          startContent={<Hash className="w-3 h-3 text-edf-bleu-nuit/40" />}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               e.preventDefault();
@@ -803,7 +811,7 @@ function TagsField({
             }
           }}
           classNames={{
-            inputWrapper: "bg-gray-50 border border-gray-200",
+            inputWrapper: "bg-white border border-edf-gris-clair rounded-none",
           }}
         />
       )}
@@ -821,19 +829,19 @@ function SeoFields({
   setNewsForm: (form: NewsFormData) => void;
 }) {
   return (
-    <div className="border border-gray-200 rounded-xl overflow-hidden">
-      <div className="flex items-center gap-2 px-4 py-3 bg-gray-50 border-b border-gray-200">
-        <Search className="w-4 h-4 text-gray-500" />
-        <h4 className="text-sm font-semibold text-gray-800">Référencement (SEO)</h4>
+    <div className="border border-edf-gris-clair">
+      <div className="flex items-center gap-2 px-4 py-3 bg-edf-blanc-bleute border-b border-edf-gris-clair">
+        <Search className="w-4 h-4 text-edf-bleu-nuit/60" />
+        <h4 className="text-sm font-semibold text-edf-bleu-nuit">Référencement (SEO)</h4>
       </div>
       <div className="p-4 space-y-4">
         <div>
           <label
             htmlFor="news-seo-title"
-            className="block text-xs font-medium text-gray-600 mb-1.5"
+            className="block text-xs font-medium text-edf-bleu-nuit/70 mb-1.5"
           >
             Titre SEO{" "}
-            <span className="text-gray-400">— défaut : le titre de l&apos;article</span>
+            <span className="text-edf-bleu-nuit/50">— défaut : le titre de l&apos;article</span>
           </label>
           <Input
             id="news-seo-title"
@@ -843,16 +851,16 @@ function SeoFields({
             onChange={(e) =>
               setNewsForm({ ...newsForm, seo_title: e.target.value })
             }
-            classNames={{ inputWrapper: "bg-gray-50 border border-gray-200" }}
+            classNames={{ inputWrapper: "bg-white border border-edf-gris-clair rounded-none" }}
           />
         </div>
         <div>
           <label
             htmlFor="news-seo-desc"
-            className="block text-xs font-medium text-gray-600 mb-1.5"
+            className="block text-xs font-medium text-edf-bleu-nuit/70 mb-1.5"
           >
             Méta-description{" "}
-            <span className="text-gray-400">— défaut : l&apos;extrait</span>
+            <span className="text-edf-bleu-nuit/50">— défaut : l&apos;extrait</span>
           </label>
           <textarea
             id="news-seo-desc"
@@ -864,19 +872,19 @@ function SeoFields({
             }}
             rows={2}
             maxLength={160}
-            className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-edf-blue/20 focus:border-edf-blue resize-none"
+            className="w-full px-3 py-2 bg-white border border-edf-gris-clair text-sm text-edf-bleu-nuit focus:outline-none focus:ring-2 focus:ring-edf-bleu-action/20 focus:border-edf-bleu-action resize-none"
           />
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs text-edf-bleu-nuit/50 mt-1">
             {newsForm.seo_description.length}/160 caractères
           </p>
         </div>
         <div>
           <label
             htmlFor="news-og-image"
-            className="block text-xs font-medium text-gray-600 mb-1.5"
+            className="block text-xs font-medium text-edf-bleu-nuit/70 mb-1.5"
           >
             Image de partage (OpenGraph){" "}
-            <span className="text-gray-400">— défaut : l&apos;image de couverture</span>
+            <span className="text-edf-bleu-nuit/50">— défaut : l&apos;image de couverture</span>
           </label>
           <Input
             id="news-og-image"
@@ -886,7 +894,7 @@ function SeoFields({
             onChange={(e) =>
               setNewsForm({ ...newsForm, og_image: e.target.value })
             }
-            classNames={{ inputWrapper: "bg-gray-50 border border-gray-200" }}
+            classNames={{ inputWrapper: "bg-white border border-edf-gris-clair rounded-none" }}
           />
         </div>
       </div>
@@ -910,7 +918,7 @@ function LinkedInSharePanel({
   onRemoveHashtag: (tag: string) => void;
 }) {
   return (
-    <div className="border border-[#0A66C2]/20 rounded-xl overflow-hidden">
+    <div className="border border-edf-gris-clair">
       <div
         role="switch"
         aria-checked={linkedInShare.enabled}
@@ -918,7 +926,7 @@ function LinkedInSharePanel({
         className={`p-4 cursor-pointer transition-colors ${
           linkedInShare.enabled
             ? "bg-[#0A66C2]/10"
-            : "bg-gray-50 hover:bg-gray-100"
+            : "bg-edf-blanc-bleute hover:bg-edf-gris-clair/50"
         }`}
         onClick={() =>
           setLinkedInShare({
@@ -939,21 +947,21 @@ function LinkedInSharePanel({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div
-              className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                linkedInShare.enabled ? "bg-[#0A66C2]" : "bg-gray-200"
+              className={`w-8 h-8 flex items-center justify-center ${
+                linkedInShare.enabled ? "bg-[#0A66C2]" : "bg-edf-gris-clair"
               }`}
             >
               <Linkedin
                 className={`w-4 h-4 ${
-                  linkedInShare.enabled ? "text-white" : "text-gray-500"
+                  linkedInShare.enabled ? "text-white" : "text-edf-bleu-nuit/50"
                 }`}
               />
             </div>
             <div>
-              <p className="font-medium text-gray-900">
+              <p className="font-medium text-edf-bleu-nuit">
                 Partager sur LinkedIn
               </p>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-edf-bleu-nuit/60">
                 Ouvre une fenêtre pré-remplie
               </p>
             </div>
@@ -961,7 +969,7 @@ function LinkedInSharePanel({
           <div
             aria-hidden="true"
             className={`w-12 h-7 rounded-full transition-colors flex items-center px-1 ${
-              linkedInShare.enabled ? "bg-[#0A66C2]" : "bg-gray-300"
+              linkedInShare.enabled ? "bg-[#0A66C2]" : "bg-edf-gris-clair"
             }`}
           >
             <div
@@ -976,7 +984,7 @@ function LinkedInSharePanel({
       {linkedInShare.enabled && (
         <div className="p-4 border-t border-[#0A66C2]/20 space-y-4">
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1.5">
+            <label className="block text-xs font-medium text-edf-bleu-nuit/70 mb-1.5">
               Texte du post (optionnel)
             </label>
             <textarea
@@ -989,19 +997,19 @@ function LinkedInSharePanel({
                 })
               }
               rows={3}
-              className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0A66C2]/30 focus:border-[#0A66C2] resize-none"
+              className="w-full px-3 py-2 bg-white border border-edf-gris-clair text-sm text-edf-bleu-nuit focus:outline-none focus:ring-2 focus:ring-[#0A66C2]/30 focus:border-[#0A66C2] resize-none"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1.5">
+            <label className="block text-xs font-medium text-edf-bleu-nuit/70 mb-1.5">
               Hashtags
             </label>
             <div className="flex flex-wrap gap-1.5 mb-2">
               {linkedInShare.hashtags.map((tag) => (
                 <span
                   key={tag}
-                  className="inline-flex items-center gap-1 px-2 py-1 bg-[#0A66C2]/10 text-[#0A66C2] text-xs rounded-full"
+                  className="inline-flex items-center gap-1 px-2 py-1 bg-[#0A66C2]/10 text-[#0A66C2] text-xs font-medium"
                 >
                   <Hash className="w-3 h-3" />
                   {tag}
@@ -1035,16 +1043,17 @@ function LinkedInSharePanel({
                     }
                   }}
                   startContent={
-                    <Hash className="w-3 h-3 text-gray-400" />
+                    <Hash className="w-3 h-3 text-edf-bleu-nuit/40" />
                   }
                   classNames={{
-                    inputWrapper: "h-8 bg-white border border-gray-200",
+                    inputWrapper: "h-8 bg-white border border-edf-gris-clair rounded-none",
                     input: "text-xs",
                   }}
                 />
                 <Button
                   size="sm"
                   variant="flat"
+                  radius="none"
                   className="h-8 min-w-8 bg-[#0A66C2]/10 text-[#0A66C2]"
                   isIconOnly
                   onPress={onAddHashtag}
@@ -1055,12 +1064,12 @@ function LinkedInSharePanel({
             )}
           </div>
 
-          <div className="p-3 bg-gray-50 rounded-lg max-h-48 overflow-y-auto">
-            <p className="text-xs font-medium text-gray-500 mb-2 flex items-center gap-1">
+          <div className="p-3 bg-edf-blanc-bleute max-h-48 overflow-y-auto">
+            <p className="text-xs font-medium text-edf-bleu-nuit/60 mb-2 flex items-center gap-1">
               <Eye className="w-3 h-3" />
               Aperçu du post
             </p>
-            <p className="text-xs text-gray-700 whitespace-pre-wrap">
+            <p className="text-xs text-edf-bleu-nuit/80 whitespace-pre-wrap">
               {linkedInShare.customText ||
                 newsContent ||
                 "Votre texte apparaîtra ici..."}
@@ -1075,7 +1084,7 @@ function LinkedInSharePanel({
             </p>
           </div>
 
-          <p className="text-xs text-gray-400 flex items-center gap-1">
+          <p className="text-xs text-edf-bleu-nuit/50 flex items-center gap-1">
             <ExternalLink className="w-3 h-3" />
             Ouvrira LinkedIn dans un nouvel onglet
           </p>

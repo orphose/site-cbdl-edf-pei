@@ -172,18 +172,18 @@ function PartnershipList({
   };
 
   return (
-    <Card className="mt-6 border border-gray-100 shadow-sm">
-      <CardHeader className="flex justify-between items-center px-6 py-4 border-b border-gray-100">
+    <Card radius="none" shadow="none" className="mt-6 border border-edf-gris-clair">
+      <CardHeader className="flex justify-between items-center px-6 py-4 border-b border-edf-gris-clair">
         <div>
-          <h2 className="text-lg font-bold text-gray-900">
+          <h2 className="text-lg font-bold text-edf-bleu-nuit">
             Gestion des partenariats
           </h2>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-edf-bleu-nuit/60">
             Glissez les lignes pour réordonner l&apos;affichage sur le site
           </p>
         </div>
         <Button
-          className="bg-edf-blue text-white font-medium"
+          radius="none" className="bg-edf-blue text-white font-medium"
           startContent={<Plus className="w-4 h-4" />}
           onPress={onCreatePartnership}
         >
@@ -193,13 +193,13 @@ function PartnershipList({
       <CardBody className="p-0">
         {partnerships.length === 0 ? (
           <div className="text-center py-16">
-            <div className="w-16 h-16 bg-edf-blue/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-edf-blanc-bleute flex items-center justify-center mx-auto mb-4">
               <Users className="w-8 h-8 text-edf-blue" />
             </div>
-            <h3 className="text-lg font-bold text-gray-800 mb-2">
+            <h3 className="text-lg font-bold text-edf-bleu-nuit mb-2">
               Ajoutez votre premier partenaire
             </h3>
-            <p className="text-gray-500 text-sm mb-6 max-w-md mx-auto">
+            <p className="text-edf-bleu-nuit/60 text-sm mb-6 max-w-md mx-auto">
               Les partenariats apparaîtront sur la page dédiée du site.
             </p>
             <Button
@@ -212,29 +212,29 @@ function PartnershipList({
           </div>
         ) : (
           <div>
-            <div className="px-6 py-4 border-b border-gray-100">
+            <div className="px-6 py-4 border-b border-edf-gris-clair">
               <Input
                 aria-label="Rechercher un partenaire"
                 size="sm"
                 placeholder="Rechercher un partenaire…"
                 value={query}
                 onValueChange={setQuery}
-                startContent={<Search className="w-4 h-4 text-gray-400" />}
+                startContent={<Search className="w-4 h-4 text-edf-bleu-nuit/40" />}
                 isClearable
                 onClear={() => setQuery("")}
                 classNames={{
-                  inputWrapper: "bg-gray-50 border border-gray-200",
+                  inputWrapper: "bg-white border border-edf-gris-clair rounded-none",
                   base: "sm:max-w-xs",
                 }}
               />
             </div>
 
             {filtered.length === 0 ? (
-              <div className="text-center py-14 text-gray-500 text-sm">
+              <div className="text-center py-14 text-edf-bleu-nuit/60 text-sm">
                 Aucun partenaire ne correspond à cette recherche.
               </div>
             ) : (
-              <ul className="divide-y divide-gray-100 list-none">
+              <ul className="divide-y divide-edf-gris-clair/70 list-none">
                 {filtered.map((item) => (
                   <li
                     key={item.id}
@@ -244,12 +244,12 @@ function PartnershipList({
                     onDrop={() => canReorder && handleDrop(item.id)}
                     onDragEnd={() => setDragId(null)}
                     className={`flex items-center gap-3 px-6 py-3 transition-colors ${
-                      dragId === item.id ? "bg-edf-blue/5 opacity-60" : "hover:bg-gray-50"
+                      dragId === item.id ? "bg-edf-bleu-action/5 opacity-60" : "hover:bg-edf-blanc-bleute/60"
                     }`}
                   >
                     {canReorder ? (
                       <span
-                        className="cursor-grab active:cursor-grabbing text-gray-300 hover:text-gray-500 touch-none"
+                        className="cursor-grab active:cursor-grabbing text-edf-gris-clair hover:text-edf-bleu-nuit/60 touch-none"
                         aria-hidden="true"
                         title="Glisser pour réordonner"
                       >
@@ -260,7 +260,7 @@ function PartnershipList({
                     )}
 
                     {item.logo_url ? (
-                      <div className="w-10 h-10 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                      <div className="w-10 h-10 overflow-hidden bg-edf-blanc-bleute flex-shrink-0">
                         <Image
                           src={getMediaUrl(item.logo_url)}
                           alt={item.name}
@@ -271,28 +271,28 @@ function PartnershipList({
                       </div>
                     ) : (
                       <div
-                        className="w-10 h-10 rounded-lg flex-shrink-0"
+                        className="w-10 h-10 flex-shrink-0"
                         style={{ backgroundColor: `${item.color ?? "#001A70"}1a` }}
                       />
                     )}
 
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium text-gray-900 truncate">
+                      <p className="font-medium text-edf-bleu-nuit truncate">
                         {item.name}
                       </p>
                       {item.description && (
-                        <p className="text-xs text-gray-400 truncate">
+                        <p className="text-xs text-edf-bleu-nuit/50 truncate">
                           {item.description}
                         </p>
                       )}
                     </div>
 
                     {item.is_active ? (
-                      <Chip color="success" variant="flat" size="sm">
+                      <Chip color="success" variant="flat" size="sm" radius="none">
                         Actif
                       </Chip>
                     ) : (
-                      <Chip color="default" variant="flat" size="sm">
+                      <Chip color="default" variant="flat" size="sm" radius="none">
                         Inactif
                       </Chip>
                     )}
@@ -304,7 +304,7 @@ function PartnershipList({
                         isIconOnly
                         aria-label={`Modifier ${item.name}`}
                         onPress={() => onEditPartnership(item)}
-                        className="text-gray-600 hover:text-edf-blue"
+                        radius="none" className="text-edf-bleu-nuit/60 hover:text-edf-bleu-action"
                       >
                         <Edit className="w-4 h-4" />
                       </Button>
@@ -314,7 +314,7 @@ function PartnershipList({
                         isIconOnly
                         aria-label={`Supprimer ${item.name}`}
                         onPress={() => onDeletePartnership(item.id)}
-                        className="text-gray-600 hover:text-red-500"
+                        radius="none" className="text-edf-bleu-nuit/60 hover:text-red-600"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -362,24 +362,24 @@ function PartnershipForm({
       transition={{ duration: 0.3 }}
       className="mt-6"
     >
-      <Card className="border border-gray-100 shadow-sm">
-        <CardHeader className="flex justify-between items-center px-6 py-4 border-b border-gray-100">
+      <Card radius="none" shadow="none" className="border border-edf-gris-clair">
+        <CardHeader className="flex justify-between items-center px-6 py-4 border-b border-edf-gris-clair">
           <div className="flex items-center gap-4">
             <Button
               variant="light"
               isIconOnly
               onPress={onBackToList}
-              className="text-gray-500"
+              radius="none" className="text-edf-bleu-nuit/60"
             >
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <div>
-              <h2 className="text-lg font-bold text-gray-900">
+              <h2 className="text-lg font-bold text-edf-bleu-nuit">
                 {editingPartnership
                   ? "Modifier le partenaire"
                   : "Nouveau partenaire"}
               </h2>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-edf-bleu-nuit/60">
                 {editingPartnership
                   ? "Modifiez les informations"
                   : "Ajoutez un partenaire"}
@@ -406,6 +406,7 @@ function PartnershipForm({
               </Chip>
             )}
             <Button
+              radius="none"
               className="bg-edf-blue text-white font-medium"
               startContent={saving ? null : <Save className="w-4 h-4" />}
               onPress={onSavePartnership}
@@ -440,7 +441,7 @@ function PartnershipForm({
                 <div className="flex justify-between items-center mb-2">
                   <label
                     htmlFor="partnership-name"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-edf-bleu-nuit"
                   >
                     Titre du partenariat{" "}
                     <span className="text-red-500">*</span>
@@ -448,8 +449,8 @@ function PartnershipForm({
                   <span
                     className={`text-xs ${
                       partnershipForm.name.length > 80
-                        ? "text-red-500 font-medium"
-                        : "text-gray-400"
+                        ? "text-red-600 font-medium"
+                        : "text-edf-bleu-nuit/50"
                     }`}
                   >
                     {partnershipForm.name.length}/80
@@ -469,15 +470,15 @@ function PartnershipForm({
                   }}
                   size="lg"
                   classNames={{
-                    inputWrapper: `bg-gray-50 border ${
+                    inputWrapper: `bg-white rounded-none border ${
                       partnershipForm.name.length > 70
-                        ? "border-orange-300"
-                        : "border-gray-200"
+                        ? "border-edf-orange-light"
+                        : "border-edf-gris-clair"
                     }`,
                   }}
                 />
                 {partnershipForm.name.length > 70 && (
-                  <p className="text-xs text-orange-500 mt-1">
+                  <p className="text-xs text-edf-orange-text mt-1">
                     Approche de la limite
                   </p>
                 )}
@@ -487,15 +488,15 @@ function PartnershipForm({
                 <div className="flex justify-between items-center mb-2">
                   <label
                     htmlFor="partnership-description"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-edf-bleu-nuit"
                   >
                     Description
                   </label>
                   <span
                     className={`text-xs ${
                       partnershipForm.description.length > 280
-                        ? "text-red-500 font-medium"
-                        : "text-gray-400"
+                        ? "text-red-600 font-medium"
+                        : "text-edf-bleu-nuit/50"
                     }`}
                   >
                     {partnershipForm.description.length}/280
@@ -514,14 +515,14 @@ function PartnershipForm({
                     }
                   }}
                   rows={5}
-                  className={`w-full px-4 py-3 bg-gray-50 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-edf-blue/20 focus:border-edf-blue resize-none ${
+                  className={`w-full px-4 py-3 bg-white border text-sm text-edf-bleu-nuit focus:outline-none focus:ring-2 focus:ring-edf-bleu-action/20 focus:border-edf-bleu-action resize-none ${
                     partnershipForm.description.length > 250
-                      ? "border-orange-300"
-                      : "border-gray-200"
+                      ? "border-edf-orange-light"
+                      : "border-edf-gris-clair"
                   }`}
                 />
                 {partnershipForm.description.length > 250 && (
-                  <p className="text-xs text-orange-500 mt-1">
+                  <p className="text-xs text-edf-orange-text mt-1">
                     Approche de la limite (
                     {280 - partnershipForm.description.length} caractères
                     restants)
@@ -531,14 +532,14 @@ function PartnershipForm({
 
               {/* Color palette */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
+                <label className="block text-sm font-medium text-edf-bleu-nuit mb-3">
                   Couleur de l&apos;étiquette
                 </label>
 
                 <div className="space-y-3">
                   {Object.entries(COLOR_PALETTE).map(([groupName, colors]) => (
                     <div key={groupName} className="flex items-center gap-2">
-                      <span className="text-xs text-gray-500 w-16">
+                      <span className="text-xs text-edf-bleu-nuit/60 w-16">
                         {groupName}
                       </span>
                       <div className="flex gap-2">
@@ -552,9 +553,9 @@ function PartnershipForm({
                                 color: color.hex,
                               })
                             }
-                            className={`w-10 h-10 rounded-lg transition-all ${
+                            className={`w-10 h-10 transition-all ${
                               partnershipForm.color === color.hex
-                                ? "ring-2 ring-offset-2 ring-gray-900 scale-110"
+                                ? "ring-2 ring-offset-2 ring-edf-bleu-nuit scale-110"
                                 : "hover:scale-105"
                             }`}
                             style={{ backgroundColor: color.hex }}
@@ -567,7 +568,7 @@ function PartnershipForm({
                 </div>
 
                 <div className="mt-4 flex items-center gap-3">
-                  <span className="text-xs text-gray-500">Aperçu :</span>
+                  <span className="text-xs text-edf-bleu-nuit/60">Aperçu :</span>
                   <span
                     className="px-3 py-1.5 text-xs font-medium text-white"
                     style={{ backgroundColor: partnershipForm.color }}
@@ -603,7 +604,7 @@ function PartnershipForm({
                 role="switch"
                 aria-checked={partnershipForm.is_active}
                 tabIndex={0}
-                className="p-4 bg-gray-50 rounded-xl cursor-pointer hover:bg-gray-100 transition-colors"
+                className="p-4 bg-edf-blanc-bleute cursor-pointer hover:bg-edf-gris-clair/50 transition-colors"
                 onClick={() =>
                   setPartnershipForm({
                     ...partnershipForm,
@@ -622,13 +623,13 @@ function PartnershipForm({
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-gray-900">Actif</p>
-                    <p className="text-sm text-gray-500">Visible sur le site</p>
+                    <p className="font-medium text-edf-bleu-nuit">Actif</p>
+                    <p className="text-sm text-edf-bleu-nuit/60">Visible sur le site</p>
                   </div>
                   <div
                     aria-hidden="true"
                     className={`w-12 h-7 rounded-full transition-colors flex items-center px-1 ${
-                      partnershipForm.is_active ? "bg-green-500" : "bg-gray-300"
+                      partnershipForm.is_active ? "bg-edf-green-dark" : "bg-edf-gris-clair"
                     }`}
                   >
                     <div

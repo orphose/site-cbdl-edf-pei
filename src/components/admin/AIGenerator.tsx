@@ -88,20 +88,20 @@ export default function AIGenerator({
           setAiPrompt("");
           setAiError("");
         }}
-        className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
+        className={`flex items-center gap-2 min-h-11 px-4 text-sm font-semibold transition-colors ${
           aiMode
-            ? "bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg"
-            : "bg-gradient-to-r from-purple-50 to-indigo-50 text-purple-700 hover:from-purple-100 hover:to-indigo-100 border border-purple-200"
+            ? "bg-edf-blue text-white"
+            : "border-2 border-edf-bleu-action text-edf-bleu-action hover:bg-edf-bleu-action hover:text-white"
         }`}
       >
-        <Sparkles className="w-4 h-4" />
+        <Sparkles className="w-4 h-4" aria-hidden="true" />
         {aiMode ? "Fermer l'assistant IA" : "Rédiger avec l'assistant IA"}
       </button>
 
       {aiMode && (
-        <div className="mt-4 p-5 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl border border-purple-100">
-          <p className="text-sm text-purple-800 mb-3 flex items-center gap-2">
-            <Wand2 className="w-4 h-4" />
+        <div className="mt-4 p-5 bg-edf-blanc-bleute border border-edf-gris-clair">
+          <p className="text-sm text-edf-bleu-nuit mb-3 flex items-center gap-2">
+            <Wand2 className="w-4 h-4 text-edf-bleu-action" aria-hidden="true" />
             {description}
           </p>
           <textarea
@@ -109,18 +109,20 @@ export default function AIGenerator({
             value={aiPrompt}
             onChange={(e) => setAiPrompt(e.target.value)}
             rows={3}
-            className="w-full px-4 py-3 bg-white border border-purple-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-300 resize-none"
+            className="w-full px-4 py-3 bg-white border border-edf-gris-clair text-sm text-edf-bleu-nuit focus:outline-none focus:ring-2 focus:ring-edf-bleu-action/20 focus:border-edf-bleu-action resize-none"
           />
           {aiError && (
-            <p className="text-xs text-red-500 mt-2 flex items-center gap-1">
-              <AlertCircle className="w-3 h-3" />
+            <p className="text-xs text-red-600 mt-2 flex items-center gap-1">
+              <AlertCircle className="w-3 h-3" aria-hidden="true" />
               {aiError}
             </p>
           )}
           <div className="flex justify-end gap-2 mt-3">
             <Button
               size="sm"
+              radius="none"
               variant="flat"
+              className="bg-white border border-edf-gris-clair text-edf-bleu-nuit"
               onPress={() => {
                 setAiMode(false);
                 setAiPrompt("");
@@ -131,7 +133,8 @@ export default function AIGenerator({
             </Button>
             <Button
               size="sm"
-              className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white"
+              radius="none"
+              className="bg-edf-bleu-action text-white font-semibold"
               startContent={
                 aiGenerating ? null : <Sparkles className="w-4 h-4" />
               }

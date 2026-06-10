@@ -148,6 +148,29 @@ export default function AdminPage() {
     setHasUnsavedChanges(false);
   };
 
+  // Changement de section depuis la barre de navigation : quitte un éventuel
+  // formulaire ouvert (avec la même confirmation anti-perte de saisie).
+  const handleSectionChange = (section: ActiveSection) => {
+    if (section === activeSection && viewMode === "list") return;
+    if (viewMode !== "list") {
+      if (
+        hasUnsavedChanges &&
+        !window.confirm(
+          "Des modifications ne sont pas enregistrées. Quitter sans enregistrer ?"
+        )
+      ) {
+        return;
+      }
+      setViewMode("list");
+      newsManager.setSaveSuccess(false);
+      newsManager.setSaveError(null);
+      partnershipManager.setSaveSuccess(false);
+      partnershipManager.setSaveError(null);
+      setHasUnsavedChanges(false);
+    }
+    setActiveSection(section);
+  };
+
   // Confirm delete — supprime puis conserve 5s un snapshot pour l'undo.
   const handleConfirmDelete = async () => {
     if (!deleteConfirm) return;
@@ -191,7 +214,7 @@ export default function AdminPage() {
         role="status"
         aria-busy="true"
         aria-live="polite"
-        className="min-h-screen flex items-center justify-center bg-gray-50"
+        className="min-h-screen flex items-center justify-center bg-edf-blanc-bleute"
       >
         <div
           className="animate-spin rounded-full h-12 w-12 border-b-2 border-edf-blue"
@@ -225,7 +248,7 @@ export default function AdminPage() {
         isAdmin={auth.isAdmin}
         onLogout={auth.handleLogout}
         activeSection={activeSection}
-        setActiveSection={setActiveSection}
+        onSectionChange={handleSectionChange}
         viewMode={viewMode}
         setViewMode={setViewMode}
         newsManager={newsManager}

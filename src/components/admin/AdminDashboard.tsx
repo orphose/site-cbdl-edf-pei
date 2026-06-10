@@ -1,14 +1,6 @@
 "use client";
 
 import {
-  Card,
-  CardBody,
-  Button,
-  Tabs,
-  Tab,
-  Chip,
-} from "@nextui-org/react";
-import {
   Newspaper,
   Users,
   Eye,
@@ -16,6 +8,8 @@ import {
   History,
   UserCog,
   AlertCircle,
+  CheckCircle2,
+  type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -43,7 +37,8 @@ interface AdminDashboardProps {
   isAdmin: boolean;
   onLogout: () => void;
   activeSection: ActiveSection;
-  setActiveSection: (section: ActiveSection) => void;
+  /** Changement de section — gardé contre la perte de saisie (cf. page) */
+  onSectionChange: (section: ActiveSection) => void;
   viewMode: ViewMode;
   setViewMode: (mode: ViewMode) => void;
   newsManager: NewsManagerReturn;
@@ -58,12 +53,20 @@ interface AdminDashboardProps {
   loadError: string | null;
 }
 
+interface NavItem {
+  key: ActiveSection;
+  label: string;
+  icon: LucideIcon;
+  count?: number;
+  adminOnly?: boolean;
+}
+
 export default function AdminDashboard({
   user,
   isAdmin,
   onLogout,
   activeSection,
-  setActiveSection,
+  onSectionChange,
   viewMode,
   newsManager,
   partnershipManager,
@@ -76,173 +79,181 @@ export default function AdminDashboard({
   onChangeRole,
   loadError,
 }: AdminDashboardProps) {
+  const navItems: NavItem[] = [
+    {
+      key: "news",
+      label: "Actualités",
+      icon: Newspaper,
+      count: newsManager.news.length,
+    },
+    {
+      key: "partnerships",
+      label: "Partenariats",
+      icon: Users,
+      count: partnershipManager.partnerships.length,
+    },
+    { key: "activity", label: "Journal", icon: History },
+    {
+      key: "users",
+      label: "Utilisateurs",
+      icon: UserCog,
+      count: profiles.length,
+      adminOnly: true,
+    },
+  ];
+
+  const publishedCount = newsManager.news.filter((n) => n.is_published).length;
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white sticky top-0 z-50 shadow-md h-[100px]">
-        <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <Link href="/">
+    <div className="min-h-screen bg-edf-blanc-bleute">
+      {/* En-tête — reprend le langage de la nav publique (fond blanc,
+          logo à gauche, état actif = barre Bleu Action sous le lien) */}
+      <header className="bg-white sticky top-0 z-50 border-b border-edf-gris-clair shadow-1">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center gap-4 sm:gap-6">
+          {/* Identité */}
+          <div className="flex items-center gap-4 shrink-0">
+            <Link
+              href="/"
+              aria-label="EDF PEI — retour au site"
+              className="flex items-center"
+            >
               <Image
                 src={IMAGES.logo.couleurs}
                 alt="EDF PEI"
-                width={200}
-                height={80}
-                className="h-20 w-auto"
+                width={140}
+                height={56}
+                className="h-9 w-auto"
               />
             </Link>
-            <div className="h-12 w-px bg-gray-200" />
-            <div>
-              <h1 className="text-lg font-bold text-gray-900">
-                Administration
-              </h1>
-              <p className="text-xs text-gray-500">{user.email}</p>
-            </div>
+            <div className="h-8 w-px bg-edf-gris-clair hidden sm:block" aria-hidden="true" />
+            <span className="eyebrow eyebrow--bleu-nuit hidden sm:inline-flex">
+              Administration
+            </span>
           </div>
 
-          <div className="flex items-center gap-4">
-            <Link href="/">
-              <Button
-                variant="light"
-                size="sm"
-                startContent={<Eye className="w-4 h-4" />}
-                className="text-gray-600"
-              >
-                Voir le site
-              </Button>
-            </Link>
-            <Button
-              variant="flat"
-              color="danger"
-              size="sm"
-              startContent={<LogOut className="w-4 h-4" />}
-              onPress={onLogout}
+          {/* Navigation des sections — self-stretch + barre active (cf. Header public) */}
+          <nav
+            aria-label="Sections d'administration"
+            className="flex items-center self-stretch gap-1 overflow-x-auto min-w-0 flex-1"
+          >
+            {navItems
+              .filter((item) => !item.adminOnly || isAdmin)
+              .map((item) => {
+                const ItemIcon = item.icon;
+                const active = activeSection === item.key;
+                return (
+                  <button
+                    key={item.key}
+                    type="button"
+                    onClick={() => onSectionChange(item.key)}
+                    aria-current={active ? "page" : undefined}
+                    className={`relative flex items-center gap-2 h-full px-3 text-[0.9375rem] whitespace-nowrap transition-colors ${
+                      active
+                        ? "text-edf-bleu-action font-semibold"
+                        : "text-edf-bleu-nuit font-medium hover:text-edf-bleu-action"
+                    }`}
+                  >
+                    <ItemIcon className="w-4 h-4" aria-hidden="true" />
+                    {item.label}
+                    {typeof item.count === "number" && (
+                      <span
+                        className={`px-1.5 py-0.5 text-xs font-semibold leading-none ${
+                          active
+                            ? "bg-edf-bleu-action/10 text-edf-bleu-action"
+                            : "bg-edf-blanc-bleute text-edf-bleu-nuit/70"
+                        }`}
+                      >
+                        {item.count}
+                      </span>
+                    )}
+                    {/* Barre active — repère "vous êtes ici" */}
+                    <span
+                      aria-hidden="true"
+                      className={`absolute inset-x-3 bottom-0 h-[3px] transition-colors ${
+                        active ? "bg-edf-bleu-action" : "bg-transparent"
+                      }`}
+                    />
+                  </button>
+                );
+              })}
+          </nav>
+
+          {/* Actions */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <Link
+              href="/"
+              className="hidden md:inline-flex items-center gap-2 min-h-11 px-3 text-sm font-medium text-edf-bleu-nuit hover:text-edf-bleu-action transition-colors"
             >
-              Déconnexion
-            </Button>
+              <Eye className="w-4 h-4" aria-hidden="true" />
+              Voir le site
+            </Link>
+            <button
+              type="button"
+              onClick={onLogout}
+              title={user.email ?? undefined}
+              className="inline-flex items-center gap-2 min-h-11 px-4 border-2 border-edf-bleu-nuit text-sm font-semibold text-edf-bleu-nuit hover:bg-edf-bleu-nuit hover:text-white transition-colors"
+            >
+              <LogOut className="w-4 h-4" aria-hidden="true" />
+              <span className="hidden sm:inline">Déconnexion</span>
+            </button>
           </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-6 py-6">
-        {/* Statistics */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <Card className="border border-gray-100">
-            <CardBody className="flex flex-row items-center gap-4 p-4">
-              <div className="w-12 h-12 rounded-xl bg-edf-blue/10 flex items-center justify-center">
-                <Newspaper className="w-6 h-6 text-edf-blue" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">
-                  {newsManager.news.length}
-                </p>
-                <p className="text-sm text-gray-500">Actualités</p>
-              </div>
-            </CardBody>
-          </Card>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        {/* Identité de session (mobile n'a pas le title du header) */}
+        <p className="text-caption mb-6">
+          Connecté en tant que{" "}
+          <span className="font-medium text-edf-bleu-nuit">{user.email}</span>
+          {!isAdmin && " — éditeur"}
+        </p>
 
-          <Card className="border border-gray-100">
-            <CardBody className="flex flex-row items-center gap-4 p-4">
-              <div className="w-12 h-12 rounded-xl bg-edf-orange/10 flex items-center justify-center">
-                <Eye className="w-6 h-6 text-edf-orange" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">
-                  {newsManager.news.filter((n) => n.is_published).length}
-                </p>
-                <p className="text-sm text-gray-500">Publiées</p>
-              </div>
-            </CardBody>
-          </Card>
-
-          <Card className="border border-gray-100">
-            <CardBody className="flex flex-row items-center gap-4 p-4">
-              <div className="w-12 h-12 rounded-xl bg-edf-green/10 flex items-center justify-center">
-                <Users className="w-6 h-6 text-edf-green" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">
-                  {partnershipManager.partnerships.length}
-                </p>
-                <p className="text-sm text-gray-500">Partenaires</p>
-              </div>
-            </CardBody>
-          </Card>
-        </div>
-
-        {/* Tabs - only in list mode */}
-        {viewMode === "list" && (
-          <Tabs
-            aria-label="Sections admin"
-            color="primary"
-            variant="underlined"
-            selectedKey={activeSection}
-            onSelectionChange={(key) =>
-              setActiveSection(key as ActiveSection)
-            }
-            classNames={{
-              tabList:
-                "gap-6 w-full relative rounded-none p-0 border-b border-gray-200",
-              cursor: "w-full bg-edf-blue",
-              tab: "max-w-fit px-0 h-12",
-              tabContent:
-                "group-data-[selected=true]:text-edf-blue font-medium",
-            }}
-          >
-            <Tab
-              key="news"
-              title={
-                <div className="flex items-center gap-2">
-                  <Newspaper className="w-4 h-4" />
-                  <span>Actualités</span>
-                  <Chip size="sm" variant="flat" className="bg-gray-100">
-                    {newsManager.news.length}
-                  </Chip>
+        {/* Chiffres clés — cartes carrées, icônes en carré plein */}
+        <dl className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+          {[
+            {
+              icon: Newspaper,
+              square: "icon-square",
+              value: newsManager.news.length,
+              label: "Actualités",
+            },
+            {
+              icon: CheckCircle2,
+              square: "icon-square icon-square--green",
+              value: publishedCount,
+              label: "Publiées sur le site",
+            },
+            {
+              icon: Users,
+              square: "icon-square icon-square--action",
+              value: partnershipManager.partnerships.length,
+              label: "Partenaires",
+            },
+          ].map((stat) => {
+            const StatIcon = stat.icon;
+            return (
+              <div
+                key={stat.label}
+                className="bg-white border border-edf-gris-clair p-5 flex items-center gap-4"
+              >
+                <span className={stat.square} aria-hidden="true">
+                  <StatIcon className="w-6 h-6" />
+                </span>
+                <div>
+                  <dd className="text-3xl font-bold text-edf-bleu-nuit leading-tight">
+                    {stat.value}
+                  </dd>
+                  <dt className="text-caption">{stat.label}</dt>
                 </div>
-              }
-            />
-            <Tab
-              key="partnerships"
-              title={
-                <div className="flex items-center gap-2">
-                  <Users className="w-4 h-4" />
-                  <span>Partenariats</span>
-                  <Chip size="sm" variant="flat" className="bg-gray-100">
-                    {partnershipManager.partnerships.length}
-                  </Chip>
-                </div>
-              }
-            />
-            <Tab
-              key="activity"
-              title={
-                <div className="flex items-center gap-2">
-                  <History className="w-4 h-4" />
-                  <span>Journal</span>
-                </div>
-              }
-            />
-            {isAdmin ? (
-              <Tab
-                key="users"
-                title={
-                  <div className="flex items-center gap-2">
-                    <UserCog className="w-4 h-4" />
-                    <span>Utilisateurs</span>
-                    <Chip size="sm" variant="flat" className="bg-gray-100">
-                      {profiles.length}
-                    </Chip>
-                  </div>
-                }
-              />
-            ) : null}
-          </Tabs>
-        )}
+              </div>
+            );
+          })}
+        </dl>
 
         {loadError && (
           <div
             role="alert"
-            className="mt-6 flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm"
+            className="mb-6 flex items-center gap-2 p-3 bg-red-50 border border-red-200 text-red-700 text-sm"
           >
             <AlertCircle className="w-4 h-4 flex-shrink-0" />
             <span>{loadError}</span>
@@ -337,12 +348,12 @@ export default function AdminDashboard({
           aria-modal="true"
           aria-labelledby="delete-dialog-title"
           aria-describedby="delete-dialog-desc"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-edf-bleu-nuit/60"
           onKeyDown={(e) => {
             if (e.key === "Escape") setDeleteConfirm(null);
           }}
         >
-          <div className="bg-white shadow-xl p-6 max-w-md mx-4">
+          <div className="bg-white shadow-4 p-6 max-w-md mx-4">
             <h3
               id="delete-dialog-title"
               className="text-lg font-bold text-edf-bleu-nuit mb-2"
@@ -351,7 +362,7 @@ export default function AdminDashboard({
             </h3>
             <p
               id="delete-dialog-desc"
-              className="text-edf-gris-fonce text-sm mb-6"
+              className="text-edf-bleu-nuit/75 text-sm mb-6"
             >
               L&apos;élément sera retiré immédiatement. Vous pourrez annuler
               la suppression pendant 5 secondes.
@@ -359,14 +370,14 @@ export default function AdminDashboard({
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setDeleteConfirm(null)}
-                className="px-4 py-2 min-h-[44px] text-edf-bleu-nuit bg-edf-gris-clair hover:bg-gray-300 transition-colors font-medium"
+                className="px-4 py-2 min-h-11 text-edf-bleu-nuit bg-edf-blanc-bleute hover:bg-edf-gris-clair transition-colors font-medium"
                 autoFocus
               >
                 Garder
               </button>
               <button
                 onClick={onConfirmDelete}
-                className="px-4 py-2 min-h-[44px] text-white bg-red-600 hover:bg-red-700 transition-colors font-semibold"
+                className="px-4 py-2 min-h-11 text-white bg-red-600 hover:bg-red-700 transition-colors font-semibold"
               >
                 Supprimer{" "}
                 {deleteConfirm.type === "news" ? "l'actualité" : "le partenariat"}
