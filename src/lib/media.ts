@@ -1,9 +1,17 @@
 /**
- * Configuration des URLs médias Supabase Storage
- * Tous les médias du site sont stockés sur Supabase Storage
+ * Médias du site.
+ *
+ * RÈGLE DE PARTAGE :
+ * — Contenus STATIQUES (images des sections, posters) : servis localement
+ *   depuis /public/images/site, optimisés (WebP ≤ 1920px). Les originaux
+ *   pesaient 327 Mo au total ; les versions servies pèsent ~4 Mo.
+ * — Contenus DYNAMIQUES (covers d'actualités, logos partenaires uploadés
+ *   via l'admin) : Supabase Storage, résolus par getMediaUrl().
+ * — VIDÉOS : Supabase Storage (hors git), en versions transcodées pour le
+ *   web (1080p max, H.264 CRF 28-29, sans audio, faststart).
  */
 
-// URL de base du storage Supabase
+// URL de base du storage Supabase (contenus dynamiques + vidéos)
 const STORAGE_BASE_URL = 'https://hfrfpbwnztopvytaeymb.supabase.co/storage/v1/object/public/media';
 
 /**
@@ -12,91 +20,77 @@ const STORAGE_BASE_URL = 'https://hfrfpbwnztopvytaeymb.supabase.co/storage/v1/ob
  * @returns URL complète du média
  */
 export function getMediaUrl(filename: string): string {
-  // Assertions de validation
-  console.assert(filename, 'Le nom du fichier est requis');
-  console.assert(filename.length > 0, 'Le nom du fichier ne peut pas être vide');
-  
   return `${STORAGE_BASE_URL}/${filename}`;
 }
 
 // ============================================
-// IMAGES
+// IMAGES STATIQUES (locales, optimisées)
 // ============================================
 
 export const IMAGES = {
   // Logos
   logo: {
-    blanc: getMediaUrl('EDF_PEI_LOGO_BLANC.png'),
-    couleurs: getMediaUrl('EDF_PEI_LOGO_COULEURS.png'),
-    couleursJpg: getMediaUrl('EDF_PEI_LOGO_COULEURS.jpg'),
+    blanc: '/images/site/logo-edf-pei-blanc.png',
+    couleurs: '/images/site/logo-edf-pei-couleurs.png',
   },
-  
+
   // Centrale
   centrale: {
-    emprise: getMediaUrl('emprise_cbdl_vs_solaire.png'),
-    emprise2: getMediaUrl('emprise_cbdl_vs_solaire_2.png'),
-    modelisation: getMediaUrl('modelisation_photo_1.png'),
-    visuelBiomasse: getMediaUrl('visuel_biomasse_1.png'),
-    pourquoiLocalisation: getMediaUrl('pourquoi_localisation_env.png'),
+    modelisation: '/images/site/modelisation-centrale.webp',
+    visuelBiomasse: '/images/site/schema-biomasse.webp',
+    pourquoiLocalisation: '/images/site/localisation-centrale.webp',
+    emprise2: '/images/site/emprise-comparaison.webp',
   },
-  
+
   // Environnement
   environnement: {
-    mangrove: getMediaUrl('mangrove_1.png'),
-    gestionResp: getMediaUrl('gestion_resp_1.png'),
-    ressourcePreserv: getMediaUrl('ressource_preserv.png'),
-    preservWater: getMediaUrl('preserv_water.jpg'),
-    qualiteAir: getMediaUrl('qualite_air_photo_1.jpg'),
-    respApproch: getMediaUrl('resp_approch.jpg'),
+    qualiteAir: '/images/site/qualite-air.webp',
+    gestionResp: '/images/site/gestion-responsable.webp',
+    murumuru: '/images/site/murumuru.webp',
+    mangrove: '/images/site/mangrove.webp',
+    approcheResponsable: '/images/site/approche-responsable.webp',
   },
-  
-  // Partenariats locaux
+
+  // Partenariats (visuels statiques des sections — les logos uploadés
+  // via l'admin restent sur Supabase)
   partenariats: {
-    fermePeda: getMediaUrl('ferme_peda_1.jpg'),
-    miellerie: getMediaUrl('miellerie_macouria_1.jpg'),
-    murumuru: getMediaUrl('murumuru_1.jpg'),
-    palmetum: getMediaUrl('palmetum_macouria_1.jpg'),
-    villagePalikour: getMediaUrl('village_palikour_1.jpg'),
+    fermePeda: '/images/site/ferme-pedagogique.webp',
   },
-  
-  // Galerie photos
-  galerie: [
-    getMediaUrl('photo_gal_1.jpg'),
-    getMediaUrl('photo_gal_2.jpg'),
-    getMediaUrl('photo_gal_3.jpg'),
-    getMediaUrl('photo_gal_4.jpg'),
-    getMediaUrl('photo_gal_5.jpg'),
-    getMediaUrl('photo_gal_6.jpg'),
-    getMediaUrl('photo_gal_7.jpg'),
-    getMediaUrl('photo_gal_8.jpg'),
-    getMediaUrl('photo_gal_9.jpg'),
-    getMediaUrl('photo_gal_10.jpg'),
-    getMediaUrl('photo_gal_11.jpg'),
-    getMediaUrl('photo_gal_12.jpg'),
-  ],
+
+  // Galerie photos (page Centrale)
+  galerie: Array.from({ length: 12 }, (_, i) =>
+    `/images/site/galerie-${String(i + 1).padStart(2, '0')}.webp`
+  ),
 } as const;
 
 // ============================================
-// VIDÉOS
+// VIDÉOS (Supabase, versions web optimisées)
 // ============================================
 
 export const VIDEOS = {
-  // Modélisation 3D de la centrale
-  modelisation: getMediaUrl('modelisation_video_cbdl.mp4'),
-  modelisation2: getMediaUrl('modelisation_video_cbdl_2.mp4'),
-  
-  // Ressource en eau
-  ressourceEau: getMediaUrl('ressource_eau.mp4'),
-  ressourceEau2: getMediaUrl('ressource_eau_2.mp4'),
-  
-  // Sanctuarisation
-  sanctuarisation: getMediaUrl('sanctuarisation_video.mp4'),
+  // Modélisation 3D de la centrale (hero) — 4K 45 Mo → 1080p 17 Mo
+  modelisation2: getMediaUrl('modelisation-centrale-web.mp4'),
+
+  // Ressource en eau — 33 Mo → 9 Mo
+  ressourceEau2: getMediaUrl('ressource-eau-web.mp4'),
+
+  // Sanctuarisation — 13 Mo → 6 Mo
+  sanctuarisation: getMediaUrl('sanctuarisation-web.mp4'),
+} as const;
+
+/** Posters des vidéos (première image réelle, locale et légère) */
+export const POSTERS = {
+  modelisation: '/images/site/posters/poster-modelisation.webp',
+  ressourceEau: '/images/site/posters/poster-ressource-eau.webp',
+  sanctuarisation: '/images/site/posters/poster-sanctuarisation.webp',
 } as const;
 
 // Export par défaut
-export default {
+const media = {
   IMAGES,
   VIDEOS,
+  POSTERS,
   getMediaUrl,
 };
 
+export default media;

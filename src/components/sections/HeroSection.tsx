@@ -4,7 +4,7 @@ import { useRef, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, X } from "lucide-react";
 import Link from "next/link";
-import { VIDEOS } from "@/lib/media";
+import { VIDEOS, POSTERS } from "@/lib/media";
 import Cartouche from "@/components/ui/Cartouche";
 
 /**
@@ -117,7 +117,7 @@ export default function HeroSection() {
               loop
               playsInline
               preload="metadata"
-              poster="/images/hero-poster.jpg"
+              poster={POSTERS.modelisation}
               className="absolute inset-0 w-full h-full object-cover"
             >
               <source src={VIDEOS.modelisation2} type="video/mp4" />

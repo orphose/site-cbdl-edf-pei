@@ -13,27 +13,34 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
-import { getMediaUrl } from "@/lib/supabase";
+import { IMAGES } from "@/lib/media";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { fadeInUp, staggerContainer, staggerItem } from "@/lib/motion-variants";
 
 /**
- * Photos de la galerie
+ * Photos de la galerie — versions locales optimisées (WebP) ;
+ * les titres servent d'alternative textuelle.
  */
-const GALLERY_PHOTOS = [
-  { id: 1, src: getMediaUrl("photo_gal_1.jpg"), title: "Centrale Bioénergie du Larivot" },
-  { id: 2, src: getMediaUrl("photo_gal_2.jpg"), title: "Vue aérienne du site" },
-  { id: 3, src: getMediaUrl("photo_gal_3.jpg"), title: "Installation des équipements" },
-  { id: 4, src: getMediaUrl("photo_gal_4.jpg"), title: "Travaux de construction" },
-  { id: 5, src: getMediaUrl("photo_gal_5.jpg"), title: "Avancement du chantier" },
-  { id: 6, src: getMediaUrl("photo_gal_6.jpg"), title: "Infrastructure moderne" },
-  { id: 7, src: getMediaUrl("photo_gal_7.jpg"), title: "Moteurs haute performance" },
-  { id: 8, src: getMediaUrl("photo_gal_8.jpg"), title: "Zone industrielle" },
-  { id: 9, src: getMediaUrl("photo_gal_9.jpg"), title: "Environnement préservé" },
-  { id: 10, src: getMediaUrl("photo_gal_10.jpg"), title: "Développement durable" },
-  { id: 11, src: getMediaUrl("photo_gal_11.jpg"), title: "Équipe projet" },
-  { id: 12, src: getMediaUrl("photo_gal_12.jpg"), title: "Inauguration" },
+const GALLERY_TITLES = [
+  "Centrale Bioénergie du Larivot",
+  "Vue aérienne du site",
+  "Installation des équipements",
+  "Travaux de construction",
+  "Avancement du chantier",
+  "Infrastructure moderne",
+  "Moteurs haute performance",
+  "Zone industrielle",
+  "Environnement préservé",
+  "Développement durable",
+  "Équipe projet",
+  "Inauguration",
 ];
+
+const GALLERY_PHOTOS = IMAGES.galerie.map((src, index) => ({
+  id: index + 1,
+  src,
+  title: GALLERY_TITLES[index] ?? `Photo ${index + 1}`,
+}));
 
 /**
  * Étapes de la naissance du projet — registre institutionnel :

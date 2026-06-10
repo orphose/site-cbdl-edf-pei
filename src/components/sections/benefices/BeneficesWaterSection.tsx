@@ -4,7 +4,7 @@ import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { fadeInLeft, fadeInRight, fadeInUpDelay } from "@/lib/motion-variants";
-import { VIDEOS } from "@/lib/media";
+import { VIDEOS, POSTERS } from "@/lib/media";
 
 /**
  * Section ÉCONOMIE D'EAU — une gestion responsable de l'eau.
@@ -84,6 +84,7 @@ export default function BeneficesWaterSection() {
                 loop
                 playsInline
                 preload="metadata"
+                poster={POSTERS.ressourceEau}
                 className="absolute inset-0 w-full h-full object-cover"
               >
                 <source src={VIDEOS.ressourceEau2} type="video/mp4" />

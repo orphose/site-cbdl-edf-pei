@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useCountUp } from "@/hooks/useCountUp";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { fadeInLeft, fadeInRight } from "@/lib/motion-variants";
-import { VIDEOS } from "@/lib/media";
+import { VIDEOS, POSTERS } from "@/lib/media";
 
 /**
  * Statistiques de préservation — registre environnemental (touches de vert).
@@ -109,6 +109,7 @@ export default function PreservationSection() {
                 loop
                 playsInline
                 preload="metadata"
+                poster={POSTERS.sanctuarisation}
                 className="absolute inset-0 w-full h-full object-cover"
               >
                 <source src={VIDEOS.sanctuarisation} type="video/mp4" />

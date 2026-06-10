@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { TreePine, Waves, MapPin } from "lucide-react";
 import Image from "next/image";
-import { getMediaUrl } from "@/lib/supabase";
+import { IMAGES } from "@/lib/media";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { fadeInUp, fadeInUpDelay, staggerContainer, staggerItem } from "@/lib/motion-variants";
 
@@ -19,7 +19,7 @@ const ERC_MEASURES = [
       "Le site a été choisi pour éviter toute interférence avec la flore protégée. La population de palmiers Murumuru est restaurée par semence sélective et transplantation de jeunes plants, sous surveillance continue.",
     highlight: "Murumuru",
     highlightLabel: "Palmier protégé",
-    image: getMediaUrl("murumuru_1.jpg"),
+    image: IMAGES.environnement.murumuru,
   },
   {
     icon: Waves,
@@ -28,7 +28,7 @@ const ERC_MEASURES = [
       "Aucune portion de la mangrove du site ne sera affectée par l'implantation de la centrale. Un plan de gestion rigoureux, en cours d'élaboration, protégera durablement cet écosystème vital.",
     highlight: "100%",
     highlightLabel: "Mangrove préservée",
-    image: getMediaUrl("mangrove_1.png"),
+    image: IMAGES.environnement.mangrove,
   },
   {
     icon: MapPin,
@@ -37,7 +37,7 @@ const ERC_MEASURES = [
       "150 hectares de zones naturelles à haute valeur patrimoniale seront sanctuarisés, avec un plan de gestion élaboré avec le Parc Naturel Régional de Guyane — une démarche initiée et financée par EDF PEI, soutenue par la CTG.",
     highlight: "150 ha",
     highlightLabel: "Zones sanctuarisées",
-    image: getMediaUrl("resp_approch.jpg"),
+    image: IMAGES.environnement.approcheResponsable,
   },
 ];
 
