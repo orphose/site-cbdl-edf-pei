@@ -16,6 +16,9 @@ export const FOOTER_LEGAL_LINKS = [
   { name: "Presse", href: "/presse" },
   { name: "Mentions légales", href: "/mentions-legales" },
   { name: "Politique de confidentialité", href: "/confidentialite" },
+  // Libellé réglementaire RGAA : l'état de conformité doit apparaître
+  // dans le lien présent sur toutes les pages.
+  { name: "Accessibilité : non conforme", href: "/accessibilite" },
 ] as const;
 
 export const PROJECT_STATS = {
