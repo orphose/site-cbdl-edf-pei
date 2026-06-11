@@ -179,6 +179,13 @@ export default function TimelineSection() {
                       {step.phase}
                     </h3>
                     <p className="text-caption">{step.description}</p>
+
+                    {step.isLast && (
+                      <p className="inline-flex items-center gap-1.5 mt-2.5 px-2.5 py-1 bg-edf-blanc-bleute text-edf-blue text-xs font-semibold uppercase tracking-wide">
+                        <Flag className="w-3.5 h-3.5" aria-hidden="true" />
+                        Objectif
+                      </p>
+                    )}
                   </div>
                 </motion.li>
               );
