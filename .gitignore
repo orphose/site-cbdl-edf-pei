@@ -66,3 +66,7 @@ public/*.mp4
 # au total) — servies localement plutôt que depuis Supabase Storage
 !public/images/site/**/*.webp
 !public/images/site/**/*.png
+!public/images/site/**/*.jpg
+
+# Exception : icônes d'application (favicon, apple-touch) générées du logo
+!src/app/*.png

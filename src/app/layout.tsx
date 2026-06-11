@@ -17,9 +17,20 @@ const workSans = Work_Sans({
 });
 
 /**
+ * Base de résolution des URLs absolues des métadonnées (og:image…).
+ * Production : NEXT_PUBLIC_SITE_URL ; previews Vercel : URL du déploiement.
+ */
+const METADATA_BASE = process.env.NEXT_PUBLIC_SITE_URL
+  ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
+  : process.env.VERCEL_URL
+    ? new URL(`https://${process.env.VERCEL_URL}`)
+    : new URL("http://localhost:3000");
+
+/**
  * Métadonnées du site
  */
 export const metadata: Metadata = {
+  metadataBase: METADATA_BASE,
   title: "Centrale Bioénergie du Larivot | EDF PEI",
   description:
     "La Centrale Bioénergie du Larivot en Guyane - Une énergie verte et garantie pour accompagner la transition énergétique vers le 100% renouvelable.",
@@ -37,9 +48,26 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Centrale Bioénergie du Larivot | EDF PEI",
     description:
-      "Un projet clé qui permettra à la Guyane de franchir une étape significative vers le 100% énergie renouvelable.",
+      "Une énergie verte et garantie pour la Guyane. Le projet qui fera franchir au territoire une étape décisive vers le 100 % énergie renouvelable.",
     type: "website",
     locale: "fr_FR",
+    url: "/",
+    siteName: "Centrale Bioénergie du Larivot",
+    images: [
+      {
+        url: "/images/site/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Vue aérienne de la Centrale Bioénergie du Larivot — EDF PEI, Guyane française",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Centrale Bioénergie du Larivot | EDF PEI",
+    description:
+      "Une énergie verte et garantie pour la Guyane. Vers le 100 % énergie renouvelable.",
+    images: ["/images/site/og-image.jpg"],
   },
 };
 
